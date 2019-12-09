@@ -22,7 +22,6 @@
         <module>ad-service</module>
         <module>notice-service</module>
         <module>term-config</module>
-        <module>mbcs</module>
         <module>notification-service</module>
         <module>feedback-service</module>
         <module>stock-evaluation</module>
