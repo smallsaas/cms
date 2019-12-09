@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.cms.services.domain.dao.QueryContentDao">
+    <sql id="Base_Column_List">
+            article_content.*
+        </sql>
+    <select id="findContentPage" resultType="ContentRecord" parameterType="ContentRecord">
+      SELECT article_content.*
+            FROM article_content
+            WHERE 1=1
+                                <if test="record.id != null and record.id>0 ">
+    AND article_content.id LIKE CONCAT('%',#{record.id},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.articleId != null and record.articleId>0 ">
+    AND article_content.article_id LIKE CONCAT('%',#{record.articleId},'%')
+    </if>
+                        <if test="record.content != null and record.content!= ''">
+    AND article_content.content LIKE CONCAT('%',#{record.content},'%')
+    </if>
+        </select>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.meta.services.domain.dao.QueryMetaWorkflowLiteActivityDao">
+    <sql id="Base_Column_List">
+            id, entity, entity_id AS entityId, note, from_status AS fromStatus, to_status AS toStatus, created_by_id AS createdById, created_by AS createdBy, created_time AS createdTime, field1, field2
+        </sql>
+
+    <select id="getListByEntity" resultType="MetaWorkflowLiteActivity">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM meta_workflow_lite_activity
+        WHERE entity = #{entity}
+        AND entity_id = #{entityId}
+        ORDER BY created_time
+    </select>
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.meta.services.domain.dao.QueryMetaStatusMachineDao">
+    <sql id="Base_Column_List">
+            id, entity, entity_table_name AS entityTableName, from_status AS fromStatus, to_status AS toStatus, permission
+        </sql>
+
+    <select id="findMetaStatusMachine" parameterType="MetaStatusMachine" resultType="MetaStatusMachine">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM meta_status_machine
+        WHERE 1=1
+        <if test="entity != null and entity!= ''">
+            AND meta_status_machine.entity = #{entity}
+        </if>
+        <if test="fromStatus != null and fromStatus!= ''">
+            AND meta_status_machine.from_status = #{fromStatus}
+        </if>
+        <if test="toStatus != null and toStatus!= ''">
+            AND meta_status_machine.to_status = #{toStatus}
+        </if>
+        <if test="entityTableName != null and entityTableName!= ''">
+            AND meta_status_machine.entity_table_name = #{entityTableName}
+        </if>
+    </select>
+
+    <select id="getEntityCurrentStatus" resultType="java.lang.String">
+        SELECT status
+        FROM ${entityTableName}
+        WHERE id = #{id}
+    </select>
+
+    <select id="getEntitiesCurrentStatus" resultType="EntityCurrentStatus">
+        SELECT id, status
+        FROM ${entityTableName}
+        WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getEntityCurrentVersionAndStatus" resultType="EntityCurrentVersionAndStatus">
+        SELECT id, status, version
+        FROM ${entityTableName}
+        WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <update id="updateEntityStatus">
+        UPDATE ${entityTableName}
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <update id="batchUpdateEntityStatus" >
+        UPDATE ${entityTableName}
+        SET status = #{status}
+        WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

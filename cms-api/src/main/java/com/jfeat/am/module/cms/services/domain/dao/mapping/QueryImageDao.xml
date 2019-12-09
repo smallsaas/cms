@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.cms.services.domain.dao.QueryImageDao">
+    <sql id="Base_Column_List">
+            article_image.*
+        </sql>
+    <select id="findImagePage" resultType="ImageRecord" parameterType="ImageRecord">
+      SELECT article_image.*
+            FROM article_image
+            WHERE 1=1
+                                <if test="record.id != null and record.id>0 ">
+    AND article_image.id LIKE CONCAT('%',#{record.id},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.articleId != null and record.articleId>0 ">
+    AND article_image.article_id LIKE CONCAT('%',#{record.articleId},'%')
+    </if>
+                        <if test="record.url != null and record.url!= ''">
+    AND article_image.url LIKE CONCAT('%',#{record.url},'%')
+    </if>
+        </select>
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationDao">
+    <sql id="Base_Column_List">
+        t_stock_evaluation.*
+    </sql>
+    <sql id="FindEvaluationCondition">
+        <if test="record.id != null and record.id>0 ">
+            AND t_stock_evaluation.id = #{record.id}
+        </if>
+
+        <if test="record.stockId != null and record.stockId>0 ">
+            AND t_stock_evaluation.stock_id =#{record.stockId}
+        </if>
+
+        <if test="record.content != null and record.content!= ''">
+            AND t_stock_evaluation.content LIKE CONCAT('%',#{record.content},'%')
+        </if>
+
+        <if test="record.stockType != null and record.stockType!= ''">
+            AND t_stock_evaluation.stock_type=#{record.stockType}
+        </if>
+        <if test="record.starValue != null and record.starValue != ''">
+            AND t_stock_evaluation_star.star_value = #{record.starValue}
+        </if>
+        <if test="record.tradeNumber != null and record.tradeNumber != ''">
+            AND t_stock_evaluation.trade_number = #{record.tradeNumber}
+        </if>
+        <if test="record.originId != null and record.originId != ''">
+            AND t_stock_evaluation.origin_id = #{record.originId}
+        </if>
+        <if test="record.originType != null and record.originType != ''">
+            AND t_stock_evaluation.origin_type = #{record.originType}
+        </if>
+    </sql>
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord">
+        <id column="id" property="id" />
+        <result column="stock_id" property="stockId" />
+        <result column="member_id" property="memberId" />
+        <result column="stock_type" property="stockType" />
+        <result column="stock_tag" property="stockTag" />
+        <result column="content" property="content" />
+        <result column="is_display" property="isDisplay" />
+        <result column="is_stick" property="isStick" />
+        <result column="status" property="status" />
+        <result column="trade_time" property="tradeTime" />
+        <result column="create_time" property="createTime" />
+        <result column="isDeleteAllow" property="isDeleteAllow" />
+    </resultMap>
+  <resultMap id="EvalutionsResultMap" type="com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord" extends="BaseResultMap">
+      <result column="toName" property="toName" />
+      <result column="isReply" property="isReply" />
+      <result column="replyTime" property="replyTime"/>
+      <collection property="images" ofType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationImage"
+        select="findImagesByEvalutionId" column="id">
+      </collection>
+      <collection property="stockEvaluationAdditions" ofType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationAddition"
+            select="findAdditionByEvalutionId" column="id">
+      </collection>
+      <collection property="stockEvaluationStars" ofType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationStar"
+                 select="findStarByEvalutionId" column="id">
+      </collection>
+  </resultMap>
+    <select id="findReplysByEvalutionId" parameterType="Long" resultType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation">
+        SELECT t_stock_evaluation.*
+        FROM t_stock_evaluation
+        WHERE stock_type= 'Evaluation' and stock_id = #{id}
+    </select>
+    <select id="findImagesByEvalutionId" parameterType="Long" resultType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationImage">
+      SELECT t_stock_evaluation_image.*
+      FROM t_stock_evaluation_image
+      WHERE evaluate_id = #{id}
+    </select>
+    <select id="findAdditionByEvalutionId" parameterType="Long" resultType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationAddition">
+      SELECT t_stock_evaluation_addition.*
+      FROM t_stock_evaluation_addition
+      WHERE evaluate_id = #{id}
+    </select>
+    <select id="findStarByEvalutionId" parameterType="Long" resultType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationStar">
+      SELECT t_stock_evaluation_star.*
+      FROM t_stock_evaluation_star
+      WHERE evaluate_id = #{id}
+    </select>
+    <select id="findStarCount" parameterType="com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord" resultType="com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationStarRecord">
+        SELECT  t_stock_evaluation_star.`star_value`, count(*) AS startCount
+        FROM t_stock_evaluation_star
+        LEFT JOIN  t_stock_evaluation
+        ON t_stock_evaluation_star.evaluate_id = t_stock_evaluation.id
+        WHERE 1=1
+        <if test="display != 'all'">
+            AND t_stock_evaluation.is_display = 1
+        </if>
+        <include refid="FindEvaluationCondition"></include>
+        GROUP BY t_stock_evaluation_star.star_value
+    </select>
+
+    <select id="findStockEvaluationPageWithReplys" resultMap="EvalutionsResultMap" parameterType="StockEvaluationRecord">
+        SELECT t_stock_evaluation.*, "" AS commentName, 0 AS isReply,
+        case
+        WHEN t_stock_evaluation.member_id = #{memberId} THEN '1'
+        ELSE  '0' END  as isDeleteAllow
+        FROM t_stock_evaluation LEFT JOIN t_stock_evaluation_star
+        ON t_stock_evaluation_star.evaluate_id = t_stock_evaluation.id
+        WHERE t_stock_evaluation.stock_type != "Evaluation"
+        AND t_stock_evaluation.is_display = 1
+        <include refid="FindEvaluationCondition"></include>
+        UNION
+        SELECT t_stock_evaluation.*
+        FROM
+        (
+            SELECT t_stock_evaluation.*, A.member_name AS commentName, 1 AS isReply,
+            case
+            WHEN t_stock_evaluation.member_id = #{memberId} THEN '1'
+            ELSE  '0' END  as isDeleteAllow
+            FROM t_stock_evaluation A, t_stock_evaluation
+            WHERE t_stock_evaluation.stock_id = A.id AND t_stock_evaluation.stock_type = 'Evaluation'
+            AND A.is_display = 1 AND t_stock_evaluation.is_display = 1
+        ) t_stock_evaluation
+        LEFT JOIN t_stock_evaluation_star
+        ON t_stock_evaluation_star.evaluate_id = t_stock_evaluation.id
+        WHERE 1=1
+        <include refid="FindEvaluationCondition"></include>
+        ORDER BY is_stick DESC,create_time DESC
+    </select>
+
+    <select id="findStockEvaluationPage" resultMap="EvalutionsResultMap" parameterType="StockEvaluationRecord">
+        SELECT t_stock_evaluation.*,
+        case
+        WHEN t_stock_evaluation.member_id = #{memberId} THEN '1'
+        ELSE  '0' END  as isDeleteAllow
+        FROM t_stock_evaluation LEFT JOIN t_stock_evaluation_star
+        ON t_stock_evaluation_star.evaluate_id = t_stock_evaluation.id
+        WHERE t_stock_evaluation.stock_type != "Evaluation"
+        AND t_stock_evaluation.is_display = 1
+        <include refid="FindEvaluationCondition"></include>
+        ORDER BY is_stick DESC,create_time DESC
+    </select>
+
+    <select id="findReplys" resultMap="EvalutionsResultMap">
+        SELECT t_stock_evaluation.*,
+        case
+        WHEN t_stock_evaluation.member_id = #{memberId} THEN '1'
+        ELSE  '0' END  as isDeleteAllow
+        FROM t_stock_evaluation A, t_stock_evaluation
+        WHERE t_stock_evaluation.stock_id = A.id AND t_stock_evaluation.stock_type = 'Evaluation'
+        AND t_stock_evaluation.is_display = 1
+        <if test="record.tradeNumber != null and record.tradeNumber != ''">
+            AND t_stock_evaluation.trade_number = #{record.tradeNumber}
+        </if>
+        <if test="record.originId != null and record.originId != ''">
+            AND t_stock_evaluation.origin_id = #{record.originId}
+        </if>
+        <if test="record.originType != null and record.originType != ''">
+            AND t_stock_evaluation.origin_type = #{record.originType}
+        </if>
+        ORDER BY is_stick DESC,create_time DESC
+    </select>
+
+    <select id="bulkFindEvaluations" resultMap="EvalutionsResultMap">
+        SELECT t_stock_evaluation.*, MAX(reply.create_time) AS replyTime
+        FROM t_stock_evaluation
+        LEFT JOIN t_stock_evaluation_star ON t_stock_evaluation.id = t_stock_evaluation_star.evaluate_id
+        LEFT JOIN t_stock_evaluation reply ON reply.stock_id = t_stock_evaluation.id AND reply.stock_type = 'Evaluation'
+        WHERE 1=1
+        <if test="stockType != null and stockType != ''">
+            AND t_stock_evaluation.stock_type = #{stockType}
+        </if>
+        <if test="starValue != null">
+            AND t_stock_evaluation_star.star_value = #{starValue}
+        </if>
+        <if test="stockIds != null">
+            <if test="stockIds.size() > 0">
+                AND t_stock_evaluation.stock_id IN (
+                <foreach collection="stockIds" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </if>
+        <if test="ids != null">
+            <if test="ids.size() > 0">
+                AND t_stock_evaluation.id IN (
+                <foreach collection="ids" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </if>
+        GROUP BY t_stock_evaluation.id
+        ORDER BY is_stick DESC,create_time DESC
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.notification.services.persistence.dao.NotifyMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.notification.services.persistence.model.Notify">
+		<id column="id" property="id" />
+		<result column="sender_id" property="senderId" />
+		<result column="content" property="content" />
+		<result column="type" property="type" />
+		<result column="target_id" property="targetId" />
+		<result column="target_type" property="targetType" />
+		<result column="action" property="action" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, sender_id AS senderId, content, type, target_id AS targetId, target_type AS targetType, action, create_time AS createTime
+    </sql>
+
+</mapper>

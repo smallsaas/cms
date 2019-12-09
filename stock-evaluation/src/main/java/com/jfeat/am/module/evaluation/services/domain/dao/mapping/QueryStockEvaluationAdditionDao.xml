@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationAdditionDao">
+    <sql id="Base_Column_List">
+        t_stock_evaluation_addition.*
+    </sql>
+    <select id="findStockEvaluationAdditionPage" resultType="StockEvaluationAdditionRecord"
+            parameterType="StockEvaluationAdditionRecord">
+        SELECT t_stock_evaluation_addition.*
+        FROM t_stock_evaluation_addition
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_stock_evaluation_addition.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.content != null and record.content!= ''">
+            AND t_stock_evaluation_addition.content LIKE CONCAT('%',#{record.content},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND t_stock_evaluation_addition.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+        <if test="record.isDisplay != null and record.isDisplay>0 ">
+            AND t_stock_evaluation_addition.is_display LIKE CONCAT('%',#{record.isDisplay},'%')
+        </if>
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_stock_evaluation_addition.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+    </select>
+</mapper>

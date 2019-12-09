@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.notice.services.domain.dao.QueryNoticeDao">
+    <select id="findNotices" resultType="NoticeRequest" >
+        SELECT t_notice.*
+        FROM t_notice
+        WHERE 1=1
+        <if test="notice.status != null and notice.status!= ''">
+            AND t_notice.status = #{notice.status}
+        </if>
+        <if test="notice.enabled != null">
+            AND t_notice.enabled = #{notice.enabled}
+        </if>
+        <if test="notice.title != null and notice.title!= ''">
+            AND t_notice.title LIKE CONCAT('%',#{notice.title},'%')
+        </if>
+        <if test="notice.content != null and notice.content!= ''">
+            AND t_notice.content LIKE CONCAT('%',#{notice.content},'%')
+        </if>
+
+        <if test="search != null and search!= ''">
+            AND(
+            t_notice.content LIKE CONCAT('%',#{search},'%')
+            OR t_notice.author LIKE CONCAT('%',#{search},'%')
+            OR t_notice.title LIKE CONCAT('%',#{search},'%')
+            OR t_notice.id LIKE CONCAT('%',#{search},'%')
+            )
+        </if>
+
+        <if test="expired != null">
+            <if test="expired == 1">
+                AND (t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1 day))
+            </if>
+            <if test="expired == 0">
+                AND (t_notice.end_time IS NULL OR DATE_ADD(t_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
+            </if>
+        </if>
+        <if test="type != null">
+            <if test="type.length==1">
+                AND t_notice.type = #{type[0]}
+            </if>
+            <if test="type.length==2">
+                AND ( t_notice.type = #{type[0]} OR t_notice.type = #{type[1]} )
+            </if>
+        </if>
+        ORDER BY t_notice.sort_num DESC, t_notice.enabled DESC,t_notice.update_time DESC,t_notice.create_time DESC
+    </select>
+
+    <select id="findExpiredNotices" resultType="Notice">
+        SELECT t_notice.*
+        FROM t_notice
+
+        WHERE t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1 day)
+        ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC,t_notice.create_time DESC
+    </select>
+
+    <select id="findRecentNotices" resultType="Notice">
+        SELECT t_notice.*
+        FROM t_notice
+        WHERE (t_notice.end_time IS NULL OR DATE_ADD(t_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
+        AND t_notice.enabled = 1
+        AND t_notice.status = 'Publish'
+
+        <if test="type != null and type!= ''">
+            AND ( t_notice.type = #{type} OR t_notice.type = 'System')
+        </if>
+
+        ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC,t_notice.create_time DESC
+    </select>
+</mapper>

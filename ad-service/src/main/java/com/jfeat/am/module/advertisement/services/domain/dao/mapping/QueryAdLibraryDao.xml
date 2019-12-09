@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao">
+    <sql id="Base_Column_List">
+            t_ad_library.*
+        </sql>
+    <select id="findAdLibraryPage" resultType="AdLibraryRecord" parameterType="AdLibraryRecord">
+      SELECT t_ad_library.*
+            FROM t_ad_library
+            WHERE 1=1
+                                    <if test="record.id != null and record.id>0 ">
+                 AND t_ad_library.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+                                <if test="record.url != null and record.url!= ''">
+                 AND t_ad_library.url LIKE CONCAT('%',#{record.url},'%')
+        </if>
+     </select>
+
+    <select id="getAdRecordsByGroup" resultType="Ad">
+        select a.*
+        from t_ad a
+        LEFT JOIN t_ad_group g
+        ON g.id=a.group_id
+        WHERE g.identifier=#{group}
+        <if test="enabled != null">
+          <choose>
+              <when test="enabled > 0">
+                  and a.enabled > 0
+              </when>
+              <otherwise>
+                  and a.enabled = 0
+              </otherwise>
+          </choose>
+        </if>
+        order by a.seq DESC
+    </select>
+</mapper>

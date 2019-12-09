@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationStarDao">
+    <sql id="Base_Column_List">
+            t_stock_evaluation_star.*
+        </sql>
+    <select id="findStockEvaluationStarPage" resultType="StockEvaluationStarRecord" parameterType="StockEvaluationStarRecord">
+      SELECT t_stock_evaluation_star.*
+            FROM t_stock_evaluation_star
+            WHERE 1=1
+                                <if test="record.id != null and record.id>0 ">
+    AND t_stock_evaluation_star.id LIKE CONCAT('%',#{record.id},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.evaluateId != null and record.evaluateId>0 ">
+    AND t_stock_evaluation_star.evaluate_id LIKE CONCAT('%',#{record.evaluateId},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.starName != null and record.starName!= ''">
+    AND t_stock_evaluation_star.star_name LIKE CONCAT('%',#{record.starName},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.starValue != null and record.starValue>0 ">
+    AND t_stock_evaluation_star.star_value LIKE CONCAT('%',#{record.starValue},'%')
+    </if>
+        </select>
+</mapper>

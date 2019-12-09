@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.cms.services.domain.dao.QueryCategoryDao">
+    <sql id="Base_Column_List">
+            article_category.*
+        </sql>
+    <select id="findCategoryPage" resultType="CategoryRecord" parameterType="CategoryRecord">
+      SELECT article_category.*
+            FROM article_category
+            WHERE 1=1
+                                <if test="record.id != null and record.id>0 ">
+    AND article_category.id LIKE CONCAT('%',#{record.id},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.typeId != null and record.typeId>0 ">
+    AND article_category.type_id LIKE CONCAT('%',#{record.typeId},'%')
+    </if>
+                        <if test="record.name != null and record.name!= ''">
+    AND article_category.name LIKE CONCAT('%',#{record.name},'%')
+    </if>
+                        <if test="record.cover != null and record.cover!= ''">
+    AND article_category.cover LIKE CONCAT('%',#{record.cover},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.allowImage != null and record.allowImage>0 ">
+    AND article_category.allow_image LIKE CONCAT('%',#{record.allowImage},'%')
+    </if>
+                                        
+                                                                                                     <if test="record.fastEntry != null and record.fastEntry>0 ">
+    AND article_category.fast_entry LIKE CONCAT('%',#{record.fastEntry},'%')
+    </if>
+        </select>
+</mapper>

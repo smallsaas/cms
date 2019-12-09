@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.images.services.domain.dao.QueryStockImagesDao">
+    <sql id="Base_Column_List">
+        t_stock_images.*
+    </sql>
+
+
+    <insert id="uploadImages" parameterType="com.jfeat.images.services.persistence.model.StockImages">
+        INSERT INTO t_stock_images(url, stock_id, stock_type, name,image_note,is_primary)
+        VALUES
+        <foreach collection="stockImages" item="item" separator=",">
+            (#{item.url},#{item.stockId}, #{item.stockType},#{item.name},#{item.imageNote},
+            <choose>
+                <when test="item.isPrimary == null">0</when>
+                <otherwise> #{item.isPrimary}</otherwise>
+            </choose>)
+        </foreach>
+    </insert>
+</mapper>

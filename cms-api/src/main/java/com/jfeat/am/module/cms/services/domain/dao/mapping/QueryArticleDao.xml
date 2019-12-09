@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.cms.services.domain.dao.QueryArticleDao">
+    <sql id="Base_Column_List">
+        article.*
+    </sql>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.cms.services.persistence.model.Article">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="category_id" property="categoryId" />
+        <result column="user_id" property="userId" />
+        <result column="title" property="title" />
+        <result column="summary" property="summary" />
+        <result column="created_time" property="createdTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="sticky" property="sticky" />
+        <result column="recommended" property="recommended" />
+        <result column="visit_count" property="visitCount" />
+        <!--<result column="like_count" property="likeCount" />-->
+        <result column="likes_count" property="likeCount" />
+
+        <result column="favorite_count" property="favoriteCount" />
+        <result column="status" property="status" />
+        <result column="sub_title" property="subTitle" />
+        <result column="sub_head" property="subHead" />
+        <result column="author" property="author" />
+        <result column="cover" property="cover" />
+    </resultMap>
+
+
+    <resultMap id="DiaryPageMap" type="com.jfeat.am.module.cms.services.domain.model.record.ArticleRecord" extends="BaseResultMap">
+        <result column="follower_count" property="followerCount" />
+        <result column="evaluation_count" property="evaluationCount" />
+        <result column="content" property="content" />
+     <!--   <collection property="images" ofType="com.jfeat.images.services.persistence.model.StockImages"
+                    select="DiaryPageImage" column="{type=type,id=id}">
+            <id column="id" property="id"/>
+            <result column="url" property="url"/>
+            <result column="is_primary" property="isPrimary"/>
+        </collection>
+        <collection property="tags" ofType="com.jfeat.am.module.tag.services.persistence.model.StockTag"
+                    select="DiaryPageTag" column="{id=id}">
+            <id column="id" property="id"/>
+            <result column="tag_name" property="tagName"/>
+            <result column="tag_type" property="tagType"/>
+        </collection>-->
+    </resultMap>
+  <!--  <select id="DiaryPageTag" parameterType="java.util.Map" resultType="com.jfeat.am.module.tag.services.persistence.model.StockTag">
+        SELECT A.id,A.tag_name,A.tag_type
+        FROM t_stock_tag AS A
+        LEFT JOIN t_stock_tag_relation B
+        ON A.id = B.tag_id
+        WHERE B.stock_id = #{id}
+    </select>-->
+<!--    <select id="DiaryPageImage" parameterType="java.util.Map" resultType="com.jfeat.images.services.persistence.model.StockImages">
+        SELECT t_stock_images.* FROM t_stock_images
+        WHERE t_stock_images.stock_id = #{id}
+        AND t_stock_images.stock_type = #{type}
+    </select>-->
+    <select id="findDiaryPage" resultMap="DiaryPageMap" parameterType="com.jfeat.am.module.cms.services.domain.model.record.ArticleRecord">
+        SELECT article.*,B.content,
+        CASE WHEN C.stock_type = "Diary" THEN count(*)
+        ELSE 0 END AS likes_count,
+        CASE WHEN D.evaluationCount != 0 THEN D.evaluationCount
+        ELSE 0 END AS evaluation_count
+        FROM article
+        LEFT JOIN article_content B
+        ON B.article_id = article.id
+        LEFT JOIN t_stock_flower C
+        ON article.id = C.stock_id AND
+        article.type = C.stock_type
+        LEFT JOIN (
+        SELECT count(*) AS evaluationCount, stock_id
+        FROM t_stock_evaluation
+        where t_stock_evaluation.stock_type = 'Diary'
+        AND t_stock_evaluation.is_display = 1
+        GROUP BY stock_id) D
+        ON D.stock_id = article.id
+        WHERE 1 =1
+        <if test="viewForbidden == null or viewForbidden != 1">
+            AND article.display = 1
+        </if>
+        <if test="record.id != null and record.id>0 ">
+            AND article.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.type != null and record.type!= '' ">
+            AND article.type LIKE CONCAT('%',#{record.type},'%')
+        </if>
+        <if test="record.content != null and record.content!= '' ">
+            AND B.content LIKE CONCAT('%',#{record.content},'%')
+        </if>
+        <if test="record.author != null and record.author!= '' ">
+            AND article.author LIKE CONCAT('%',#{record.author},'%')
+        </if>
+
+        <if test="record.categoryId != null and record.categoryId>0 ">
+            AND article.category_id LIKE CONCAT('%',#{record.categoryId},'%')
+        </if>
+
+        <if test="record.userId != null and record.userId>0 ">
+            AND article.user_id LIKE CONCAT('%',#{record.userId},'%')
+        </if>
+        <if test="record.subTitle != null and record.subTitle!= ''">
+            AND article.sub_title LIKE CONCAT('%',#{record.subTitle},'%')
+        </if>
+        <if test="record.subHead != null and record.subHead!= ''">
+            AND article.sub_head LIKE CONCAT('%',#{record.subHead},'%')
+        </if>
+        <if test="record.summary != null and record.summary!= ''">
+            AND article.summary LIKE CONCAT('%',#{record.summary},'%')
+        </if>
+        <if test="record.createdTime != null and record.createdTime>0 ">
+            AND article.created_time LIKE CONCAT('%',#{record.createdTime},'%')
+        </if>
+        <if test="record.sticky != null and record.sticky>0 ">
+            AND article.sticky LIKE CONCAT('%',#{record.sticky},'%')
+        </if>
+        <if test="record.recommended != null and record.recommended>0 ">
+            AND article.recommended LIKE CONCAT('%',#{record.recommended},'%')
+        </if>
+
+        <if test="record.visitCount != null and record.visitCount>0 ">
+            AND article.visit_count LIKE CONCAT('%',#{record.visitCount},'%')
+        </if>
+
+        <if test="record.likeCount != null and record.likeCount>0 ">
+            AND article.like_count LIKE CONCAT('%',#{record.likeCount},'%')
+        </if>
+
+        <if test="record.favoriteCount != null and record.favoriteCount>0 ">
+            AND article.favorite_count LIKE CONCAT('%',#{record.favoriteCount},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND article.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+        <if test="ownerId != null">
+            AND article.user_id = #{ownerId}
+        </if>
+        GROUP BY article.id
+        <choose>
+            <when test="orderBy == 'EvaluationCount'">
+                ORDER BY sticky DESC, evaluation_count DESC, created_time DESC
+            </when>
+            <when test="orderBy == 'FlowerCount'">
+                ORDER BY sticky DESC,likes_count DESC, created_time DESC
+            </when>
+            <otherwise>
+                ORDER BY sticky DESC,created_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findTrendPage" resultMap="DiaryPageMap" parameterType="com.jfeat.am.module.cms.services.domain.model.record.ArticleRecord">
+        SELECT article.*,B.content,
+        CASE WHEN C.stock_type = "Diary" THEN count(*)
+        ELSE 0 END AS likes_count,
+        CASE WHEN D.evaluationCount != 0 THEN D.evaluationCount
+        ELSE 0 END AS evaluation_count
+        FROM article
+        LEFT JOIN article_content B
+        ON B.article_id = article.id
+        LEFT JOIN t_stock_flower C
+        ON article.id = C.stock_id AND
+        article.type = C.stock_type
+        LEFT JOIN (
+        SELECT count(*) AS evaluationCount, stock_id
+        FROM t_stock_evaluation
+        where t_stock_evaluation.stock_type = 'Diary'
+        AND t_stock_evaluation.is_display = 1
+        GROUP BY stock_id) D
+        ON D.stock_id = article.id
+        WHERE 1 =1
+        <if test="viewForbidden == null or viewForbidden != 1">
+            AND article.display = 1
+        </if>
+        <if test="record.type != null and record.type!= '' ">
+            AND article.type LIKE CONCAT('%',#{record.type},'%')
+        </if>
+        <if test="record.title != null and record.title!= ''">
+            AND article.title LIKE CONCAT('%',#{record.title},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND article.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+        GROUP BY article.id
+        ORDER BY sticky DESC, evaluation_count DESC, created_time DESC
+    </select>
+
+
+
+    <select id="findArticlePageByIdsWithInfo" resultMap="DiaryPageMap" parameterType="com.jfeat.am.module.cms.services.domain.model.record.ArticleRecord">
+        SELECT article.*,B.content,
+        CASE WHEN C.stock_type = "Diary" THEN count(*)
+        ELSE 0 END AS likes_count
+        FROM article
+        LEFT JOIN article_content B
+        ON B.article_id = article.id
+        LEFT JOIN t_stock_flower C
+        ON article.id = C.stock_id AND
+        article.type = C.stock_type
+        WHERE 1=1
+        <if test="ids != null and ids.size() != 0">
+        AND article.id IN (
+            <foreach collection="ids" item="item" separator=",">
+                #{item}
+            </foreach>
+        )
+        </if>
+        GROUP BY article.id
+        ORDER BY sticky DESC,created_time DESC
+    </select>
+
+    <select id="findArticlePageByIds" resultType="ArticleRecord" parameterType="ArticleRecord">
+        SELECT article.*
+        FROM article
+        WHERE article.type = "Article"
+        <if test="ids != null and ids.size() != 0">
+        AND article.id IN (
+        <foreach collection="ids" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+        </if>
+        GROUP BY article.id
+        ORDER BY sticky DESC,created_time DESC
+    </select>
+
+    <select id="findArticlePage" resultType="ArticleRecord" parameterType="ArticleRecord">
+        SELECT article.*,
+        CASE
+        WHEN evaluationCount != 0 THEN evaluationCount
+        ELSE 0 END AS evaluationCount
+        FROM article LEFT JOIN (
+        SELECT count(*) AS evaluationCount, stock_id
+        FROM t_stock_evaluation
+        where t_stock_evaluation.stock_type IN('Article','Diary','Information')
+        AND t_stock_evaluation.is_display = 1
+        GROUP BY stock_id) A
+        ON A.stock_id = article.id
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND article.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.type != null and record.type!= '' ">
+            AND article.type LIKE CONCAT('%',#{record.type},'%')
+        </if>
+
+        <if test="record.categoryId != null and record.categoryId>0 ">
+            AND article.category_id LIKE CONCAT('%',#{record.categoryId},'%')
+        </if>
+
+        <if test="record.userId != null and record.userId>0 ">
+            AND article.user_id LIKE CONCAT('%',#{record.userId},'%')
+        </if>
+        <if test="record.title != null and record.title!= ''">
+            AND article.title LIKE CONCAT('%',#{record.title},'%')
+        </if>
+
+        <if test="record.subTitle != null and record.subTitle!= ''">
+            AND article.sub_title LIKE CONCAT('%',#{record.subTitle},'%')
+        </if>
+
+        <if test="record.subHead != null and record.subHead!= ''">
+            AND article.sub_head LIKE CONCAT('%',#{record.subHead},'%')
+        </if>
+        <if test="record.summary != null and record.summary!= ''">
+            AND article.summary LIKE CONCAT('%',#{record.summary},'%')
+        </if>
+
+        <if test="record.createdTime != null and record.createdTime>0 ">
+            AND article.created_time LIKE CONCAT('%',#{record.createdTime},'%')
+        </if>
+        <if test="record.sticky != null and record.sticky>0 ">
+            AND article.sticky LIKE CONCAT('%',#{record.sticky},'%')
+        </if>
+        <if test="record.recommended != null and record.recommended>0 ">
+            AND article.recommended LIKE CONCAT('%',#{record.recommended},'%')
+        </if>
+
+        <if test="record.visitCount != null and record.visitCount>0 ">
+            AND article.visit_count LIKE CONCAT('%',#{record.visitCount},'%')
+        </if>
+
+        <if test="record.likeCount != null and record.likeCount>0 ">
+            AND article.like_count LIKE CONCAT('%',#{record.likeCount},'%')
+        </if>
+
+        <if test="record.favoriteCount != null and record.favoriteCount>0 ">
+            AND article.favorite_count LIKE CONCAT('%',#{record.favoriteCount},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND article.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+        <if test="ownerId != null">
+            AND article.user_id = #{ownerId}
+        </if>
+        ORDER BY sticky DESC,created_time DESC
+    </select>
+
+</mapper>

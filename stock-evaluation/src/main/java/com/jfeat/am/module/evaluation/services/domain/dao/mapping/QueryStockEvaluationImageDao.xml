@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationImageDao">
+    <sql id="Base_Column_List">
+        t_stock_evaluation_image.*
+    </sql>
+    <select id="findStockEvaluationImagePage" resultType="StockEvaluationImageRecord"
+            parameterType="StockEvaluationImageRecord">
+        SELECT t_stock_evaluation_image.*
+        FROM t_stock_evaluation_image
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_stock_evaluation_image.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.evaluateId != null and record.evaluateId>0 ">
+            AND t_stock_evaluation_image.evaluate_id LIKE CONCAT('%',#{record.evaluateId},'%')
+        </if>
+        <if test="record.url != null and record.url!= ''">
+            AND t_stock_evaluation_image.url LIKE CONCAT('%',#{record.url},'%')
+        </if>
+        <if test="record.status != null and record.status!= ''">
+            AND t_stock_evaluation_image.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_stock_evaluation_image.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+        <if test="record.evaluationAdditionId != null and record.evaluationAdditionId>0 ">
+            AND t_stock_evaluation_image.evaluation_addition_id LIKE CONCAT('%',#{record.evaluationAdditionId},'%')
+        </if>
+    </select>
+</mapper>

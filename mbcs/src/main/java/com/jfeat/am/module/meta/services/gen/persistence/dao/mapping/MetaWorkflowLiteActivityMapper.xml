@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.meta.services.gen.persistence.dao.MetaWorkflowLiteActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap"
+               type="com.jfeat.am.module.meta.services.gen.persistence.model.MetaWorkflowLiteActivity">
+        <id column="id" property="id"/>
+        <result column="entity" property="entity"/>
+        <result column="entity_id" property="entityId"/>
+        <result column="note" property="note"/>
+        <result column="from_status" property="fromStatus"/>
+        <result column="to_status" property="toStatus"/>
+        <result column="created_by_id" property="createdById"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="field1" property="field1"/>
+        <result column="field2" property="field2"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entity, entity_id AS entityId, note, from_status AS fromStatus, to_status AS toStatus, created_by_id AS createdById, created_by AS createdBy, created_time AS createdTime, field1, field2
+    </sql>
+
+</mapper>

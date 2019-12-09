@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao">
+    <sql id="Base_Column_List">
+            t_ad.*
+        </sql>
+    <select id="findAdPage" resultType="AdRecord" parameterType="AdRecord">
+      SELECT t_ad.*,t_ad_group.name as group_name
+            FROM t_ad left join t_ad_group on t_ad.group_id=t_ad_group.id
+            WHERE 1=1
+          <if test="record.groupId != null and record.groupId>0 ">
+                 AND t_ad_group.id LIKE CONCAT('%',#{record.groupId},'%')
+        </if>
+         <if test="search != null and search!= ''">
+                 AND (t_ad.name LIKE CONCAT('%',#{search},'%')
+                 or t_ad_group.name LIKE CONCAT('%',#{search},'%'))
+        </if>
+        <if test="record.enabled != null ">
+            AND t_ad.enabled LIKE CONCAT('%',#{record.enabled},'%')
+        </if>
+
+     </select>
+
+    <select id="findAd" resultType="AdRecord" parameterType="AdRecord">
+        SELECT t_ad.*,t_ad_group.name as group_name
+        FROM t_ad left join t_ad_group on t_ad.group_id=t_ad_group.id
+        where t_ad.id=#{id}
+    </select>
+
+    <select id="getProductIdName" resultType="com.jfeat.am.module.advertisement.services.domain.model.smallProductRequest" >
+        SELECT id,name
+        FROM t_product
+
+    </select>
+
+    <select id="getCategoryIdName" resultType="com.jfeat.am.module.advertisement.services.domain.model.smallProductRequest" >
+        SELECT id,name
+        FROM t_product_category
+
+    </select>
+
+
+
+
+
+
+
+</mapper>

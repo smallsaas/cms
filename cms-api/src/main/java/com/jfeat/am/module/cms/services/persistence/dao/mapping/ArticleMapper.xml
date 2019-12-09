@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.cms.services.persistence.dao.ArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.cms.services.persistence.model.Article">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="category_id" property="categoryId" />
+        <result column="user_id" property="userId" />
+        <result column="title" property="title" />
+        <result column="summary" property="summary" />
+        <result column="created_time" property="createdTime" />
+        <result column="publish_time" property="publishTime" />
+        <result column="sticky" property="sticky" />
+        <result column="recommended" property="recommended" />
+        <result column="visit_count" property="visitCount" />
+        <result column="like_count" property="likeCount" />
+        <result column="favorite_count" property="favoriteCount" />
+        <result column="status" property="status" />
+        <result column="sub_title" property="subTitle" />
+        <result column="sub_head" property="subHead" />
+        <result column="author" property="author" />
+        <result column="cover" property="cover" />
+    </resultMap>
+
+</mapper>

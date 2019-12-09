@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.termconfig.services.persistence.dao.TermConfigMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.termconfig.services.persistence.model.TermConfig">
+		<id column="id" property="id" />
+		<result column="type" property="type" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="org_id" property="orgId" />
+		<result column="created_time" property="createdTime" />
+		<result column="previous_modified_time" property="previousModifiedTime" />
+		<result	 column="last_modified_time" property="lastModifiedTime" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+        id, type, title, content, created_time AS createdTime, previous_modified_time AS previousModifiedTime, last_modified_time AS lastModifiedTime,org_id AS orgId
+    </sql>
+
+</mapper>

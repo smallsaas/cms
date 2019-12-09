@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.meta.services.gen.persistence.dao.MetaStatusMachineMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.meta.services.gen.persistence.model.MetaStatusMachine">
+		<id column="id" property="id" />
+		<result column="entity" property="entity" />
+		<result column="entity_table_name" property="entityTableName" />
+		<result column="from_status" property="fromStatus" />
+		<result column="to_status" property="toStatus" />
+		<result column="permission" property="permission" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entity, entity_table_name AS entityTableName, from_status AS fromStatus, to_status AS toStatus, permission
+    </sql>
+
+</mapper>

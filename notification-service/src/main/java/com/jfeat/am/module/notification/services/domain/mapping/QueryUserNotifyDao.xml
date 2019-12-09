@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.notification.services.domain.dao.QueryUserNotifyDao">
+
+    <select id="queryTypeCount" resultType="map">
+        SELECT
+        notify.target_type AS targetType,
+        COUNT(*) AS num
+        FROM
+        user_notify
+        LEFT JOIN notify ON notify.id = user_notify.notify_id
+        WHERE
+        user_notify.user_id = #{userId}
+        AND user_notify.is_read = #{isRead}
+        AND notify.sender_id &lt;&gt; #{userId}
+        GROUP BY notify.target_type
+    </select>
+
+
+    <select id="returnTypeCount" resultType="map">
+        SELECT
+        notify.target_type AS targetType,
+        CASE
+        WHEN (notify.action = 'Favorite' OR notify.action = 'UnFavorite')
+        THEN 'Favorite'
+        WHEN (notify.action = 'Flower' OR notify.action = 'UnFlower')
+        THEN 'Flower'
+        ELSE 'Evaluation' end as action,
+        COUNT(*) AS num
+        FROM
+        user_notify
+        LEFT JOIN notify ON notify.id = user_notify.notify_id
+        WHERE
+        user_notify.user_id = #{userId}
+        AND user_notify.is_read = #{isRead}
+        AND notify.sender_id &lt;&gt; #{userId}
+        GROUP BY notify.action
+    </select>
+
+    <update id="read">
+        update user_notify set is_read = 1 where id = #{id}
+    </update>
+
+</mapper>

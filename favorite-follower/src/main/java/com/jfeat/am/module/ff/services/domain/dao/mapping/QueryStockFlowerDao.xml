@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.ff.services.domain.dao.QueryStockFlowerDao">
+    <sql id="Base_Column_List">
+        t_stock_flower.*
+    </sql>
+    <select id="findStockFlowerPage" resultType="StockFlowerRecord" parameterType="StockFlowerRecord">
+        SELECT t_stock_flower.*
+        FROM t_stock_flower
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_stock_flower.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.memberId != null and record.memberId>0 ">
+            AND t_stock_flower.member_id LIKE CONCAT('%',#{record.memberId},'%')
+        </if>
+
+        <if test="record.memberName != null and record.memberName!= ''">
+            AND t_stock_flower.member_name LIKE CONCAT('%',#{record.memberName},'%')
+        </if>
+
+        <if test="record.stockId != null and record.stockId>0 ">
+            AND t_stock_flower.stock_id LIKE CONCAT('%',#{record.stockId},'%')
+        </if>
+
+        <if test="record.stockName != null and record.stockName>0 ">
+            AND t_stock_flower.stock_name LIKE CONCAT('%',#{record.stockName},'%')
+        </if>
+
+        <if test="record.stockType != null and record.stockType!= ''">
+            AND t_stock_flower.stock_type LIKE CONCAT('%',#{record.stockType},'%')
+        </if>
+
+        <if test="record.flowerCount != null and record.flowerCount>0 ">
+            AND t_stock_flower.flower_count LIKE CONCAT('%',#{record.flowerCount},'%')
+        </if>
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_stock_flower.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+    </select>
+</mapper>

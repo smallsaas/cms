@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.meta.services.gen.persistence.dao.MetaEntityPatchMachineMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine">
+        <id column="id" property="id"/>
+        <result column="entity" property="entity"/>
+        <result column="entity_table_name" property="entityTableName"/>
+        <result column="entity_field_name" property="entityFieldName"/>
+        <result column="entity_field_type" property="entityFieldType"/>
+        <result column="number_range_min" property="numberRangeMin"/>
+        <result column="number_range_max" property="numberRangeMax"/>
+        <result column="permission" property="permission"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entity, entity_table_name AS entityTableName, entity_field_name AS entityFieldName, entity_field_type AS entityFieldType, number_range_min AS numberRangeMin, number_range_max AS numberRangeMax, permission
+    </sql>
+
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.notification.services.domain.dao.QueryNotifyDao">
+
+    <select id="paginationNotifies" resultType="com.jfeat.am.module.notification.services.domain.model.NotifyModel">
+        SELECT
+        notify.id,
+        notify.sender_id AS senderId,
+        notify.content,
+        notify.type,
+        notify.target_id AS targetId,
+        notify.target_type AS targetType,
+        notify.action,
+        notify.create_time AS createTime,
+        user_notify.id AS userNotifyId,
+        user_notify.is_read As isRead,
+        notify.origin_id AS originId,
+        notify.origin_type As originType
+        FROM
+        notify
+        LEFT JOIN user_notify ON notify.id = user_notify.notify_id
+        WHERE
+        notify.sender_id &lt;&gt; #{userId}
+        AND user_notify.user_id = #{userId}
+        <if test="isRead != null">
+            AND user_notify.is_read = #{isRead}
+        </if>
+        <if test="targetTypes != null and targetTypes.size > 0">
+            AND notify.target_type IN
+            <foreach collection="targetTypes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY notify.id DESC
+    </select>
+
+
+    <select id="searchNotifies" resultType="com.jfeat.am.module.notification.services.domain.model.NotifyModel">
+        SELECT
+        notify.id,
+        notify.sender_id AS senderId,
+        notify.content,
+        notify.type,
+        notify.target_id AS targetId,
+        notify.target_type AS targetType,
+        notify.action,
+        notify.create_time AS createTime,
+        user_notify.id AS userNotifyId,
+        user_notify.is_read As isRead,
+        notify.origin_id AS originId,
+        notify.origin_type As originType,
+        notify.source_id AS sourceId,
+        notify.source_type AS sourceType
+        FROM
+        notify
+        LEFT JOIN user_notify ON notify.id = user_notify.notify_id
+        WHERE
+        notify.sender_id &lt;&gt; #{userId}
+        AND user_notify.user_id = #{userId}
+        <if test="actions != null and actions.size > 0">
+            AND notify.action IN
+            <foreach collection="actions" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY notify.create_time DESC
+    </select>
+
+    <select id="queryNotifies" resultType="Notify">
+        SELECT *
+        FROM notify
+        WHERE
+        notify.target_id = #{targetId}
+        AND notify.target_type = #{targetType}
+        AND notify.action = #{action}
+        AND notify.create_time &gt; #{createAt};
+    </select>
+
+</mapper>
