@@ -1,6 +1,7 @@
 package com.jfeat.am.module.notice.api;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notice.services.definition.NoticeStatus;
 import com.jfeat.am.module.notice.services.definition.NoticeTypes;
 import com.jfeat.am.module.notice.services.domain.dao.QueryNoticeDao;
@@ -57,6 +58,7 @@ public class NoticeEndpoint {
     @PostMapping
     @ApiOperation(value = "添加公告", response = Notice.class)
     public Tip createNotice(@RequestBody Notice entity) {
+        entity.setAuthor(JWTKit.getAccount());
         return SuccessTip.create(noticeService.createMaster(entity, new NoticeFilter()));
     }
 
