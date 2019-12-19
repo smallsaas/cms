@@ -8,6 +8,8 @@ import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.crud.base.util.StrKit;
 import com.jfeat.crud.core.properties.AmProperties;
 import com.jfeat.crud.core.util.HttpKit;
+import com.jfeat.module.fs.model.InitServiceConfig;
+import com.jfeat.module.fs.service.ImgService;
 import com.jfeat.module.fs.service.LoadFileCodeService;
 import com.jfeat.module.fs.util.ImageUtil;
 import io.swagger.annotations.Api;
@@ -44,6 +46,10 @@ public class FileServiceEndpoint {
 
     @Autowired
     LoadFileCodeService loadFileCodeService;
+    @Autowired
+    ImgService imgService;
+
+
 
     @ApiOperation(value = "获取下载码",response = String.class,notes = "登陆后自动生成的一个下载码")
     @ApiParam(name = "name", value = "文件名称")
@@ -64,6 +70,11 @@ public class FileServiceEndpoint {
     public Tip formUpload(@RequestHeader("authorization") String token,
                           @RequestParam(name = "blur", defaultValue = "false") Boolean blur,
                           @RequestPart("file") MultipartFile picture) {
+        //配置文件上传路径
+        InitServiceConfig initServiceConfig = imgService.initImgService();
+        amProperties.setFileUploadPath(initServiceConfig.getFileUploadPath());
+        amProperties.setFileHost(initServiceConfig.getFileHost());
+        //图片
         String originalFileName = picture.getOriginalFilename();
         String extensionName= FilenameUtils.getExtension(originalFileName);
         String pictureName = UUID.randomUUID().toString() + "." + extensionName;
@@ -229,7 +240,7 @@ public class FileServiceEndpoint {
         String host = fileHost;
         String tenant = JWTKit.getOrgId() + "";
         if (!fileHost.endsWith("/")) {
-            host = host + "/" + tenant;
+            host = host + "/"  + tenant;
         }
         else {
             host = host + tenant;

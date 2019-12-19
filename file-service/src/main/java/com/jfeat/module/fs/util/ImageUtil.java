@@ -48,7 +48,7 @@ public class ImageUtil {
         int width = originalSize[0];
         int height = originalSize[1];
         String extension = FilenameUtils.getExtension(sourceFile.getName());
-        String name = UUID.randomUUID().toString() + "_" + width + "*" + height + "." + extension;
+        String name = UUID.randomUUID().toString() + "_" + width + "_" + height + "." + extension;
         return reduce(sourceFile, name, width, height, false);
     }
 
@@ -85,6 +85,9 @@ public class ImageUtil {
         }
         reducedG.drawImage(src.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
         reducedG.dispose();
+        //注释下行代码 后 会同时生成2个图片 分别为 压缩前 压缩后
+        name=sourceFile.getName();
+
         File targetFile = new File(sourceFile.getParent(), name);
         ImageIO.write(tag, format, targetFile);
         return targetFile;
