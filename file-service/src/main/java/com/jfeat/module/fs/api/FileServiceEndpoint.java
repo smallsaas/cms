@@ -8,8 +8,6 @@ import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.crud.base.util.StrKit;
 import com.jfeat.crud.core.properties.AmProperties;
 import com.jfeat.crud.core.util.HttpKit;
-import com.jfeat.module.fs.model.InitServiceConfig;
-import com.jfeat.module.fs.service.ImgService;
 import com.jfeat.module.fs.service.LoadFileCodeService;
 import com.jfeat.module.fs.util.ImageUtil;
 import io.swagger.annotations.Api;
@@ -46,8 +44,7 @@ public class FileServiceEndpoint {
 
     @Autowired
     LoadFileCodeService loadFileCodeService;
-    @Autowired
-    ImgService imgService;
+
 
 
 
@@ -71,9 +68,9 @@ public class FileServiceEndpoint {
                           @RequestParam(name = "blur", defaultValue = "false") Boolean blur,
                           @RequestPart("file") MultipartFile picture) {
         //配置文件上传路径
-        InitServiceConfig initServiceConfig = imgService.initImgService();
+  /*    InitServiceConfig initServiceConfig = imgService.initImgService();
         amProperties.setFileUploadPath(initServiceConfig.getFileUploadPath());
-        amProperties.setFileHost(initServiceConfig.getFileHost());
+        amProperties.setFileHost(initServiceConfig.getFileHost());*/
         //图片
         String originalFileName = picture.getOriginalFilename();
         String extensionName= FilenameUtils.getExtension(originalFileName);
