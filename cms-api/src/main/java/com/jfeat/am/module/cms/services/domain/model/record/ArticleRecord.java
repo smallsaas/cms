@@ -3,6 +3,7 @@ package com.jfeat.am.module.cms.services.domain.model.record;
 
 import com.jfeat.am.module.cms.services.persistence.model.Article;
 import com.jfeat.am.module.cms.services.persistence.model.ArticleProductRelation;
+import com.jfeat.crud.base.request.Image;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class ArticleRecord extends Article {
 
+     List<Image> image;
 
     // 收藏 总数
     Integer favoriteCount;
@@ -30,6 +32,14 @@ public class ArticleRecord extends Article {
     List<StockTag> tags;*/
 
     List<ArticleProductRelation> productRelations;
+
+    public List<Image> getImage() {
+        return image;
+    }
+
+    public void setImage(List<Image> image) {
+        this.image = image;
+    }
 
     public String getContent() {
         return content;

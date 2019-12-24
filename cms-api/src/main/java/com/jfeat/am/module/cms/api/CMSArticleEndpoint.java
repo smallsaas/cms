@@ -31,6 +31,7 @@ import com.jfeat.am.module.cms.services.domain.model.ArticleModel;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,10 @@ public class CMSArticleEndpoint  {
         // author由gw传入
         if(entity.getAuthor() == null || ("").equals(entity.getAuthor())) {
             entity.setAuthor(JWTKit.getAccount());
+        }
+        //设置图片
+        if(entity.getImage()!=null&&entity.getImage().size()>0){
+            entity.setCover(entity.getImage().get(0).getUrl());
         }
         entity.setType(ArticleType.Article.toString());
         entity.setUserId(userId);
@@ -168,7 +173,17 @@ public class CMSArticleEndpoint  {
     @ApiOperation("查看 文章 或 资讯 或 日记(包括点赞数，收藏数等所有的文章属性)")
     public Tip getArticle(@PathVariable Long id) {
         Long userId = JWTKit.getUserId();
-        return SuccessTip.create(articleService.showArticle(id, userId));
+        ArticleModel articleModel = articleService.showArticle(id, userId);
+        //ArticleModel articleModel = articleService.selectArticleModel(id);
+        //处理图片
+            if(articleModel.getCover()!=null){
+                List<com.jfeat.crud.base.request.Image> images=new ArrayList<>();
+                com.jfeat.crud.base.request.Image image=new com.jfeat.crud.base.request.Image();
+                image.setUrl(articleModel.getCover());
+                images.add(image);
+                articleModel.setImage(images);
+             }
+        return SuccessTip.create(articleModel);
     }
 
     @BusinessLog(name = "Article", value = "update Article")
@@ -176,6 +191,10 @@ public class CMSArticleEndpoint  {
     @ApiOperation("update 文章 或 资讯 或 日记")
     public Tip updateArticle(@PathVariable Long id, @RequestBody ArticleModel entity) {
         entity.setId(id);
+        //设置图片
+        if(entity.getImage()!=null&&entity.getImage().size()>0){
+            entity.setCover(entity.getImage().get(0).getUrl());
+        }
         return SuccessTip.create(articleService.updateArticle(id,entity));
     }
 
@@ -332,7 +351,18 @@ public class CMSArticleEndpoint  {
         if(isOwner == 1) {
             ownerId = JWTKit.getUserId();
         }
-        page.setRecords(queryArticleDao.findArticlePage(page, record, ownerId, orderBy));
+        List<ArticleRecord> articlePage = queryArticleDao.findArticlePage(page, record, ownerId, orderBy);
+        //处理图片
+        for (ArticleRecord articleRecord:articlePage) {
+            if(articleRecord.getCover()!=null){
+                List<com.jfeat.crud.base.request.Image> images=new ArrayList<>();
+                com.jfeat.crud.base.request.Image image=new com.jfeat.crud.base.request.Image();
+                image.setUrl(articleRecord.getCover());
+                images.add(image);
+                articleRecord.setImage(images);
+            }
+        }
+        page.setRecords(articlePage);
 
         return SuccessTip.create(page);
     }

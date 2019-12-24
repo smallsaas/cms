@@ -24,4 +24,8 @@
         <result column="cover" property="cover" />
     </resultMap>
 
+    <select id="selectArticleModel" resultType="ArticleModel">
+        select * from article where id = #{id}
+    </select>
+
 </mapper>

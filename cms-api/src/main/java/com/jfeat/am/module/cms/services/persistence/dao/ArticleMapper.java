@@ -1,7 +1,9 @@
 package com.jfeat.am.module.cms.services.persistence.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.jfeat.am.module.cms.services.domain.model.ArticleModel;
 import com.jfeat.am.module.cms.services.persistence.model.Article;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.jfeat.am.module.cms.services.persistence.model.Article;
  */
 public interface ArticleMapper extends BaseMapper<Article> {
 
+    ArticleModel selectArticleModel(@Param("id") Long id);
 }

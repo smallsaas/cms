@@ -2,6 +2,7 @@ package com.jfeat.am.module.cms.services.domain.model;
 
 import com.jfeat.am.module.cms.services.persistence.model.Article;
 import com.jfeat.am.module.cms.services.persistence.model.ArticleProductRelation;
+import com.jfeat.crud.base.request.Image;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import java.util.List;
  */
 public class ArticleModel extends Article {
 
+        List<Image> image;
+
         String content;
 
      /*   List<StockImages> images;
@@ -19,6 +22,7 @@ public class ArticleModel extends Article {
         List<StockTagRelation> stockTagRelation;
 
         List<StockTag> tags;*/
+
 
         List<ArticleProductRelation> productRelations;
 
@@ -73,5 +77,13 @@ public class ArticleModel extends Article {
 
         public void setProductRelations(List<ArticleProductRelation> productRelations) {
                 this.productRelations = productRelations;
+        }
+
+        public List<Image> getImage() {
+                return image;
+        }
+
+        public void setImage(List<Image> image) {
+                this.image = image;
         }
 }

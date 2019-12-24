@@ -70,4 +70,7 @@ public interface CMSArticleService extends CRUDArticleService{
      * */
     Integer auditRejectedArticle(Long articleId);
 
+    //根据id返回article
+    public ArticleModel selectArticleModel(Long articleId);
+
 }

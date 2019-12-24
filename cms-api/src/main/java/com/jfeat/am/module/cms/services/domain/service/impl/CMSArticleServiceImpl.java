@@ -362,4 +362,10 @@ public class CMSArticleServiceImpl extends CRUDArticleServiceImpl implements CMS
         article.setStatus(ArticleStatus.Audit_Rejected.toString());
         return articleMapper.updateById(article);
     }
+
+    public ArticleModel selectArticleModel(Long articleId){
+        ArticleModel article = articleMapper.selectArticleModel(articleId);
+        return article;
+    };
+
 }
