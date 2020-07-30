@@ -8,7 +8,7 @@
       SELECT t_ad.*,t_ad_group.name as group_name
             FROM t_ad left join t_ad_group on t_ad.group_id=t_ad_group.id
             WHERE 1=1
-          <if test="record.groupId != null and record.groupId>0 ">
+        <if test="record.groupId != null and record.groupId>0 ">
                  AND t_ad_group.id LIKE CONCAT('%',#{record.groupId},'%')
         </if>
          <if test="search != null and search!= ''">
