@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.survey.services.persistence.dao.SurveyMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.survey.services.persistence.model.Survey">
+		<id column="id" property="id" />
+		<result column="author" property="author" />
+		<result column="title" property="title" />
+		<result column="type" property="type" />
+		<result column="status" property="status" />
+		<result column="enabled" property="enabled" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="sort_num" property="sortNum" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, author, title, type, status, enabled, create_time AS createTime, update_time AS updateTime,sort_num as sortNum
+    </sql>
+
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.survey.services.domain.dao.QuerySurveyDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.am.module.survey.services.model.SurveyRecord">
+        <id column="id" property="id"/>
+        <result column="author" property="author"/>
+        <result column="title" property="title"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="enabled" property="enabled"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="finishedCount " property="finishedCount "/>
+        <result column="sort_num" property="sortNum" />
+    </resultMap>
+
+    <select id="enableSurvey" resultMap="BaseResultMap">
+        SELECT t_survey.*,
+         (SELECT
+				COUNT(t_survey_answer.survey_id) AS finishedCount
+				FROM
+					t_survey
+				LEFT JOIN t_survey_answer ON t_survey_answer.survey_id = t_survey.id
+				WHERE
+					1 = 1
+				AND t_survey.enabled = 1
+		) AS finishedCount
+        FROM t_survey
+        LEFT JOIN t_survey_answer on t_survey_answer.survey_id = t_survey.id
+        WHERE 1=1
+        and t_survey.enabled = 1
+
+    </select>
+
+
+
+    <select id="findSurveyPage" resultMap="BaseResultMap"
+            parameterType="com.jfeat.am.module.survey.services.persistence.model.Survey">
+        SELECT t_survey.*,COUNT(t_survey_answer.survey_id) AS finishedCount
+        FROM t_survey
+        LEFT JOIN t_survey_answer on t_survey_answer.survey_id = t_survey.id
+        WHERE 1=1
+
+        <if test="record.author != null and record.author!= ''">
+            AND t_survey.author LIKE CONCAT('%',#{record.author},'%')
+        </if>
+
+        <if test="record.title != null and record.title != ''">
+            AND t_survey.title LIKE CONCAT('%',#{record.title},'%')
+        </if>
+
+        <if test="record.type != null and record.type!= ''">
+            AND t_survey.type = #{record.type}
+        </if>
+
+        <if test="record.status != null and record.status!= ''">
+            AND t_survey.status = #{record.status}
+        </if>
+
+        <if test="record.enabled != null and record.enabled>0">
+            AND t_survey.enabled = #{record.enabled}
+        </if>
+
+        <if test="record.createTime != null and record.createTime>0">
+            AND t_survey.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+        <if test="record.updateTime != null and record.updateTime>0">
+            AND t_survey.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+        GROUP BY t_survey.id
+
+        order by t_survey.sort_num,t_survey.update_time,t_survey.create_time
+
+    </select>
+
+
+
+    <update id="updateEnabled">
+        UPDATE  t_survey SET t_survey.enabled = 0 WHERE t_survey.enabled=1 and t_survey.type=#{type}
+    </update>
+
+
+</mapper>

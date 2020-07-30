@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.survey.services.persistence.dao.SurveyItemOptionMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jfeat.am.module.survey.services.persistence.model.SurveyItemOption">
+		<id column="id" property="id" />
+		<result column="item_id" property="itemId" />
+		<result column="option_num" property="optionNum" />
+		<result column="content" property="content" />
+		<result column="image_url" property="imageUrl" />
+		<result column="enabled" property="enabled" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, item_id AS itemId, option_num AS optionNum,image_url as imageUrl, content,enabled
+    </sql>
+
+</mapper>

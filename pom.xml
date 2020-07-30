@@ -27,5 +27,6 @@
         <module>stock-evaluation</module>
         <module>favorite-follower</module>
         <module>file-service</module>
+		<module>survey-service</module>
     </modules>
 </project>

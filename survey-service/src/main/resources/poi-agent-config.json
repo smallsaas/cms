@@ -1,0 +1,7 @@
+{
+  "host": "112.74.26.228",
+  "port": "3306",
+  "user": "jfeat",
+  "password": "jfeat",
+  "db": "job"
+}

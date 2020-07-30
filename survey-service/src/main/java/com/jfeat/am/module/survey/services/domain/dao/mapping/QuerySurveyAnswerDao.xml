@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.survey.services.domain.dao.QuerySurveyAnswerDao">
+    <sql id="Base_Column_List">
+        t_survey_answer.*
+    </sql>
+    <select id="findSurveyAnswerPage" resultType="SurveyAnswerRecord" parameterType="SurveyAnswerRecord">
+        SELECT t_survey_answer.*
+        FROM t_survey_answer
+        WHERE 1=1
+        <if test="record.id != null and record.id>0 ">
+            AND t_survey_answer.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+        <if test="record.surveyId != null and record.surveyId>0 ">
+            AND t_survey_answer.survey_id LIKE CONCAT('%',#{record.surveyId},'%')
+        </if>
+
+        <if test="record.authorId != null and record.authorId>0 ">
+            AND t_survey_answer.author_id LIKE CONCAT('%',#{record.authorId},'%')
+        </if>
+
+        <if test="record.authorMessage != null and record.authorMessage!= ''">
+            AND t_survey_answer.author_message LIKE CONCAT('%',#{record.authorMessage},'%')
+        </if>
+        <if test="record.content != null and record.content!= ''">
+            AND t_survey_answer.content LIKE CONCAT('%',#{record.content},'%')
+        </if>
+    </select>
+    <select id="myAnswer" resultType="SurveyAnswerRecord">
+        SELECT t_survey_answer.*
+        FROM t_survey_answer
+        WHERE 1=1
+        and t_survey_answer.author_id=#{userId}
+    </select>
+</mapper>
