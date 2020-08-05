@@ -1,6 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
- INSERT INTO t_ad_group(id,`name`) VALUES ("1","首页轮播图");
+/* INSERT INTO t_ad_group(id,`name`) VALUES ("1","首页轮播图");
  INSERT INTO t_ad_group(id,`name`) VALUES ("2","精品推荐");
  INSERT INTO `t_ad_group` (`id`, `name`) VALUES ("3", "热门商品");
 
@@ -19,3 +19,4 @@ INSERT INTO `t_ad_link_definition` (`id`, `type`, `name`, `url`) VALUES ('7', '0
 INSERT INTO `t_ad_link_definition` (`id`, `type`, `name`, `url`) VALUES ('8', '1', '产品', '#/details/');
 INSERT INTO `t_ad_link_definition` (`id`, `type`, `name`, `url`) VALUES ('9', '2', '类别', '#/home/category/');
 INSERT INTO `t_ad_link_definition` (`id`, `type`, `name`, `url`) VALUES ('10', '0', '拼团活动', '#/home/category/-1/pieceGroup');
+*/
