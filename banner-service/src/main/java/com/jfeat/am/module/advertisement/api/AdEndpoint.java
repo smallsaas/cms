@@ -71,9 +71,9 @@ public class AdEndpoint  {
     public Tip createAd(@RequestBody AdRecord entity) {
         entity.setEnabled(1);
         //处理图片
-        if(entity.getImages()!=null&&entity.getImages().size()>0){
+       /* if(entity.getImages()!=null&&entity.getImages().size()>0){
             entity.setImage(entity.getImages().get(0).getUrl());
-        }
+        }*/
 
         return SuccessTip.create(adService.createMaster(entity));
     }
@@ -83,10 +83,10 @@ public class AdEndpoint  {
     public Tip createAd(@PathVariable Long groupId, @RequestBody AdRecord entity) {
         entity.setEnabled(1);
         entity.setGroupId(groupId);
-        //处理图片
+     /*   //处理图片
         if(entity.getImages()!=null&&entity.getImages().size()>0){
             entity.setImage(entity.getImages().get(0).getUrl());
-        }
+        }*/
 
         return SuccessTip.create(adService.createMaster(entity));
     }
@@ -105,11 +105,12 @@ public class AdEndpoint  {
     @PutMapping("/ad/{id}")
     @ApiOperation("更新轮播图")
     public Tip updateAd(@PathVariable Long id, @RequestBody AdRecord entity) {
-        //处理图片
+     /*   //处理图片
         if(entity.getImages().size()!=0){
             entity.setImage(entity.getImages().get(0).getUrl());
-        }
+        }*/
         //处理strategyList 拼接& 存入实体
+        entity.setId(id);
         StringBuilder strategys=new StringBuilder();
         if(entity.getStrategyArray()!=null&&entity.getStrategyArray().length>0){
             int num=0;
@@ -126,7 +127,7 @@ public class AdEndpoint  {
 
         entity.setStrategy(strategys.toString());
 
-        return SuccessTip.create(adService.updateMaster(entity));
+        return SuccessTip.create(adService.updateMaster(entity,false));
     }
 
     @GetMapping("/pub/ad/{id}")
@@ -139,7 +140,7 @@ public class AdEndpoint  {
         adRecord = adService.getAdRecord(id);
         image.setUrl(adRecord.getImage());
         images.add(image);
-        adRecord.setImages(images);
+        /*adRecord.setImages(images);*/
         return SuccessTip.create(adRecord);
     }
 
@@ -184,7 +185,7 @@ public class AdEndpoint  {
 
     }
 
-    @GetMapping("/pub/ad/")
+    @GetMapping("/pub/ad")
     @ApiOperation("广告列表")
     public Tip queryAdLibraryies(Page<AdRecord> page,
                                  @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,

@@ -8,17 +8,10 @@ import java.util.List;
 public class AdRecord extends Ad {
     String groupName;
 
-    List<AdImage> images;
 
    String[] strategyArray;
 
-    public List<AdImage> getImages() {
-        return images;
-    }
 
-    public void setImages(List<AdImage> images) {
-        this.images = images;
-    }
 
     public String[] getStrategyArray() {
         return strategyArray;

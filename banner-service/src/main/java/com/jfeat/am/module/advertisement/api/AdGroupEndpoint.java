@@ -42,7 +42,7 @@ public class AdGroupEndpoint {
     }
 
     @GetMapping("/pub/ad/groups/{id}")
-    @ApiOperation("获取轮播图分类列表")
+    @ApiOperation("获取轮播图分类详情")
     public Tip getAdGroups(@PathVariable Long id) {
         return SuccessTip.create(adGroupService.retrieveMaster(id));
     }
@@ -57,6 +57,7 @@ public class AdGroupEndpoint {
     @PutMapping("/adm/ad/groups/{id}")
     @ApiOperation("更新轮播图分类")
     public Tip updateAdGroup(@PathVariable Long id, @RequestBody AdGroup entity) {
+        entity.setId(id);
         return SuccessTip.create(adGroupService.updateMaster(entity));
     }
 

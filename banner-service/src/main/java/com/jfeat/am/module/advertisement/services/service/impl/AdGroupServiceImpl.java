@@ -7,6 +7,7 @@ import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,12 +32,20 @@ public class AdGroupServiceImpl extends CRUDServiceOnlyImpl<AdGroup> implements 
 
     @Override
     public List<AdGroup> getAllAdGroup(String search){
-        List<AdGroup> adGroups=adGroupMapper.selectList(new QueryWrapper<AdGroup>()
-                .like("name",search).or()
-                .like("identifier",search)
+        if(!StringUtils.isEmpty(search)){
+            List<AdGroup> adGroups=adGroupMapper.selectList(
+                    new QueryWrapper<AdGroup>()
+                            .like("name",search)
+                            .or()
+                            .like("identifier",search)
 
-        );
-        return  adGroups;
+            );
+            return  adGroups;
+        }else{
+            List<AdGroup> adGroups=adGroupMapper.selectList( new QueryWrapper<AdGroup>());
+            return  adGroups;
+        }
+
     };
 
 
