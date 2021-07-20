@@ -28,6 +28,6 @@
         <!--        <module>favorite-follower</module>-->
         <!--        <module>images-service</module>-->
         <!--        <module>file-upload</module>-->
-        <module>cms</module>
+        <!--        <module>cms</module>-->
     </modules>
 </project>
