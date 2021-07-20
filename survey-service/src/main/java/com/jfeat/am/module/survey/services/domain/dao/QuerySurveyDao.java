@@ -1,6 +1,6 @@
 package com.jfeat.am.module.survey.services.domain.dao;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.survey.services.persistence.model.Survey;
 import org.apache.ibatis.annotations.Param;
 

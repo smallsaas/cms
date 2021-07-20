@@ -1,7 +1,7 @@
 package com.jfeat.am.module.notification.services.crud.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.notification.services.crud.service.NotifyService;
 import com.jfeat.am.module.notification.services.domain.dao.QueryNotifyDao;
 import com.jfeat.am.module.notification.services.domain.model.NotifyModel;

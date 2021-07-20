@@ -1,7 +1,7 @@
 package com.jfeat.am.module.evaluation.services.domain.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationDao;
 import com.jfeat.am.module.evaluation.services.domain.model.StockEvaluationModel;
@@ -40,9 +40,9 @@ public class StockEvaluationServiceImpl extends CRUDStockEvaluationServiceImpl i
      * 评价用户，以及当前用户是否可以删除
      * */
     public List<StockEvaluationRecord> evaluations(Page<StockEvaluationRecord> page,
-                                             StockEvaluationRecord record,
-                                             String orderBy,
-                                             Long memberId){
+                                                   StockEvaluationRecord record,
+                                                   String orderBy,
+                                                   Long memberId){
         return queryStockEvaluationDao.findStockEvaluationPageWithReplys(page, record, orderBy, memberId);
     }
 
@@ -133,7 +133,7 @@ public class StockEvaluationServiceImpl extends CRUDStockEvaluationServiceImpl i
             // 评论屏蔽
             StockEvaluation vo = new StockEvaluation();
             vo.setIsDisplay(isDisplay);
-            effected += stockEvaluationMapper.update(vo, new EntityWrapper<StockEvaluation>().in(StockEvaluation.ID, ids));
+            effected += stockEvaluationMapper.update(vo, new QueryWrapper<StockEvaluation>().in(StockEvaluation.ID, ids));
             stockEvaluation.setIsDisplay(0);
         }
         return effected;
@@ -158,7 +158,7 @@ public class StockEvaluationServiceImpl extends CRUDStockEvaluationServiceImpl i
      * @Parma Long stockId ，String stockType
      */
     public Integer stockEvaluationCount(Long stockId, String stockType) {
-        Integer count = stockEvaluationMapper.selectCount(new EntityWrapper<StockEvaluation>().eq("stock_id", stockId).eq("stock_type", stockType));
+        Integer count = stockEvaluationMapper.selectCount(new QueryWrapper<StockEvaluation>().eq("stock_id", stockId).eq("stock_type", stockType));
         return count;
     }
 
@@ -170,7 +170,7 @@ public class StockEvaluationServiceImpl extends CRUDStockEvaluationServiceImpl i
      */
     public List<StockEvaluation> evaluation(Long stockId, String stockType) {
 
-        List<StockEvaluation> evaluations = stockEvaluationMapper.selectList(new EntityWrapper<StockEvaluation>().eq(StockEvaluation.STOCK_ID, stockId).eq(StockEvaluation.STOCK_TYPE, stockType));
+        List<StockEvaluation> evaluations = stockEvaluationMapper.selectList(new QueryWrapper<StockEvaluation>().eq(StockEvaluation.STOCK_ID, stockId).eq(StockEvaluation.STOCK_TYPE, stockType));
 
         return evaluations;
     }

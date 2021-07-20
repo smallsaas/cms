@@ -1,8 +1,6 @@
 package com.jfeat.am.module.feedback.api.crud;
 
-import com.baomidou.mybatisplus.plugins.Page;
-
-
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;

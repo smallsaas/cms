@@ -1,6 +1,6 @@
 package com.jfeat.am.module.notification.api.crud;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notification.constant.Const;
 import com.jfeat.am.module.notification.services.crud.service.NotifyService;

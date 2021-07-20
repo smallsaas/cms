@@ -1,7 +1,7 @@
 package com.jfeat.am.module.feedback.services.persistence.dao;
 
 import com.jfeat.am.module.feedback.services.persistence.model.TFeedback;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>

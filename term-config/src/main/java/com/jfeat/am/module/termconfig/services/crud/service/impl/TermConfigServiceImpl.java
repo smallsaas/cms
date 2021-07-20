@@ -1,7 +1,8 @@
 package com.jfeat.am.module.termconfig.services.crud.service.impl;
             
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.termconfig.services.crud.service.TermConfigService;
 import com.jfeat.am.module.termconfig.services.persistence.dao.TermConfigMapper;
 import com.jfeat.am.module.termconfig.services.persistence.model.TermConfig;
@@ -34,13 +35,13 @@ public class TermConfigServiceImpl  extends CRUDServiceOnlyImpl<TermConfig> impl
     public TermConfig getTermConfigByType(String type) {
         TermConfig termConfig = new TermConfig();
         termConfig.setType(type);
-        return termConfigMapper.selectOne(termConfig);
+        return termConfigMapper.selectOne(new LambdaQueryWrapper<>(termConfig));
     }
 
     @Override
     public List<TermConfig> getTermConfig() {
 
-        List<TermConfig> termConfigs= termConfigMapper.selectList(new EntityWrapper<TermConfig>());
+        List<TermConfig> termConfigs= termConfigMapper.selectList(new QueryWrapper<TermConfig>());
 
         return termConfigs;
     }

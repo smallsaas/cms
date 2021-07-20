@@ -1,7 +1,6 @@
 package com.jfeat.am.module.notice.services.domain.model;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 

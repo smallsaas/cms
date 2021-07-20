@@ -1,7 +1,7 @@
 package com.jfeat.am.module.notification.services.persistence.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.notification.services.persistence.model.Notify;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
  * <p>

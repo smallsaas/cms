@@ -1,8 +1,8 @@
 package com.jfeat.am.module.feedback.services.persistence.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;

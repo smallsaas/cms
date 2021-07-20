@@ -1,7 +1,7 @@
 package com.jfeat.am.module.termconfig.services.persistence.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.termconfig.services.persistence.model.TermConfig;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
  * <p>

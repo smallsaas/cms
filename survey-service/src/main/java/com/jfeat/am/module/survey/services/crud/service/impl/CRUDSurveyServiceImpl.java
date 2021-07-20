@@ -2,8 +2,9 @@ package com.jfeat.am.module.survey.services.crud.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.survey.services.define.SurveyItemType;
 import com.jfeat.am.module.survey.services.domain.dao.QuerySurveyDao;
 import com.jfeat.am.module.survey.services.model.SurveyItemModel;
@@ -96,12 +97,16 @@ public class CRUDSurveyServiceImpl extends CRUDServiceOnlyImpl<Survey> implement
     @Transactional
     public void deleteItemAndOptions(Long surveyId) {
 
-        List<SurveyItem> items = itemMapper.selectList(new EntityWrapper<SurveyItem>().eq(SurveyItem.SURVEY_ID, surveyId));
+        List<SurveyItem> items = itemMapper.selectList(
+                new QueryWrapper<SurveyItem>()
+                        .eq(SurveyItem.SURVEY_ID, surveyId));
         if (items == null || items.size() == 0) {
 
         } else {
             for (SurveyItem item : items) {
-                optionMapper.delete(new EntityWrapper<SurveyItemOption>().eq(SurveyItemOption.ITEM_ID, item.getId()));
+                optionMapper.delete(
+                        new QueryWrapper<SurveyItemOption>()
+                                .eq(SurveyItemOption.ITEM_ID, item.getId()));
                 itemMapper.deleteById(item.getId());
             }
         }
@@ -132,9 +137,11 @@ public class CRUDSurveyServiceImpl extends CRUDServiceOnlyImpl<Survey> implement
         List<SurveyItemModel> models = new ArrayList<SurveyItemModel>();
         if (result == true) {
 
-            List<SurveyItem> items = itemMapper.selectList(new EntityWrapper<SurveyItem>().eq(SurveyItem.SURVEY_ID, id)
-                                                                                            .eq(SurveyItem.ENABLED, 1)
-                                                                                            .orderBy("sort_num",false));
+            List<SurveyItem> items = itemMapper
+                    .selectList(new QueryWrapper<SurveyItem>()
+                            .eq(SurveyItem.SURVEY_ID, id)
+                            //.orderBy("sort_num",false)
+                            );
             if (items == null || items.size() == 0) {
                 surveyObject.put("surveyItems", models);
                 SurveyModel model = JSON.parseObject(JSON.toJSONString(surveyObject), SurveyModel.class);
@@ -142,7 +149,9 @@ public class CRUDSurveyServiceImpl extends CRUDServiceOnlyImpl<Survey> implement
             }
             for (SurveyItem item : items) {
                 JSONObject itemObject = JSON.parseObject(JSON.toJSONString(item));
-                List<SurveyItemOption> options = optionMapper.selectList(new EntityWrapper<SurveyItemOption>().eq(SurveyItemOption.ITEM_ID, item.getId()));
+                List<SurveyItemOption> options = optionMapper
+                                .selectList(new QueryWrapper<SurveyItemOption>()
+                                .eq(SurveyItemOption.ITEM_ID, item.getId()));
 
                 itemObject.put("itemOptions", options);
                 SurveyItemModel model = JSON.parseObject(JSON.toJSONString(itemObject), SurveyItemModel.class);
@@ -154,7 +163,11 @@ public class CRUDSurveyServiceImpl extends CRUDServiceOnlyImpl<Survey> implement
             SurveyModel model = JSON.parseObject(JSON.toJSONString(surveyObject), SurveyModel.class);
             return model;
         } else {
-            List<SurveyItem> items = itemMapper.selectList(new EntityWrapper<SurveyItem>().eq(SurveyItem.SURVEY_ID, id).orderBy("sort_num",false));
+            List<SurveyItem> items = itemMapper.selectList(
+                    new QueryWrapper<SurveyItem>()
+                            .eq(SurveyItem.SURVEY_ID, id)
+                            //.orderBy("sort_num",false)
+                        );
             if (items == null || items.size() == 0) {
                 surveyObject.put("surveyItems", models);
                 SurveyModel model = JSON.parseObject(JSON.toJSONString(surveyObject), SurveyModel.class);
@@ -163,7 +176,7 @@ public class CRUDSurveyServiceImpl extends CRUDServiceOnlyImpl<Survey> implement
             for (SurveyItem item : items) {
                 // if needs  enhance , using sql search instead of this way.
                 JSONObject itemObject = JSON.parseObject(JSON.toJSONString(item));
-                List<SurveyItemOption> options = optionMapper.selectList(new EntityWrapper<SurveyItemOption>().eq(SurveyItemOption.ITEM_ID, item.getId()));
+                List<SurveyItemOption> options = optionMapper.selectList(new QueryWrapper<SurveyItemOption>().eq(SurveyItemOption.ITEM_ID, item.getId()));
 
                 itemObject.put("itemOptions", options);
                 SurveyItemModel model = JSON.parseObject(JSON.toJSONString(itemObject), SurveyItemModel.class);
@@ -228,7 +241,7 @@ public class CRUDSurveyServiceImpl extends CRUDServiceOnlyImpl<Survey> implement
         Survey survey = new Survey();
         survey.setEnabled(1);
         survey.setType(type);
-        Survey origin = surveyMapper.selectOne(survey);
+        Survey origin = surveyMapper.selectOne(new LambdaQueryWrapper<>(survey));
         if (origin == null) {
             return null;
         }

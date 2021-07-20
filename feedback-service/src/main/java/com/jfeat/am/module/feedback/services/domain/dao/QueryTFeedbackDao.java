@@ -1,8 +1,8 @@
 package com.jfeat.am.module.feedback.services.domain.dao;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
 import com.jfeat.am.module.feedback.services.persistence.model.TFeedback;
 import org.apache.ibatis.annotations.Param;

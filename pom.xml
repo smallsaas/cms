@@ -11,22 +11,23 @@
 
     <parent>
         <groupId>com.jfeat</groupId>
-        <artifactId>sb-parent</artifactId>
+        <artifactId>pom-parent</artifactId>
         <version>1.0.0</version>
         <relativePath/>
     </parent>
 
     <modules>
-        <module>cms-api</module>
-        <module>images-service</module>
-        <module>ad-service</module>
+        <module>article-service</module>
+        <module>banner-service</module>
         <module>notice-service</module>
         <module>term-config</module>
         <module>notification-service</module>
         <module>feedback-service</module>
         <module>stock-evaluation</module>
-        <module>favorite-follower</module>
 		<module>survey-service</module>
-        <module>file-upload</module>
+        <!--        <module>favorite-follower</module>-->
+        <!--        <module>images-service</module>-->
+        <!--        <module>file-upload</module>-->
+        <module>cms</module>
     </modules>
 </project>

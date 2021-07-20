@@ -1,8 +1,7 @@
 package com.jfeat.am.module.notification.services.domain.dao;
 
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.notification.services.persistence.model.UserNotify;
 import org.apache.ibatis.annotations.Param;
 

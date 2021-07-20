@@ -1,17 +1,17 @@
 package com.jfeat.am.module.survey.api.crud;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.survey.services.model.SurveyAnswerModel;
 import com.jfeat.am.module.survey.services.model.SurveyAnswerRecord;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.crud.core.util.HttpKit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,13 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.survey.services.domain.dao.QuerySurveyAnswerDao;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.survey.services.domain.service.SurveyAnswerService;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 
 /**

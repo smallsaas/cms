@@ -1,6 +1,6 @@
 package com.jfeat.am.module.notice.services.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.notice.services.definition.NoticeStatus;
 import com.jfeat.am.module.notice.services.persistence.dao.NoticeMapper;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;

@@ -1,6 +1,6 @@
 package com.jfeat.am.module.notification.services.crud.service;
         
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.notification.services.domain.model.NotifyModel;
 import com.jfeat.am.module.notification.services.persistence.model.Notify;
 import com.jfeat.crud.plus.CRUDServiceOnly;

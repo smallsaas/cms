@@ -1,6 +1,6 @@
 package com.jfeat.am.module.evaluation.services.crud.service.impl;
             
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationAddition;
 import com.jfeat.am.module.evaluation.services.persistence.dao.StockEvaluationAdditionMapper;
 

@@ -1,8 +1,8 @@
 package com.jfeat.am.module.feedback.services.crud.service.impl;
         
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.feedback.services.domain.dao.QueryTFeedbackDao;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
 import com.jfeat.am.module.feedback.services.persistence.dao.TFeedbackImageMapper;
@@ -85,13 +85,13 @@ public class TFeedbackServiceImpl extends CRUDServiceOverModelImpl<TFeedback,TFe
     }
 
     @Override
-    public List<TFeedbackModel> findFeedback(Page<TFeedbackModel> page,String name,Integer unread){
+    public List<TFeedbackModel> findFeedback(Page<TFeedbackModel> page, String name, Integer unread){
 
-        List<TFeedback> model = tFeedbackMapper.selectList(new EntityWrapper<TFeedback>().eq("unread",unread).like("create_name",name));
+        List<TFeedback> model = tFeedbackMapper.selectList(new QueryWrapper<TFeedback>().eq("unread",unread).like("create_name",name));
         List<TFeedbackModel> models = new ArrayList<>();
         for(TFeedback feedback : model){
             TFeedbackModel feedbackModel = new TFeedbackModel();
-            List<TFeedbackImage> images = tFeedbackImageMapper.selectList(new EntityWrapper<TFeedbackImage>().eq("feedback_id",feedback.getId()));
+            List<TFeedbackImage> images = tFeedbackImageMapper.selectList(new QueryWrapper<TFeedbackImage>().eq("feedback_id",feedback.getId()));
             feedbackModel.setImages(images);
             models.add(feedbackModel);
         }

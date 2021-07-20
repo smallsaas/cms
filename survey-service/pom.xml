@@ -5,7 +5,7 @@
 
     <groupId>com.jfeat</groupId>
     <artifactId>survey-service</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Survey</name>
@@ -13,217 +13,27 @@
 
     <parent>
         <groupId>com.jfeat</groupId>
-        <artifactId>sb-parent</artifactId>
+        <artifactId>pom-parent</artifactId>
         <version>1.0.0</version>
         <relativePath/>
     </parent>
 
     <properties>
         <skipStandalone>true</skipStandalone>
-        <!---CRUD, scope provided-->
-        <crud-plus.version>0.0.6</crud-plus.version>
-        <crud-core.version>0.0.2</crud-core.version>
-        <!---only dev, scope provided-->
-        <crud-dev.version>0.0.1</crud-dev.version>
-      <!--  <skipStandalone>true</skipStandalone>
-        <sb-base.version>1.0.0</sb-base.version>
-        <sb-crud.version>1.0.4-SNAPSHOT</sb-crud.version>
-        <sb-log.version>1.0.0</sb-log.version>
-        <sb-debug.version>1.0.0</sb-debug.version>
-        <sb-field-config.version>1.2.0</sb-field-config.version>
-        <sb-starter-test.version>1.0.0</sb-starter-test.version>-->
     </properties>
 
-        <dependencies>
-            <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-dev</artifactId>
-            <version>${crud-dev.version}</version>
-        </dependency>
-
-        <!--dependent runtime -->
+    <dependencies>
         <dependency>
             <groupId>com.jfeat</groupId>
-            <artifactId>crud-plus</artifactId>
-            <version>${crud-plus.version}</version>
+            <artifactId>crud-app-bundle</artifactId>
+            <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-core</artifactId>
-            <version>${crud-core.version}</version>
-        </dependency>
-
-            <!--springboot amqp(rabbbitmq)-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-amqp</artifactId>
-            </dependency>
-
-            <!-- springboot cache -->
-            <dependency>
-                <groupId>net.sf.ehcache</groupId>
-                <artifactId>ehcache-core</artifactId>
-                <version>2.6.11</version>
-            </dependency>
-            <dependency>
-                <groupId>org.ehcache</groupId>
-                <artifactId>ehcache</artifactId>
-                <version>${ehcache.version}</version>
-            </dependency>
-
-            <!--springboot test-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-
-            <!--log4j logGER-->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.29</version>
-            </dependency>
-
-
-            <!--allow swagger support java 11 (above java9)-->
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>2.3.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-core</artifactId>
-                <version>2.3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>2.3.1</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>1.1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>1.9.4</version>
-            </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatisplus-spring-boot-starter</artifactId>
-            <version>${mybatisplus-spring-boot-starter.version}</version>
+            <artifactId>mybatis-plus-support</artifactId>
+            <version>2.1.9</version>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-
-        <!--shiro依赖-->
-       <!-- <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>${shiro.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-ehcache</artifactId>
-            <version>${shiro.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
-
-        <!-- jwt -->
-        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
-        </dependency>
-
-        <!-- redis -->
-        <!--<dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.ruedigermoeller</groupId>
-            <artifactId>fst</artifactId>
-            <version>${fst.version}</version>
-        </dependency>-->
-
-        <!--其他依赖-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons.io.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-        </dependency>
-      <!--  <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>-->
-
     </dependencies>
 
     <build>

@@ -1,10 +1,11 @@
 package com.jfeat.am.module.notification.services.persistence.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.io.Serializable;
 
 import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
 
 /**

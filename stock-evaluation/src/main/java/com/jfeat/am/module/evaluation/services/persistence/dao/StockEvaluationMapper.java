@@ -1,7 +1,7 @@
 package com.jfeat.am.module.evaluation.services.persistence.dao;
 
 import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>

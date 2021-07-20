@@ -1,6 +1,6 @@
 package com.jfeat.am.module.feedback.services.crud.service;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
 import com.jfeat.am.module.feedback.services.persistence.model.TFeedback;
 import com.jfeat.crud.plus.CRUDServiceOverModel;

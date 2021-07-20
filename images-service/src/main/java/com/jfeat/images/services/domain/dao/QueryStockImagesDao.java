@@ -1,6 +1,6 @@
 package com.jfeat.images.services.domain.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.images.services.domain.url.UrlRequest;
 import com.jfeat.images.services.persistence.model.StockImages;
 import org.apache.ibatis.annotations.Param;

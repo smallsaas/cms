@@ -1,6 +1,8 @@
 package com.jfeat.am.module.survey.api.crud;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.survey.services.crud.service.CRUDSurveyService;
 import com.jfeat.am.module.survey.services.model.SurveyModel;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -11,7 +13,6 @@ import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.survey.services.domain.dao.QuerySurveyDao;
-import com.jfeat.am.module.log.annotation.BusinessLog;
-
 
 import com.jfeat.am.module.survey.services.persistence.model.Survey;
 
@@ -119,17 +118,17 @@ public class SurveyEndpoint   {
     @GetMapping
     @ApiOperation("get survey including survey option")
     public Tip querySurveys(Page<Survey> page,
-                              @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                              @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                              @RequestParam(name = "author", required = false) String author,
-                              @RequestParam(name = "title", required = false) String title,
-                              @RequestParam(name = "type", required = false) String type,
-                              @RequestParam(name = "status", required = false) String status,
-                              @RequestParam(name = "enabled", required = false) Integer enabled,
-                              @RequestParam(name = "createTime", required = false) Date createTime,
-                              @RequestParam(name = "updateTime", required = false) Date updateTime,
-                              @RequestParam(name = "orderBy", required = false) String orderBy,
-                              @RequestParam(name = "sort", required = false) String sort) {
+                            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                            @RequestParam(name = "author", required = false) String author,
+                            @RequestParam(name = "title", required = false) String title,
+                            @RequestParam(name = "type", required = false) String type,
+                            @RequestParam(name = "status", required = false) String status,
+                            @RequestParam(name = "enabled", required = false) Integer enabled,
+                            @RequestParam(name = "createTime", required = false) Date createTime,
+                            @RequestParam(name = "updateTime", required = false) Date updateTime,
+                            @RequestParam(name = "orderBy", required = false) String orderBy,
+                            @RequestParam(name = "sort", required = false) String sort) {
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {
                 String pattern = "(ASC|DESC|asc|desc)";

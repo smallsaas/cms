@@ -1,8 +1,6 @@
 package com.jfeat.am.module.survey.services.crud.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.survey.services.crud.service.CRUDSurveyItemService;
 import com.jfeat.am.module.survey.services.define.SurveyItemType;
 import com.jfeat.am.module.survey.services.model.SurveyItemModel;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <p>
@@ -43,7 +40,6 @@ public class CRUDSurveyItemServiceImpl extends CRUDServiceOnlyImpl<SurveyItem> i
     protected BaseMapper<SurveyItem> getMasterMapper() {
         return surveyItemMapper;
     }
-
 
     @Transactional
     public Integer addOneItemIntoSurvey(Long surVeyId, SurveyItemModel item) {

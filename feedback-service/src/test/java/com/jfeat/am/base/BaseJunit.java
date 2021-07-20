@@ -3,6 +3,7 @@ package com.jfeat.am.base;
 import com.jfeat.AmApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
  * @Date 2017/5/21 16:10
  */
 @ActiveProfiles(profiles = "test")
-@RunWith(SpringRunner.class)
+@RunWith(Runner.class)
 @SpringBootTest(classes = AmApplication.class)
 @WebAppConfiguration
 @Transactional //测试之后数据可回滚

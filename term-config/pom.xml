@@ -5,7 +5,7 @@
 
     <groupId>com.jfeat</groupId>
     <artifactId>term-config</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>TermConfig</name>
@@ -13,105 +13,40 @@
 
     <parent>
         <groupId>com.jfeat</groupId>
-        <artifactId>sb-parent</artifactId>
+        <artifactId>pom-parent</artifactId>
         <version>1.0.0</version>
         <relativePath/>
     </parent>
 
     <properties>
-        <skipStandalone>false</skipStandalone>
-        <commons-lang3.version>3.9</commons-lang3.version>
-        <!---CRUD, scope provided-->
-        <crud-plus.version>0.0.6</crud-plus.version>
-        <crud-core.version>0.0.2</crud-core.version>
-        <!---only dev, scope provided-->
-        <crud-dev.version>0.0.1</crud-dev.version>
-        <!---only produce, scope provided-->
-        <crud-log.version>0.0.1</crud-log.version>
+        <skipStandalone>true</skipStandalone>
     </properties>
 
-<dependencies>
-        <!-- dev only -->
+    <dependencies>
         <dependency>
             <groupId>com.jfeat</groupId>
-            <artifactId>crud-dev</artifactId>
-            <version>${crud-dev.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-plus</artifactId>
-            <version>${crud-plus.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-core</artifactId>
-            <version>${crud-core.version}</version>
-        </dependency>
-
-        <!-- springboot cache -->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-            <version>2.6.11</version>
+            <artifactId>crud-app-bundle</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
         </dependency>
-
-        <!--springboot test-->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.3.9</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
-
-        <!--allow swagger support java 11 (above java9)-->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.4</version>
-        </dependency>
-
-
-</dependencies>
+    </dependencies>
 
     <build>
         <plugins>

@@ -1,7 +1,7 @@
 package com.jfeat.am.module.notification.services.crud.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.notification.constant.Const;
 import com.jfeat.am.module.notification.constant.NotificationType;
 import com.jfeat.am.module.notification.services.crud.service.UserNotifyService;
@@ -80,7 +80,7 @@ public class UserNotifyServiceImpl extends CRUDServiceOnlyImpl<UserNotify> imple
     @Override
     public List<UserNotify> pullRemind(Long userId) {
         List<Subscription> subscriptions = subscriptionMapper.selectList(
-                new EntityWrapper<Subscription>().eq(Subscription.USER_ID, userId));
+                new QueryWrapper<Subscription>().eq(Subscription.USER_ID, userId));
         List<Notify> list = new ArrayList<>();
         for (Subscription subscription : subscriptions) {
             List<Notify> notifies = queryNotifyDao.queryNotifies(

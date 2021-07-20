@@ -1,6 +1,6 @@
 package com.jfeat.am.module.notice.api;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notice.services.definition.NoticeStatus;
 import com.jfeat.am.module.notice.services.definition.NoticeTypes;

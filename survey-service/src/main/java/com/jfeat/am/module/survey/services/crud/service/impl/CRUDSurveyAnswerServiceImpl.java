@@ -1,7 +1,7 @@
 package com.jfeat.am.module.survey.services.crud.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.survey.services.domain.dao.QuerySurveyDao;
 import com.jfeat.am.module.survey.services.persistence.model.SurveyAnswer;
 import com.jfeat.am.module.survey.services.persistence.dao.SurveyAnswerMapper;
@@ -44,7 +44,7 @@ public class CRUDSurveyAnswerServiceImpl extends CRUDServiceOnlyImpl<SurveyAnswe
      *
      * */
     public Integer isAnswered(Long userId,Long surveyId){
-        return surveyAnswerMapper.selectCount(new EntityWrapper<SurveyAnswer>()
+        return surveyAnswerMapper.selectCount(new QueryWrapper<SurveyAnswer>()
                 .eq(SurveyAnswer.AUTHOR_ID,userId)
                 .eq(SurveyAnswer.SURVEY_ID,surveyId));
     }

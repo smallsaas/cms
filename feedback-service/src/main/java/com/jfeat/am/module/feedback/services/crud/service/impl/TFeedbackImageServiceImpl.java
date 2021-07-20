@@ -1,6 +1,6 @@
 package com.jfeat.am.module.feedback.services.crud.service.impl;
         
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.feedback.services.persistence.model.TFeedbackImage;
 import com.jfeat.am.module.feedback.services.persistence.dao.TFeedbackImageMapper;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackImageService;
