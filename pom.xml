@@ -17,17 +17,15 @@
     </parent>
 
     <modules>
-        <module>article-service</module>
         <module>banner-service</module>
-        <module>notice-service</module>
         <module>term-config</module>
-        <module>notification-service</module>
         <module>feedback-service</module>
-        <module>stock-evaluation</module>
-		<module>survey-service</module>
-        <!--        <module>favorite-follower</module>-->
-        <!--        <module>images-service</module>-->
-        <!--        <module>file-upload</module>-->
-        <!--        <module>cms</module>-->
+        <module>notice-service</module>
+
+<!--        <module>notification-service</module>-->
+<!--        <module>survey-service</module>-->
+<!--        <module>article-service</module>-->
+<!--        <module>evaluation-service</module>-->
+        <module>cms-api</module>
     </modules>
 </project>

@@ -1,15 +1,17 @@
-package com.jfeat.am.module.feedback.api.crud;
+package com.jfeat.am.module.cms.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.feedback.services.crud.filter.TFeedbackFilter;
 import com.jfeat.am.module.feedback.services.crud.service.TFeedbackService;
 import com.jfeat.am.module.feedback.services.domain.model.TFeedbackModel;
+import com.jfeat.am.module.feedback.services.patch.FeedbackPatchService;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -22,26 +24,27 @@ import javax.validation.Valid;
  * @since 2017-11-28
  */
 @RestController
-@Api("反馈建议")
-@RequestMapping("/api")
-public class FeedbackEndpoint {
-
+@Api("CMS-反馈建议")
+@RequestMapping("/api/cms")
+public class CMSFeedbackEndpoint{
 
     @Resource
     private TFeedbackService tFeedbackService;
 /*    @Resource
-    private UserService userService;*/
+    private SysUserService userService;*/
+    @Resource
+    FeedbackPatchService feedbackPatchService;
 
     @ApiOperation("提交反馈或建议")
     @PostMapping("/feedback")
     public Tip createTFeedback(@Valid @RequestBody TFeedbackModel entity) {
         Long userId = JWTKit.getUserId();
+
         entity.setUserId(userId);
         if (entity.getCreateUser() != null) {
             entity.setCreateName(entity.getCreateUser());
         } else {
-          /*  User user = userService.getById(userId);
-            entity.setCreateName(user.getName());*/
+           /* SysUser user = userService.getById(userId);*/
             entity.setCreateName(JWTKit.getAccount());
         }
         return SuccessTip.create(tFeedbackService.createMaster(entity, new TFeedbackFilter(), null, null));
@@ -67,7 +70,8 @@ public class FeedbackEndpoint {
         return SuccessTip.create(tFeedbackService.deleteMaster(id));
     }
 
-    @ApiOperation("反馈或建议列表")
+   /* @ApiOperation("反馈或建议列表")
+   该方法测试无数据,可调用下面的方法替代
     @GetMapping("/feedback")
     //此方法可能需要自行添加需要的参数,按需要使用
     public Tip queryTFeedbacks(Page page,
@@ -80,7 +84,7 @@ public class FeedbackEndpoint {
         page.setSize(pageSize);
         page.setRecords(tFeedbackService.findFeedback(page, name, unread));
         return SuccessTip.create(page);
-    }
+    }*/
 
     @GetMapping("/feedback/list")
     //此方法可能需要自行添加需要的参数,按需要使用
@@ -99,8 +103,11 @@ public class FeedbackEndpoint {
         return SuccessTip.create(page);
     }
 
-    @GetMapping("/null")
-    public Tip show(@RequestHeader("authorization") String token) {
-        return null;
+    @ApiOperation("处理(解决)反馈或建议")
+    @PutMapping("/adm/feedback/{id}/solve")
+    public Tip solve(@PathVariable Long id, @RequestBody TFeedbackModel tFeedbackModel) {
+        tFeedbackModel.setId(id);
+        Integer result = feedbackPatchService.solve(tFeedbackModel);
+        return SuccessTip.create(result);
     }
 }
