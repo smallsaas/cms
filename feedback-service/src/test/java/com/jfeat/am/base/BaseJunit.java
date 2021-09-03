@@ -27,7 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(Runner.class)
 @SpringBootTest(classes = AmApplication.class)
 @WebAppConfiguration
-@Transactional //测试之后数据可回滚
+@Transactional
 public class BaseJunit {
 
     protected static final Logger logger = LoggerFactory.getLogger(BaseJunit.class);

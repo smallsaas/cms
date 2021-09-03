@@ -39,16 +39,17 @@
             <version>${crud-plus.version}</version>
         </dependency>
 
+        <!-- powered by crud-core -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.3.9</version>
+            <version>${spring-test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -58,6 +59,7 @@
         </dependency>
 
         <!--allow swagger support java 11 (above java9)-->
+        <!--
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -87,7 +89,7 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectjweaver.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
