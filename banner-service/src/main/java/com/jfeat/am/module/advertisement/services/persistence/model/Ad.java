@@ -1,11 +1,15 @@
 package com.jfeat.am.module.advertisement.services.persistence.model;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -34,6 +38,22 @@ public class Ad extends Model<Ad> {
 
 	private String type;
 	private String strategy;
+
+	// url
+	public String getUrl() {
+		if(!StringUtils.isEmpty(image)){
+			try {
+				JSONArray images = JSON.parseArray(image);
+				if(images!=null && images.size()>0){
+					JSONObject img = images.getJSONObject(0);
+					return img.getString("url");
+				}
+
+			}catch (Exception e){
+			}
+		}
+		return image;
+	}
 
 	//排序号
 	private Integer seq ;
@@ -140,6 +160,7 @@ public class Ad extends Model<Ad> {
 			", groupId=" + groupId +
 			", name=" + name +
 			", image=" + image +
+			", url=" + getUrl() +
 			", enabled=" + enabled +
 			", targetUrl=" + targetUrl +
 			"}";
