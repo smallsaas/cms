@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/openapi/cms")
 @Api("轮播图-Banner")
-upublic class AdPubEndpoint {
+public class AdPubEndpoint {
 
     @Resource
     private AdService adService;
