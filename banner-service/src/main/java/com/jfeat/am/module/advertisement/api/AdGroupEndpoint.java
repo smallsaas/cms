@@ -28,26 +28,6 @@ public class AdGroupEndpoint {
     @Resource
     private AdGroupService adGroupService;
 
-    @GetMapping("/pub/ad/groups")
-    @ApiOperation("获取广告组列表")
-    public Tip listAdGroups(Page<AdGroup> page,
-                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
-                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                            @RequestParam(name = "search", required = false) String search) {
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(adGroupService.getAllAdGroup(search));
-
-        return SuccessTip.create(page);
-    }
-
-    @GetMapping("/pub/ad/groups/{id}")
-    @ApiOperation("获取轮播图分类详情")
-    public Tip getAdGroups(@PathVariable Long id) {
-        return SuccessTip.create(adGroupService.retrieveMaster(id));
-    }
-
-
     @PostMapping("/adm/ad/groups")
     @ApiOperation("添加轮播图分类")
     public Tip createAdGroup(@RequestBody AdGroup entity) {

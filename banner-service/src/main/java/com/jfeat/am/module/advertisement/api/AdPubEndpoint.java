@@ -12,6 +12,7 @@ import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
+import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.am.module.advertisement.services.service.AdService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -35,9 +36,9 @@ import java.util.stream.Collectors;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/cms")
+@RequestMapping("/openapi/cms")
 @Api("轮播图-Banner")
-public class AdPubEndpoint {
+upublic class AdPubEndpoint {
 
     @Resource
     private AdService adService;
@@ -46,7 +47,29 @@ public class AdPubEndpoint {
     @Resource
     QueryAdDao queryAdDao;
 
-    @GetMapping("/pub/ad/group/{group}")
+    @Resource
+    private AdGroupService adGroupService;
+
+    @GetMapping("/ad/groups")
+    @ApiOperation("获取广告组列表")
+    public Tip listAdGroups(Page<AdGroup> page,
+                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
+                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                            @RequestParam(name = "search", required = false) String search) {
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page.setRecords(adGroupService.getAllAdGroup(search));
+
+        return SuccessTip.create(page);
+    }
+
+    @GetMapping("/ad/groups/{id}")
+    @ApiOperation("获取轮播图分类详情")
+    public Tip getAdGroups(@PathVariable Long id) {
+        return SuccessTip.create(adGroupService.retrieveMaster(id));
+    }
+
+    @GetMapping("/ad/group/{group}")
     @ApiOperation("按组获取轮播图 [带组信息]")
     public Tip getAdGroup(@PathVariable String group) {
         AdGroupedModel model = adService.getAdRecordsByGroup(group);
@@ -58,13 +81,13 @@ public class AdPubEndpoint {
     }
 
     @ApiOperation("按组获取轮播图 group=1 首页轮播图")
-    @GetMapping("/pub/ad/records/{group}")
+    @GetMapping("/ad/records/{group}")
     public Tip Ad(@PathVariable String group,
                  @RequestParam(value = "enabled", required = false) Integer enabled) {
         return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group, enabled));
     }
 
-    @GetMapping("/pub/ad/{id}")
+    @GetMapping("/ad/{id}")
     @ApiOperation("轮播图详情")
     public Tip getAdInfo(@PathVariable Long id) {
         //新建对象 进行封装image
@@ -79,7 +102,7 @@ public class AdPubEndpoint {
     }
 
     @ApiOperation("按组获取广告组")
-    @GetMapping("/pub/ad/allGroup/{groupId}")
+    @GetMapping("/ad/allGroup/{groupId}")
     public Tip getAdsFromGroup(
                  @RequestParam(name = "search", required = false) String search,
                   @PathVariable Integer groupId) {
@@ -95,7 +118,7 @@ public class AdPubEndpoint {
 
     }
 
-    @GetMapping("/pub/ad")
+    @GetMapping("/ad")
     @ApiOperation("广告列表")
     public Tip queryAdLibraryies(Page<AdRecord> page,
                                  @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
@@ -129,7 +152,7 @@ public class AdPubEndpoint {
         return SuccessTip.create(page);
     }
 
-    @GetMapping("/pub/ad/libraries")
+    @GetMapping("/ad/libraries")
     @ApiOperation("图库列表")
     public Tip queryAdLibraryies(Page<AdLibraryRecord> page,
                                  @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,

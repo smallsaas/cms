@@ -29,7 +29,6 @@ import javax.annotation.Resource;
 @RequestMapping("/api/cms/ad/libraries")
 public class AdLibraryEndpoint  {
 
-
     @Resource
     AdLibraryService adLibraryService;
 
