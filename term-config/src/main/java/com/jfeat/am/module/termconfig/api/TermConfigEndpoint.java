@@ -22,7 +22,6 @@ import java.util.Date;
  * @author Code Generator
  * @since 2017-12-09
  */
-@Deprecated
 @Api("cms-系统规则配置")
 @RestController
 @RequestMapping("/api/cms/term/config")
