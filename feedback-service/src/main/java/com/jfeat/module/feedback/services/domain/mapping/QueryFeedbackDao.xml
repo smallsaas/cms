@@ -2,19 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao">
     
-    <select id="findFeedbacks" resultType="TFeedbackModel">
+    <select id="findFeedbacks" resultType="FeedbackModel">
         SELECT
-        <include refid="findFeedbacks"/>
+            t_feedback.*
         FROM t_feedback
         WHERE 1=1
-        <if test="unread != null and unread > -1">
-            AND t_feedback.unread = #{unread}
+        <if test="status != null">
+            AND t_feedback.status = #{status}
         </if>
         <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
             AND t_feedback.created_date BETWEEN #{startTime} AND #{endTime}
         </if>
         <if test="createName != null and createName != ''">
-            AND t_feedback.create_name LIKE CONCAT ('%',#{createName},'%')
+            AND t_feedback.user_name LIKE CONCAT ('%',#{createName},'%')
         </if>
         GROUP BY t_feedback.id
     </select>
