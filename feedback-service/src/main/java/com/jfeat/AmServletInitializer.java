@@ -15,5 +15,4 @@ public class AmServletInitializer extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(AmApplication.class);
     }
-
 }
