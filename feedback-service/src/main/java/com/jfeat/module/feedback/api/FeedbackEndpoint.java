@@ -1,17 +1,17 @@
 package com.jfeat.module.feedback.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao;
-import com.jfeat.module.feedback.services.filter.FeedbackFilter;
-import com.jfeat.module.feedback.services.gen.persistence.model.Feedback;
-import com.jfeat.module.feedback.services.service.FeedbackService;
-import com.jfeat.module.feedback.services.domain.model.FeedbackModel;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
+import com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao;
+import com.jfeat.module.feedback.services.gen.persistence.dao.FeedbackMapper;
+import com.jfeat.module.feedback.services.gen.persistence.model.Feedback;
+import com.jfeat.module.feedback.services.service.FeedbackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 
 /**
@@ -32,6 +32,9 @@ public class FeedbackEndpoint {
 
     @Resource
     private QueryFeedbackDao queryFeedbackDao;
+
+    @Resource
+    FeedbackMapper feedbackMapper;
 
     @ApiOperation("处理(解决)反馈或建议")
     @PutMapping("/feedback/{id}/solve")
@@ -85,7 +88,6 @@ public class FeedbackEndpoint {
                               @RequestParam(name = "startTime", required = false) String startTime,
                               @RequestParam(name = "endTime", required = false) String endTime,
                               @RequestParam(name = "name", required = false) String name) {
-
         page.setCurrent(pageNum);
         page.setSize(pageSize);
         page.setRecords(queryFeedbackDao.findFeedbacks(page, status, createName, startTime, endTime));

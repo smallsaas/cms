@@ -54,7 +54,7 @@ mybatis-plus:
     refresh-mapper: true
     logic-delete-value: -1
     logic-not-delete-value: 1
-    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  #    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true #配置的缓存的全局开关
@@ -70,13 +70,13 @@ mybatis-plus:
 spring:
   profiles: test
   datasource:
-      url: jdbc:h2:mem:jobs;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
-      driver-class-name: org.h2.Driver
-      username: sa
-      password:
-      filters: log4j,wall,mergeStat
-      schema: classpath*:sql/*-schema.sql
-      data: classpath*:sql/*-data.sql
+    url: jdbc:h2:mem:jobs;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    filters: log4j,wall,mergeStat
+    schema: classpath*:sql/*-schema.sql
+    data: classpath*:sql/*-data.sql
 
 logging:
   level: debug
@@ -92,18 +92,21 @@ am:
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://localhost:3307/test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: root
-      password: password
-      filters: log4j,wall,mergeStat
-      initialize: false
-      schema: classpath*:sql/*-schema.sql
-      data: classpath*:sql/*-data.sql
+    #      url: jdbc:mysql://localhost:3307/test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    username: root
+    #      password: password
+    password: root
+    filters: log4j,wall,mergeStat
+#    initialize: false
+    initialize: true
+    schema: classpath*:sql/*-schema.sql
+    data: classpath*:sql/*-data.sql
   rabbitmq:
-     host: 112.74.26.228
-     port: 5672
-     username: jfeat
-     password: jfeat
+    host: 112.74.26.228
+    port: 5672
+    username: jfeat
+    password: jfeat
 
 logging:
   level: debug
@@ -119,15 +122,15 @@ am:
 spring:
   profiles: produce
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/jobs?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: root
-      password: root
-      filters: log4j,wall,mergeStat
+    url: jdbc:mysql://127.0.0.1:3306/jobs?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+    filters: log4j,wall,mergeStat
   rabbitmq:
-      host: 112.74.26.228
-      port: 5672
-      username: jfeat
-      password: jfeat
+    host: 112.74.26.228
+    port: 5672
+    username: jfeat
+    password: jfeat
 
 logging:
   level: warn

@@ -47,6 +47,7 @@ public class FeedbackServiceImpl extends CRUDServiceOnlyImpl<Feedback> implement
     public Integer solve(Long feedbackId, String note) {
         Feedback feedback = feedbackMapper.selectById(feedbackId);
         feedback.setStatus(FeedbackStatus.SOLVED);
+        feedback.setSolvedNote(note);
         feedback.setSolvedBy(JWTKit.getAccount());
         return feedbackMapper.updateById(feedback);
     }
