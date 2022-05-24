@@ -31,6 +31,7 @@ CREATE TABLE `t_notice` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `end_time` datetime DEFAULT NULL COMMENT '到期时间',
   `sort_num` int DEFAULT '1' COMMENT '排序号[Deprecated]',
+  `org_id` bigint(11) NOT NULL COMMENT 'orgId',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

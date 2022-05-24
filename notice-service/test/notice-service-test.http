@@ -1,0 +1,100 @@
+@endpoint=http://localhost:8081
+
+@adminToken =Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjEiLCJ1c2VySWQiOiIxIiwidGVuYW50T3JnSWQiOjEsImFjY291bnQiOiJhZG1pbiIsInVzZXJUeXBlIjowLCJkZXZVc2VyVHlwZSI6MCwiYlVzZXJUeXBlIjoiU1lTVEVNIiwiYlVzZXJJZCI6MCwiaWF0IjoxNjUzMzc5NjY3LCJqdGkiOiIxIiwic3ViIjoiYWRtaW4iLCJleHAiOjE2NTM2Mzg4Njd9.3Wm7Rokrf3ZEVTqWLrYK8V8M5E8zkJRG2YLcEhsJwP68eObzjcJhXaPz2pN_TMS6NQIEdgBFzi7wqfzpxTzYRw
+
+@A_1token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjE4IiwidXNlcklkIjoiNiIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0xIiwidXNlclR5cGUiOjAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJiVXNlcklkIjowLCJpYXQiOjE2NTMzNzI2NzksImp0aSI6IjYiLCJzdWIiOiJBLTEiLCJleHAiOjE2NTM2MzE4Nzl9.blwmLJjVHlEmufX5M7D3K3fHRAEugJfhkJ11EM_OVhIX68rLX2zIEmR8Hg31iWfOmgNURPPdc80focieCyX-Dw
+
+@A_2token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjE5IiwidXNlcklkIjoiNyIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0yIiwidXNlclR5cGUiOjAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJiVXNlcklkIjowLCJpYXQiOjE2NTMzNzQxNDUsImp0aSI6IjciLCJzdWIiOiJBLTIiLCJleHAiOjE2NTM2MzMzNDV9.Evz6efj-F82LBnRAmGLBUtbvBfTodBiVTE8zDhJv5vs0HrqSPQQtN6CJfoEM7zpRF0Ip-Mc6tkz1zXb37Zs5jg
+
+@A_1_1token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjIyIiwidXNlcklkIjoiOCIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0xLTEiLCJ1c2VyVHlwZSI6MCwiZGV2VXNlclR5cGUiOjAsImJVc2VyVHlwZSI6IlNZU1RFTSIsImJVc2VySWQiOjAsImlhdCI6MTY1MzM3MjcyOSwianRpIjoiOCIsInN1YiI6IkEtMS0xIiwiZXhwIjoxNjUzNjMxOTI5fQ.fk1WxkH7cs19ne8UusZa1QY8T73xASXWTlC84ktbAQ8nQmK_VYnXUO6Y5DAfZF-wiQgB3jWoNjPWx878nivfxQ
+
+
+
+##公告列表查询
+### 超级管理员查看
+GET {{endpoint}}/api/cms/notice/notices
+Authorization:{{adminToken}}
+
+### 用户A-1 用户级别为A-1
+GET {{endpoint}}/api/cms/notice/notices
+Authorization:{{A_1token}}
+
+### A-2
+### 用户A-2 用户级别为A-2 和A-1同级别
+GET {{endpoint}}/api/cms/notice/notices
+Authorization:{{A_2token}}
+
+### 用户为A-1-1 用户级别为A-1-1 在A-1级别下
+GET {{endpoint}}/api/cms/notice/notices
+Authorization:{{A_1_1token}}
+
+
+### 添加公告
+POST {{endpoint}}/api/cms/notice/notices
+Content-Type:application/json
+Authorization:{{A_2token}}
+{
+    "author": "admin",
+    "content": "部分库存信息有误，各负责人请检查下数据",
+    "createTime": "2019-09-01 09:11:59",
+    "enabled": 2,
+    "endDate": "0",
+    "endTime": "2019-10-01 09:06:48",
+    "isEnd": "end",
+    "sortNum": 2,
+    "title": "内部公告",
+    "type": "Internal",
+    "updateTime": null
+}
+
+### 查看公告
+GET {{endpoint}}/api/cms/notice/notices/1529001196451561473
+Authorization:{{A_2token}}
+
+
+### 修改公告
+PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473
+Authorization:{{A_2token}}
+Content-Type:application/json
+{
+    "content": "部分库存信息有误",
+    "createTime": "2019-09-01 09:11:59",
+    "enabled": 2,
+    "endDate": "0",
+    "endTime": "2019-10-01 09:06:48",
+    "isEnd": "end",
+    "sortNum": 2,
+    "title": "内部公告",
+    "type": "Internal",
+    "updateTime": null
+}
+
+
+### 删除公告
+DELETE {{endpoint}}/api/cms/notice/notices/1529001196451561473
+Authorization:{{A_2token}}
+
+### 发布公告
+PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/publish
+Authorization:{{A_2token}}
+
+### 下架公告
+PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/deprecate
+Authorization:{{A_2token}}
+
+### 启用公告
+PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/enable
+Authorization:{{A_2token}}
+
+### 停止公告
+PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/disable
+Authorization:{{A_2token}}
+
+
+### 启用(或取消启用)公告
+PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/switchEnabled
+Authorization:{{A_2token}}
+
+### 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
+GET {{endpoint}}/api/cms/notice/notices/recent/notices
+Authorization:{{A_1token}}

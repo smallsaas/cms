@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.am.module.notice.services.domain.dao.QueryNoticeDao">
-    <select id="findNotices" resultType="NoticeRequest" >
+
+    <sql id="QueryOwnedOrgIds">
+        SELECT children.id
+        FROM t_sys_org,
+             t_sys_org as children
+        WHERE t_sys_org.left_num &lt;= children.left_num
+          AND t_sys_org.right_num >= children.left_num
+          and t_sys_org.id = #{notice.orgId}
+        order by t_sys_org.node_level ASC
+    </sql>
+
+    <select id="findNotices" resultType="NoticeRequest">
         SELECT t_notice.*
         FROM t_notice
+        <if test="notice.orgId > 0">
+            ,(<include refid="QueryOwnedOrgIds"></include>) AS ownedOrgIds
+        </if>
         WHERE 1=1
+        <if test="notice.orgId > 0">
+            AND t_notice.org_id = ownedOrgIds.id
+        </if>
+
+        <if test="notice.orgId != null and notice.orgId>0 ">
+            AND t_notice.org_id IN (<include refid="QueryOwnedOrgIds"/>)
+        </if>
         <if test="notice.status != null and notice.status!= ''">
             AND t_notice.status = #{notice.status}
         </if>
@@ -29,7 +50,8 @@
 
         <if test="expired != null">
             <if test="expired == 1">
-                AND (t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1 day))
+                AND (t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1
+                day))
             </if>
             <if test="expired == 0">
                 AND (t_notice.end_time IS NULL OR DATE_ADD(t_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
@@ -50,8 +72,9 @@
         SELECT t_notice.*
         FROM t_notice
 
-        WHERE t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1 day)
-        ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC,t_notice.create_time DESC
+        WHERE t_notice.end_time IS NOT NULL
+          AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1 day)
+        ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC, t_notice.create_time DESC
     </select>
 
     <select id="findRecentNotices" resultType="Notice">
