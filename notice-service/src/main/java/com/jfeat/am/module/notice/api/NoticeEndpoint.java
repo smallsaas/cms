@@ -124,6 +124,7 @@ public class NoticeEndpoint {
         notice.setTitle(title);
         notice.setContent(content);
         notice.setEnabled(enabled);
+        notice.setOrgId(JWTKit.getOrgId());
         List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
         List<NoticeRequest> newNoticeRequestList=new ArrayList<>();
         Date nowDate=new Date();

@@ -74,6 +74,17 @@ public class Notice extends Model<Notice> {
 	private String status;
 
 
+	private Long orgId;
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
@@ -193,6 +204,8 @@ public class Notice extends Model<Notice> {
 
 	public static final String SORT_NUM = "sort_num";
 
+	public static final String ORF_ID = "org_id";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -210,8 +223,9 @@ public class Notice extends Model<Notice> {
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
 				", endTime=" + endTime +
-				", orderNum=" + sortNum +
+				", sortNum=" + sortNum +
 				", status='" + status + '\'' +
+				", orgId=" + orgId +
 				'}';
 	}
 }

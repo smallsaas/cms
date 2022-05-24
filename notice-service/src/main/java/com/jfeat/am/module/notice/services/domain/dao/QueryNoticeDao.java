@@ -15,10 +15,11 @@ public interface QueryNoticeDao extends BaseMapper<Notice> {
 
     /**
      * 搜索公告
+     *
      * @param page
      * @param notice
-     * @param expired  是否过期 0-未过期  1-过期
-     * @param type 类型列表, 多类型查询
+     * @param expired 是否过期 0-未过期  1-过期
+     * @param type    类型列表, 多类型查询
      * @return
      */
     List<NoticeRequest> findNotices(Page<NoticeRequest> page,
@@ -30,6 +31,7 @@ public interface QueryNoticeDao extends BaseMapper<Notice> {
 
     /**
      * 已过期的公告
+     *
      * @return
      */
     List<Notice> findExpiredNotices();
@@ -37,6 +39,7 @@ public interface QueryNoticeDao extends BaseMapper<Notice> {
 
     /**
      * 已发布的最新公告
+     *
      * @param page
      * @param type 类型 External-外部公告（C端）  Internal-内部公告（B端）
      * @return

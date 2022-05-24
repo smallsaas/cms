@@ -20,7 +20,7 @@ jwt:
 
 ###################  项目启动端口  ###################
 server:
-  port: 8080
+  port: 8081
 
 ###################  beetl配置  ###################
 beetl:
@@ -53,7 +53,7 @@ mybatis-plus:
     refresh-mapper: true
     logic-delete-value: -1
     logic-not-delete-value: 1
-    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+#    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true #配置的缓存的全局开关
@@ -92,11 +92,12 @@ am:
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://192.168.3.88:3307/alliance?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+#      192.168.3.88:3307/alliance
       username: root
       password: root
       filters: log4j,wall,mergeStat
-      initialize: true
+      initialize: false
       schema: classpath*:sql/*-schema.sql
       data: classpath*:sql/*-data.sql
 
