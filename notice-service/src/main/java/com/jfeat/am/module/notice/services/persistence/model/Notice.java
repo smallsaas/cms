@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.Date;
 
 /**
@@ -75,6 +75,10 @@ public class Notice extends Model<Notice> {
 
 
 	private Long orgId;
+
+	private String contentPath;
+
+	private String pictureUrl;
 
 	public Long getOrgId() {
 		return orgId;
@@ -166,6 +170,22 @@ public class Notice extends Model<Notice> {
 		return this;
 	}
 
+	public String getContentPath() {
+		return contentPath;
+	}
+
+	public void setContentPath(String contentPath) {
+		this.contentPath = contentPath;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -205,6 +225,11 @@ public class Notice extends Model<Notice> {
 	public static final String SORT_NUM = "sort_num";
 
 	public static final String ORF_ID = "org_id";
+
+	public static final String CONTENT_PATH ="content_Path";
+
+	public static final String PICTURE_URL="picture_url";
+
 
 	@Override
 	protected Serializable pkVal() {

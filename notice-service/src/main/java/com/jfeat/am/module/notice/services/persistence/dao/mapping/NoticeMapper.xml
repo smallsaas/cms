@@ -15,11 +15,13 @@
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
 		<result column="end_time" property="endTime" />
+		<result column="content_path" property="contentPath" />
+		<result column="picture_url" property="pictureUrl" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, author, sort_num AS sortNum, status, title, content, type, enabled, create_time AS createTime, update_time AS updateTime, end_time AS endTime
+        id, author, sort_num AS sortNum, status, title, content, type, enabled, create_time AS createTime, update_time AS updateTime, end_time AS endTime,content_path AS contentPath,picture_url AS pictureUrl
     </sql>
 
 </mapper>

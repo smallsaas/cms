@@ -10,6 +10,7 @@ import com.jfeat.am.module.notice.services.domain.model.NoticeRequest;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.service.filter.NoticeFilter;
+import com.jfeat.am.module.notice.services.service.utils.ReaderFile;
 import com.jfeat.am.module.notice.task.AuditNoticeJob;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -21,6 +22,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +67,15 @@ public class NoticeEndpoint {
     @GetMapping("/{id}")
     @ApiOperation(value = "查看公告", response = Notice.class)
     public Tip getNotice(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.retrieveMaster(id));
+        Notice notice = noticeService.retrieveMaster(id);
+
+//        当content为空时读取content_path内容
+        if ((notice.getContent().equals("") || notice.getContent()==null) && (notice.getContentPath()!=null || notice.getContentPath().equals(""))){
+            String path = notice.getContentPath();
+            notice.setContent(ReaderFile.readerFile(path));
+        }
+//        noticeService.retrieveMaster(id)
+        return SuccessTip.create(notice);
     }
 
     @PutMapping("/{id}")
@@ -126,6 +136,14 @@ public class NoticeEndpoint {
         notice.setEnabled(enabled);
         notice.setOrgId(JWTKit.getOrgId());
         List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
+
+        //        当content为空时读取content_path内容
+        for (Notice notice1:noticeRequestList){
+            if ((notice1.getContent().equals("") || notice1.getContent()==null) && (notice1.getContentPath()!=null || notice.getContentPath().equals(""))){
+                String path = notice1.getContentPath();
+                notice1.setContent(ReaderFile.readerFile(path));
+            }
+        }
         List<NoticeRequest> newNoticeRequestList=new ArrayList<>();
         Date nowDate=new Date();
         //此处处理距离结束日期的时间 传给前端
@@ -159,8 +177,10 @@ public class NoticeEndpoint {
 
             newNoticeRequestList.add(noticeRequest);
         }
-        page.setRecords(noticeRequestList);
 
+
+        page.setRecords(noticeRequestList);
+        System.out.println(page);
         return SuccessTip.create(page);
     }
 
