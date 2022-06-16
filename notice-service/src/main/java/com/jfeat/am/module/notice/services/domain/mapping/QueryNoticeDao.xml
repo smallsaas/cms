@@ -26,6 +26,7 @@
         <if test="notice.orgId != null and notice.orgId>0 ">
             AND t_notice.org_id IN (<include refid="QueryOwnedOrgIds"/>)
         </if>
+
         <if test="notice.status != null and notice.status!= ''">
             AND t_notice.status = #{notice.status}
         </if>
@@ -65,7 +66,7 @@
                 AND ( t_notice.type = #{type[0]} OR t_notice.type = #{type[1]} )
             </if>
         </if>
-        ORDER BY t_notice.sort_num DESC, t_notice.enabled DESC,t_notice.update_time DESC,t_notice.create_time DESC
+        ORDER BY t_notice.create_time DESC,t_notice.sort_num DESC, t_notice.enabled DESC,t_notice.update_time DESC
     </select>
 
     <select id="findExpiredNotices" resultType="Notice">
@@ -89,5 +90,11 @@
         </if>
 
         ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC,t_notice.create_time DESC
+    </select>
+
+    <select id="queryNoticesById" resultType="Notice">
+        SELECT t_notice.*
+        FROM t_notice
+        Where t_notice.id = #{id}
     </select>
 </mapper>

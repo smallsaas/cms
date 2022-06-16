@@ -1,18 +1,18 @@
-@endpoint=http://localhost:8081
+@endpoint=http://localhost:8080
+@service=http://app1.console.smallsaas.cn:8001
 
-@adminToken =Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjEiLCJ1c2VySWQiOiIxIiwidGVuYW50T3JnSWQiOjEsImFjY291bnQiOiJhZG1pbiIsInVzZXJUeXBlIjowLCJkZXZVc2VyVHlwZSI6MCwiYlVzZXJUeXBlIjoiU1lTVEVNIiwiYlVzZXJJZCI6MCwiaWF0IjoxNjUzMzc5NjY3LCJqdGkiOiIxIiwic3ViIjoiYWRtaW4iLCJleHAiOjE2NTM2Mzg4Njd9.3Wm7Rokrf3ZEVTqWLrYK8V8M5E8zkJRG2YLcEhsJwP68eObzjcJhXaPz2pN_TMS6NQIEdgBFzi7wqfzpxTzYRw
+@adminToken =Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjEiLCJ1c2VySWQiOiIxIiwidGVuYW50T3JnSWQiOjEsImFjY291bnQiOiJhZG1pbiIsInVzZXJUeXBlIjowLCJkZXZVc2VyVHlwZSI6MCwiYlVzZXJUeXBlIjoiU1lTVEVNIiwiYlVzZXJJZCI6MCwiaWF0IjoxNjUzNzA2MDA1LCJqdGkiOiIxIiwic3ViIjoiYWRtaW4iLCJleHAiOjE2NTYyOTgwMDV9.nH3W8nkLMzrBp_VybRJ-ZnNjCG96RqD5a6-HikifXV9hQ618btKd8MGxoPf2XIroEzDc4Gj4JoVKk7dSBoB0zA
 
-@A_1token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjE4IiwidXNlcklkIjoiNiIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0xIiwidXNlclR5cGUiOjAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJiVXNlcklkIjowLCJpYXQiOjE2NTMzNzI2NzksImp0aSI6IjYiLCJzdWIiOiJBLTEiLCJleHAiOjE2NTM2MzE4Nzl9.blwmLJjVHlEmufX5M7D3K3fHRAEugJfhkJ11EM_OVhIX68rLX2zIEmR8Hg31iWfOmgNURPPdc80focieCyX-Dw
+@A_1token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjE4IiwidXNlcklkIjoiNiIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0xIiwidXNlclR5cGUiOjAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJiVXNlcklkIjowLCJpYXQiOjE2NTM3MDYxMTAsImp0aSI6IjYiLCJzdWIiOiJBLTEiLCJleHAiOjE2NTYyOTgxMTB9.YN-_CKUKkWeLVnqNgfA3QHbKlI6kfr0-SK17X7akfhx25QMx-auwO8BnIDrFIqvAkOD3rZ251nWos3HrudZtow
 
-@A_2token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjE5IiwidXNlcklkIjoiNyIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0yIiwidXNlclR5cGUiOjAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJiVXNlcklkIjowLCJpYXQiOjE2NTMzNzQxNDUsImp0aSI6IjciLCJzdWIiOiJBLTIiLCJleHAiOjE2NTM2MzMzNDV9.Evz6efj-F82LBnRAmGLBUtbvBfTodBiVTE8zDhJv5vs0HrqSPQQtN6CJfoEM7zpRF0Ip-Mc6tkz1zXb37Zs5jg
+@A_2token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjE5IiwidXNlcklkIjoiNyIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0yIiwidXNlclR5cGUiOjAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJiVXNlcklkIjowLCJpYXQiOjE2NTM3MDYxNTEsImp0aSI6IjciLCJzdWIiOiJBLTIiLCJleHAiOjE2NTYyOTgxNTF9.N_yWlEwVcqkdC6HRPskPrBYiiSW8TyL9a3uyWECmDUTVZxkUYcIXxuMUQwwgdjSdWUiIEd_Hj1Eup7LfjWs8yg
 
-@A_1_1token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjIyIiwidXNlcklkIjoiOCIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0xLTEiLCJ1c2VyVHlwZSI6MCwiZGV2VXNlclR5cGUiOjAsImJVc2VyVHlwZSI6IlNZU1RFTSIsImJVc2VySWQiOjAsImlhdCI6MTY1MzM3MjcyOSwianRpIjoiOCIsInN1YiI6IkEtMS0xIiwiZXhwIjoxNjUzNjMxOTI5fQ.fk1WxkH7cs19ne8UusZa1QY8T73xASXWTlC84ktbAQ8nQmK_VYnXUO6Y5DAfZF-wiQgB3jWoNjPWx878nivfxQ
-
+@A_1_1token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjIyIiwidXNlcklkIjoiOCIsInRlbmFudE9yZ0lkIjoxLCJhY2NvdW50IjoiQS0xLTEiLCJ1c2VyVHlwZSI6MCwiZGV2VXNlclR5cGUiOjAsImJVc2VyVHlwZSI6IlNZU1RFTSIsImJVc2VySWQiOjAsImlhdCI6MTY1MzcwNjE3MywianRpIjoiOCIsInN1YiI6IkEtMS0xIiwiZXhwIjoxNjU2Mjk4MTczfQ.jQo-SxSEimkRJ2YqSIhsHaX7w8NQZ46J5ub8P6mYcQOFm3loYqi-dxxhtbO_-irHHvuc9sd2Zn9CrlnzXOJvmw
 
 
 ##公告列表查询
 ### 超级管理员查看
-GET {{endpoint}}/api/cms/notice/notices
+GET {{service}}/api/cms/notice/notices
 Authorization:{{adminToken}}
 
 ### 用户A-1 用户级别为A-1
@@ -36,7 +36,6 @@ Authorization:{{A_2token}}
 {
     "author": "admin",
     "content": "部分库存信息有误，各负责人请检查下数据",
-    "createTime": "2019-09-01 09:11:59",
     "enabled": 2,
     "endDate": "0",
     "endTime": "2019-10-01 09:06:48",
@@ -48,7 +47,7 @@ Authorization:{{A_2token}}
 }
 
 ### 查看公告
-GET {{endpoint}}/api/cms/notice/notices/1529001196451561473
+GET {{endpoint}}/api/cms/notice/notices/1196596850284810241
 Authorization:{{A_2token}}
 
 
@@ -58,7 +57,6 @@ Authorization:{{A_2token}}
 Content-Type:application/json
 {
     "content": "部分库存信息有误",
-    "createTime": "2019-09-01 09:11:59",
     "enabled": 2,
     "endDate": "0",
     "endTime": "2019-10-01 09:06:48",
@@ -96,5 +94,9 @@ PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/switchEnabled
 Authorization:{{A_2token}}
 
 ### 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
-GET {{endpoint}}/api/cms/notice/notices/recent/notices
+GET {{endpoint}}/api/u/cms/notice/notices/recent/notices
 Authorization:{{A_1token}}
+
+
+GET {{endpoint}}/api/cms/notice/notices/1529391175619112962
+Authorization:{{adminToken}}

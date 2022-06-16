@@ -1,4 +1,5 @@
-package com.jfeat.am.module.notice.api;
+package com.jfeat.am.module.notice.api.user;
+
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
@@ -9,7 +10,6 @@ import com.jfeat.am.module.notice.services.domain.model.EnabledStatus;
 import com.jfeat.am.module.notice.services.domain.model.NoticeRequest;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import com.jfeat.am.module.notice.services.service.NoticeService;
-import com.jfeat.am.module.notice.services.service.filter.NoticeFilter;
 import com.jfeat.am.module.notice.services.service.utils.ReaderFile;
 import com.jfeat.am.module.notice.task.AuditNoticeJob;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -22,24 +22,14 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * <p>
- * api
- * </p>
- *
- * @author Code Generator
- * @since 2017-11-02
- */
-
 @RestController
 @Api("公告")
-@RequestMapping("/api/cms/notice/notices")
-public class NoticeEndpoint {
+@RequestMapping("/api/u/cms/notice/notices")
+public class UserNoticeEndpoint {
 
     @Resource
     NoticeService noticeService;
@@ -49,20 +39,6 @@ public class NoticeEndpoint {
 
     @Resource
     AuditNoticeJob auditNoticeJob;
-
-
-    /**
-     * CRUD
-     *
-     * @param entity
-     * @return
-     */
-    @PostMapping
-    @ApiOperation(value = "添加公告", response = Notice.class)
-    public Tip createNotice(@RequestBody Notice entity) {
-        entity.setAuthor(JWTKit.getAccount());
-        return SuccessTip.create(noticeService.createMaster(entity, new NoticeFilter()));
-    }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查看公告", response = Notice.class)
@@ -78,18 +54,6 @@ public class NoticeEndpoint {
         return SuccessTip.create(notice);
     }
 
-    @PutMapping("/{id}")
-    @ApiOperation(value = "修改公告", response = Notice.class)
-    public Tip updateNotice(@PathVariable Long id, @RequestBody Notice entity) {
-        entity.setId(id);
-        return SuccessTip.create(noticeService.updateMaster(entity, new NoticeFilter()));
-    }
-
-    @DeleteMapping("/{id}")
-    @ApiOperation("删除公告")
-    public Tip deleteNotice(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.deleteMaster(id));
-    }
 
     @GetMapping
     @ApiOperation(value = "公告列表", response = NoticeRequest.class)
@@ -106,6 +70,7 @@ public class NoticeEndpoint {
             @RequestParam(name = "content", required = false) String content
     ) {
         page.setCurrent(pageNum);
+
         page.setSize(pageSize);
 
         // type=External,Internal,System
@@ -134,7 +99,6 @@ public class NoticeEndpoint {
         notice.setTitle(title);
         notice.setContent(content);
         notice.setEnabled(enabled);
-        notice.setOrgId(JWTKit.getOrgId());
         List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
 
         //        当content为空时读取content_path内容
@@ -162,17 +126,17 @@ public class NoticeEndpoint {
                 }
 
 
-               Long endTime=noticeRequest.getEndTime().getTime()-nowDate.getTime();
-               //如果已过期
-                 if(endTime<0){
-                     noticeRequest.setEndDate(0L);
-                 }
-                 //未过期
-                 else
-                 {
-                     noticeRequest.setEndDate(endTime/86400000+1);
-                 }
-                 //24*60*60*1000
+                Long endTime=noticeRequest.getEndTime().getTime()-nowDate.getTime();
+                //如果已过期
+                if(endTime<0){
+                    noticeRequest.setEndDate(0L);
+                }
+                //未过期
+                else
+                {
+                    noticeRequest.setEndDate(endTime/86400000+1);
+                }
+                //24*60*60*1000
             }
 
             newNoticeRequestList.add(noticeRequest);
@@ -186,54 +150,14 @@ public class NoticeEndpoint {
 
 
     /**
-     * Advance API
-     */
-
-    @PutMapping("/{id}/publish")
-    @ApiOperation("发布公告")
-    public Tip publishNotice(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.publishNotice(id));
-    }
-
-    @PutMapping("/{id}/deprecate")
-    @ApiOperation("下架公告")
-    public Tip downNotice(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.deprecateNotice(id));
-    }
-
-
-    /**
-     * Leagcy API
-     */
-
-    @ApiOperation("启用公告")
-    @PutMapping("/{id}/enable")
-    public Tip enableNotice(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.enableNotice(id, 1));
-    }
-
-    @PutMapping("/{id}/disable")
-    @ApiOperation("停止公告")
-    public Tip disableNotice(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.enableNotice(id, 0));
-    }
-
-    @PutMapping("/{id}/switchEnabled")
-    @ApiOperation("启用(或取消启用)公告")
-    public Tip switchEnabled(@PathVariable Long id) {
-        return SuccessTip.create(noticeService.switchEnabled(id));
-    }
-
-
-    /**
      * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
      */
     @GetMapping("/recent/notices")
     @ApiOperation("最新公告（必须是未过期，且已启用的。结果按有效时间倒序）")
     public Tip latestNotices(Page<Notice> page,
-                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                               @RequestParam(name = "type", required = false) String type) {
+                             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                             @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                             @RequestParam(name = "type", required = false) String type) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 

@@ -46,4 +46,6 @@ public interface QueryNoticeDao extends BaseMapper<Notice> {
      */
     List<Notice> findRecentNotices(Page<Notice> page, @Param("type") String type);
 
+    Notice queryNoticesById(@Param("id") Long id);
+
 }
