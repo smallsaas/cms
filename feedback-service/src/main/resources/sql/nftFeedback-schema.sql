@@ -16,7 +16,7 @@ CREATE TABLE `nft_complain_record`
     `status`            varchar(16)  NOT NULL COMMENT '状态 待回复 - PENDING_REPLY 已回复 - REPLIED 已完成 - COMPLETED 创建时间 (create_time) 更新时间 (update_time)',
     `create_time`       datetime    DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
     `update_time`       datetime    DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
-    `request_type` varchar(32) default 'ORDER_DISPUTES' not null comment '申诉类型，用于记录是反馈还是订单纠纷，对应的类型枚举如下：FEEDBACK，ORDER_DISPUTES';
+    `request_type` varchar(32) default 'ORDER_DISPUTES' not null comment '申诉类型，用于记录是反馈还是订单纠纷，对应的类型枚举如下：FEEDBACK，ORDER_DISPUTES',
 PRIMARY KEY (`id`)
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE `nft_complain_type`
     `content`           varchar(512) NOT NULL COMMENT '申诉内容',
     `create_time`       datetime    DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
     `update_time`       datetime    DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
-    `request_type` varchar(32) default 'ORDER_DISPUTES' not null comment '申诉类型，用于记录是反馈还是订单纠纷，对应的类型枚举如下：FEEDBACK，ORDER_DISPUTES';
+    `request_type` varchar(32) default 'ORDER_DISPUTES' not null comment '申诉类型，用于记录是反馈还是订单纠纷，对应的类型枚举如下：FEEDBACK，ORDER_DISPUTES',
 PRIMARY KEY (`id`)
 );
 
