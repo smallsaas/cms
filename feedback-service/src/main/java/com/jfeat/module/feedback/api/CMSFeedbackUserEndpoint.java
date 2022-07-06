@@ -25,8 +25,8 @@ import javax.validation.Valid;
  */
 @RestController
 @Api("反馈建议")
-@RequestMapping("/api/u")
-public class FeedbackUserEndpoint {
+@RequestMapping("/api/u/cms")
+public class CMSFeedbackUserEndpoint {
 
     @Resource
     private FeedbackService feedbackService;

@@ -1,12 +1,10 @@
 package com.jfeat.module.feedback.api;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao;
-import com.jfeat.module.feedback.services.gen.persistence.dao.FeedbackMapper;
-import com.jfeat.module.feedback.services.gen.persistence.model.Feedback;
+import com.jfeat.module.feedback.services.gen.persistence.dao.CMSFeedbackMapper;
 import com.jfeat.module.feedback.services.service.FeedbackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +23,7 @@ import javax.annotation.Resource;
 @RestController
 @Api("反馈建议")
 @RequestMapping("/api/adm")
-public class FeedbackEndpoint {
+public class CMSFeedbackEndpoint {
 
     @Resource
     private FeedbackService feedbackService;
@@ -33,8 +31,6 @@ public class FeedbackEndpoint {
     @Resource
     private QueryFeedbackDao queryFeedbackDao;
 
-    @Resource
-    FeedbackMapper feedbackMapper;
 
     @ApiOperation("处理(解决)反馈或建议")
     @PutMapping("/feedback/{id}/solve")

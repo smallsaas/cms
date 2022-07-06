@@ -12,6 +12,6 @@
   * Master: serviceOnly
    * Slave : nft_complain_type
    */
- public interface NTFCRUDComplainTypeService extends CRUDServiceOnly<ComplainType> {
+ public interface NFTCRUDComplainTypeService extends CRUDServiceOnly<ComplainType> {
 
  }
