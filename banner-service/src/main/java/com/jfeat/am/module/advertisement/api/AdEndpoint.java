@@ -44,6 +44,7 @@ public class AdEndpoint  {
     @Resource
     private AdGroupMapper adGroupMapper;
 
+
     @PostMapping("/ad")
     @ApiOperation("添加轮播图")
     public Tip createAd(@RequestBody AdRecord entity) {
