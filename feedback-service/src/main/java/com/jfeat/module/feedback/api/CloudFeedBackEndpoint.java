@@ -42,7 +42,7 @@ public class CloudFeedBackEndpoint {
     }
 
     @ApiOperation(value = "反馈列表")
-    @GetMapping("")
+    @GetMapping("/feedback")
     public Tip feedback(Page page,
                         @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                         @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
