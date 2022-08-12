@@ -3,9 +3,9 @@ package com.jfeat.module.feedback.services.service.impl;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import com.jfeat.module.feedback.services.gen.persistence.dao.ComplainRecordMapper;
+import com.jfeat.module.feedback.services.gen.persistence.model.ComplainRecord;
 import com.jfeat.module.feedback.services.service.NFTWispOrderService;
-import com.jfeat.module.smallsaas.ticket.services.gen.persistence.dao.ComplainRecordMapper;
-import com.jfeat.module.smallsaas.ticket.services.gen.persistence.model.complainrecord.ComplainRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
