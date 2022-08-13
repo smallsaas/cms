@@ -19,11 +19,11 @@
 
     <select id="findComplainRecordPage" resultType="ComplainRecordRecord" parameterType="ComplainRecordRecord">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List"/>,t_end_user.`name` as 'userName',t_end_user.phone as 'userPhone'
 
 
         FROM nft_complain_record
-
+        left join t_end_user on t_end_user.id = nft_complain_record.complainant_id
 
         WHERE 1=1
 
