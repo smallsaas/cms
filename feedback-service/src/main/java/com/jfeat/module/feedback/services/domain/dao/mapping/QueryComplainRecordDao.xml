@@ -19,7 +19,7 @@
 
     <select id="findComplainRecordPage" resultType="ComplainRecordRecord" parameterType="ComplainRecordRecord">
         SELECT
-        <include refid="Base_Column_List"/>,t_end_user.`name` as 'userName',t_end_user.phone as 'userPhone'
+        <include refid="Base_Column_List"/>,t_end_user.`name` as 'userName',t_end_user.phone as 'userPhone',t_end_user.avatar as 'avatar'
 
 
         FROM nft_complain_record
