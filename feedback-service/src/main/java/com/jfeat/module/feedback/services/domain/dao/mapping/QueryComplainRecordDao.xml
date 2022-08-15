@@ -90,5 +90,7 @@
         OR nft_complain_record.name LIKE CONCAT('%',#{search},'%')
     </if>
     -->
+
+            order by nft_complain_record.create_time desc
     </select>
 </mapper>
