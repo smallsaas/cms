@@ -61,7 +61,16 @@ public class ComplainRecord extends Model<ComplainRecord> {
 
     private String requestType;
 
-    
+    private String appid;
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
     public Long getId() {
         return id;
     }

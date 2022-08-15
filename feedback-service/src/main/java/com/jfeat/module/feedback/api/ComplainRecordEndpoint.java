@@ -60,12 +60,13 @@ public class ComplainRecordEndpoint {
     @Resource
     QueryComplainRecordDao queryComplainRecordDao;
 
-    @PostMapping
+    @PostMapping("/{appid}")
     @ApiOperation(value = "新建 ComplainRecord", response = ComplainRecord.class)
-    public Tip createComplainRecord(@RequestBody ComplainRecord entity) {
+    public Tip createComplainRecord(@PathVariable("appid") String appid,@RequestBody ComplainRecord entity) {
 
         Integer affected = 0;
         try {
+            entity.setAppid(appid);
             affected = complainRecordService.createMaster(entity);
 
         } catch (DuplicateKeyException e) {
@@ -75,27 +76,27 @@ public class ComplainRecordEndpoint {
         return SuccessTip.create(affected);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{appid}/{id}")
     @ApiOperation(value = "查看 ComplainRecord", response = ComplainRecord.class)
     public Tip getComplainRecord(@PathVariable Long id) {
         return SuccessTip.create(complainRecordService.queryMasterModel(queryComplainRecordDao, id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{appid}/{id}")
     @ApiOperation(value = "修改 ComplainRecord", response = ComplainRecord.class)
-    public Tip updateComplainRecord(@PathVariable Long id, @RequestBody ComplainRecord entity) {
+    public Tip updateComplainRecord(@PathVariable("appid") String appid,@PathVariable Long id, @RequestBody ComplainRecord entity) {
         entity.setId(id);
         return SuccessTip.create(complainRecordService.updateMaster(entity));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{appid}/{id}")
     @ApiOperation("删除 ComplainRecord")
-    public Tip deleteComplainRecord(@PathVariable Long id) {
+    public Tip deleteComplainRecord(@PathVariable("appid") String appid,@PathVariable Long id) {
         return SuccessTip.create(complainRecordService.deleteMaster(id));
     }
 
     @ApiOperation(value = "ComplainRecord 列表信息", response = ComplainRecordRecord.class)
-    @GetMapping
+    @GetMapping("/{appid}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", dataType = "Integer"),
             @ApiImplicitParam(name = "pageSize", dataType = "Integer"),
@@ -114,7 +115,7 @@ public class ComplainRecordEndpoint {
             @ApiImplicitParam(name = "orderBy", dataType = "String"),
             @ApiImplicitParam(name = "sort", dataType = "String")
     })
-    public Tip queryComplainRecords(Page<ComplainRecordRecord> page,
+    public Tip queryComplainRecords(Page<ComplainRecordRecord> page,@PathVariable("appid") String appid,
                                     @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                     @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                     @RequestParam(name = "search", required = false) String search,
@@ -170,7 +171,7 @@ public class ComplainRecordEndpoint {
         record.setCreateTime(createTime);
         record.setUpdateTime(updateTime);
         record.setRequestType(requestType);
-
+        record.setAppid(appid);
 
         List<ComplainRecordRecord> complainRecordPage = queryComplainRecordDao.findComplainRecordPage(page, record, search, orderBy, null, null);
 

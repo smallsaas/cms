@@ -6,7 +6,8 @@
         .
         id
         , nft_complain_record.complainant_id AS complainantId, nft_complain_record.relation_order_id AS relationOrderId, nft_complain_record.complainant_role AS complainantRole, nft_complain_record.title, nft_complain_record.content, nft_complain_record.credential_link AS credentialLink, nft_complain_record.status, nft_complain_record.create_time AS createTime, nft_complain_record.update_time AS updateTime, nft_complain_record.request_type AS requestType
-    </sql>
+           , nft_complain_record.appid
+</sql>
 
 
     <select id="queryMasterModel" resultType="ComplainRecordModel">
@@ -82,6 +83,8 @@
         <if test="endTime != null">
             <![CDATA[AND nft_complain_record.end_time <= DATE(#{endTime}]]>
         </if>
+
+            And nft_complain_record.appid  = #{record.appid}
         <!--
     <if test="search != null and search != ''">
         OR nft_complain_record.name LIKE CONCAT('%',#{search},'%')

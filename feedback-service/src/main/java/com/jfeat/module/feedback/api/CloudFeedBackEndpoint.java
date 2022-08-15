@@ -39,19 +39,20 @@ public class CloudFeedBackEndpoint {
     QueryComplainRecordDao queryComplainRecordDao;
 
     @ApiOperation(value = "用户进行反馈")
-    @PostMapping("/feedback/{type}")
-    public Tip feedback(@RequestBody ComplainRecord request, @PathVariable String type) {
+    @PostMapping("/feedback/{appid}/{type}")
+    public Tip feedback(@RequestBody ComplainRecord request, @PathVariable String type, @PathVariable("appid") String appid) {
         if (JWTKit.getUserId() == null) {
             throw new BusinessException(BusinessCode.NoPermission, "用户未登录");
         }
+        request.setAppid(appid);
         request.setComplainantId(JWTKit.getUserId());
         request.setRequestType(type);
         complainRecordMapper.insert(request);
         return SuccessTip.create();
     }
 
-    @ApiOperation(value = "用户进行反馈")
-    @PostMapping("/feedback")
+/*    @ApiOperation(value = "用户进行反馈")
+    @PostMapping("/feedback/{appid}")
     public Tip feedbackType(@RequestBody ComplainRecord request) {
         if (JWTKit.getUserId() == null) {
             throw new BusinessException(BusinessCode.NoPermission, "用户未登录");
@@ -60,13 +61,13 @@ public class CloudFeedBackEndpoint {
         request.setRequestType(FBComplainRequestType.FEEDBACK.name());
         int insert = complainRecordMapper.insert(request);
         return SuccessTip.create(insert);
-    }
-
+    }*/
 
 
     @ApiOperation(value = "反馈列表")
-    @GetMapping("/feedback")
-    public Tip feedbackPage(Page<ComplainRecordRecord> page,
+    @GetMapping("/feedback/{appid}")
+    public Tip feedbackPage(@PathVariable("appid")String appid,
+                            Page<ComplainRecordRecord> page,
                             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                             @RequestParam(name = "search", required = false) String search,
@@ -87,10 +88,10 @@ public class CloudFeedBackEndpoint {
                             @RequestParam(name = "status", required = false) String status,
 
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                @RequestParam(name = "createTime", required = false) Date createTime,
+                            @RequestParam(name = "createTime", required = false) Date createTime,
 
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                @RequestParam(name = "updateTime", required = false) Date updateTime,
+                            @RequestParam(name = "updateTime", required = false) Date updateTime,
 
                             @RequestParam(name = "requestType", required = false) String requestType,
                             @RequestParam(name = "orderBy", required = false) String orderBy) {
@@ -110,7 +111,7 @@ public class CloudFeedBackEndpoint {
         record.setCreateTime(createTime);
         record.setUpdateTime(updateTime);
         record.setRequestType(requestType);
-
+        record.setAppid(appid);
         List<ComplainRecordRecord> complainRecordPage = queryComplainRecordDao.findComplainRecordPage(page, record, search, orderBy, null, null);
         page.setRecords(complainRecordPage);
 
