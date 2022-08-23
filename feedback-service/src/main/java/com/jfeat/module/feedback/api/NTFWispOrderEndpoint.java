@@ -14,8 +14,6 @@ import com.jfeat.module.feedback.services.domain.dao.QueryWispOrderDao;
 import com.jfeat.module.feedback.services.gen.persistence.model.WispOrderRecordDetail;
 import com.jfeat.module.feedback.services.service.NFTWispOrderService;
 import com.jfeat.module.feedback.services.service.impl.NFTWispOrderServiceImpl;
-import com.jfeat.module.smallsaas.ticket.api.ComplainReplyRecordEndpoint;
-import com.jfeat.module.smallsaas.ticket.api.request.ComplainReplyGenerateRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,8 +37,6 @@ public class NTFWispOrderEndpoint {
     @Resource
     NFTWispOrderServiceImpl nftWispOrderService;
 
-    @Resource
-    private ComplainReplyRecordEndpoint replyRecordEndpoint;
 
     @Resource
     QueryWispOrderDao queryWispOrderDao;
@@ -72,7 +68,7 @@ public class NTFWispOrderEndpoint {
     }
 
 
-    @ApiOperation(value = "管理员进行申诉回复")
+/*    @ApiOperation(value = "管理员进行申诉回复")
     @PostMapping("/wisp/complain/reply")
     public Tip complainByOrderId(@RequestBody ComplainReplyGenerateRequest request) {
         return replyRecordEndpoint.createComplainReply(request.setReplierId(JWTKit.getUserId()).setIsManagerReply(1));
@@ -82,7 +78,7 @@ public class NTFWispOrderEndpoint {
     @GetMapping("/wisp/complain/{id}")
     public Tip complainByOrderId(@PathVariable(name = "id") Long id) {
         return SuccessTip.create(nftWispOrderService.managerComplainDetailRecord(id));
-    }
+    }*/
 
 
 }
