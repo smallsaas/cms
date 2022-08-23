@@ -61,6 +61,7 @@ public class NoticeEndpoint {
     @ApiOperation(value = "添加公告", response = Notice.class)
     public Tip createNotice(@RequestBody Notice entity) {
         entity.setAuthor(JWTKit.getAccount());
+        entity.setOrgId(JWTKit.getOrgId());
         return SuccessTip.create(noticeService.createMaster(entity, new NoticeFilter()));
     }
 
