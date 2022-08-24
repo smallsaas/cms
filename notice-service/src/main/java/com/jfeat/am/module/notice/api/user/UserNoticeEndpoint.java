@@ -179,16 +179,5 @@ public class UserNoticeEndpoint {
         return SuccessTip.create(page);
     }
 
-    /**
-     * 以命名查询 公告
-     * @param name
-     * @return
-     */
 
-    @GetMapping("/getNoticesByName")
-    public Tip getNoticesByName(@RequestParam("name") String name){
-        QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
-        noticeQueryWrapper.eq(Notice.NAME,name);
-        return SuccessTip.create(noticeMapper.selectOne(noticeQueryWrapper));
-    }
 }
