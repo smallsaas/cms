@@ -1,5 +1,6 @@
 package com.jfeat.am.module.notice.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notice.services.definition.NoticeStatus;
@@ -7,6 +8,7 @@ import com.jfeat.am.module.notice.services.definition.NoticeTypes;
 import com.jfeat.am.module.notice.services.domain.dao.QueryNoticeDao;
 import com.jfeat.am.module.notice.services.domain.model.EnabledStatus;
 import com.jfeat.am.module.notice.services.domain.model.NoticeRequest;
+import com.jfeat.am.module.notice.services.persistence.dao.NoticeMapper;
 import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.service.filter.NoticeFilter;
@@ -49,6 +51,9 @@ public class NoticeEndpoint {
 
     @Resource
     AuditNoticeJob auditNoticeJob;
+
+    @Resource
+    NoticeMapper noticeMapper;
 
 
     /**
@@ -249,5 +254,18 @@ public class NoticeEndpoint {
         page.setRecords(queryNoticeDao.findRecentNotices(page, type));
 
         return SuccessTip.create(page);
+    }
+
+    /**
+     * 以命名查询 公告
+     * @param name
+     * @return
+     */
+
+    @GetMapping("/getNoticesByName")
+    public Tip getNoticesByName(@RequestParam("name") String name){
+        QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
+        noticeQueryWrapper.eq(Notice.NAME,name);
+        return SuccessTip.create(noticeMapper.selectOne(noticeQueryWrapper));
     }
 }

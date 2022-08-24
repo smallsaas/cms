@@ -36,6 +36,9 @@
         <if test="notice.title != null and notice.title!= ''">
             AND t_notice.title LIKE CONCAT('%',#{notice.title},'%')
         </if>
+        <if test="notice.name != null and notice.name!= ''">
+            AND t_notice.name LIKE CONCAT('%',#{notice.name},'%')
+        </if>
         <if test="notice.content != null and notice.content!= ''">
             AND t_notice.content LIKE CONCAT('%',#{notice.content},'%')
         </if>

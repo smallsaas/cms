@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.*;
 import java.util.Date;
@@ -25,6 +26,9 @@ public class Notice extends Model<Notice> {
      * 编号
      */
 	private Long id;
+
+	@ApiModelProperty(value = "命名")
+	private String name;
     /**
      * 作者
      */
@@ -48,6 +52,7 @@ public class Notice extends Model<Notice> {
     /**
      * 创建时间
      */
+
 	@TableField("create_time")
 	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	private Date createTime;
@@ -79,6 +84,14 @@ public class Notice extends Model<Notice> {
 	private String contentPath;
 
 	private String pictureUrl;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Long getOrgId() {
 		return orgId;
@@ -203,6 +216,8 @@ public class Notice extends Model<Notice> {
 	}
 
 	public static final String ID = "id";
+
+	public static final String NAME = "name";
 
 	public static final String AUTHOR = "author";
 
