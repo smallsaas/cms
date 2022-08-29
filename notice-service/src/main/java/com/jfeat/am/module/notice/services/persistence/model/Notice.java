@@ -85,6 +85,26 @@ public class Notice extends Model<Notice> {
 
 	private String pictureUrl;
 
+	private Date startTime;
+
+	private Integer periodType;
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Integer getPeriodType() {
+		return periodType;
+	}
+
+	public void setPeriodType(Integer periodType) {
+		this.periodType = periodType;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -244,6 +264,12 @@ public class Notice extends Model<Notice> {
 	public static final String CONTENT_PATH ="content_Path";
 
 	public static final String PICTURE_URL="picture_url";
+
+	public static final Integer PERIOD_TYPE_NOT_SET = 0;
+
+	public static final Integer PERIOD_TYPE_EVERY_DAY=1;
+
+	public static final Integer PERIOD_TYPE_FOREVER=2;
 
 
 	@Override

@@ -44,4 +44,5 @@ public interface NoticeService extends CRUDServiceOnly<Notice> {
      */
     Integer switchEnabled(Long id);
 
+
 }

@@ -16,4 +16,5 @@ public class NoticeTypes {
      * 外部公告 消费客户
      */
     public static final String EXTERNAL = "External";
+
 }
