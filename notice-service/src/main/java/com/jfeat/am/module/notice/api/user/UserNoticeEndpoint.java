@@ -19,6 +19,7 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
+import com.jfeat.crud.base.util.DateTimeKit;
 import com.jfeat.crud.plus.META;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,6 +62,8 @@ public class UserNoticeEndpoint {
             String path = notice.getContentPath();
             notice.setContent(ReaderFile.readerFile(path));
         }
+        notice.setViewNumber(notice.getViewNumber()+1);
+        noticeMapper.updateById(notice);
 //        noticeService.retrieveMaster(id)
         return SuccessTip.create(notice);
     }
@@ -172,10 +175,14 @@ public class UserNoticeEndpoint {
             }
         }
 
+        for (NoticeRequest noticeRequest:resultNotices){
+            noticeRequest.setCreateTimeStr(DateTimeKit.toTimeline(noticeRequest.getCreateTime()));
+        }
+
 
         page.setSize(resultNotices.size());
         page.setRecords(resultNotices);
-        System.out.println(page);
+
         return SuccessTip.create(page);
     }
 

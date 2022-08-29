@@ -89,6 +89,16 @@ public class Notice extends Model<Notice> {
 
 	private Integer periodType;
 
+	private Integer viewNumber;
+
+	public Integer getViewNumber() {
+		return viewNumber;
+	}
+
+	public void setViewNumber(Integer viewNumber) {
+		this.viewNumber = viewNumber;
+	}
+
 	public Date getStartTime() {
 		return startTime;
 	}

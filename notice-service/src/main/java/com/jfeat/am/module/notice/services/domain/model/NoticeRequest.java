@@ -25,6 +25,16 @@ public class NoticeRequest extends Notice {
 	//距离结束日期
 	private Long endDate;
 
+	private String createTimeStr;
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
+
 	public String getIsEnd() {
 		return isEnd;
 	}
