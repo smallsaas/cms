@@ -83,10 +83,10 @@ public class UserNoticeEndpoint {
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "content", required = false) String content) {
 
-        Long userId = JWTKit.getUserId();
-        if (userId==null){
-            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
-        }
+//        Long userId = JWTKit.getUserId();
+//        if (userId==null){
+//            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+//        }
 
         page.setCurrent(pageNum);
 
