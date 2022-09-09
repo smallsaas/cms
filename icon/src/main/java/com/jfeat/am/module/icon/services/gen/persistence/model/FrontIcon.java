@@ -36,6 +36,12 @@ public class FrontIcon extends Model<FrontIcon> {
     @TableField(exist = false)
     private JSONObject extra;
 
+    @TableField(exist = false)
+    private String tags;
+
+    @TableField(exist = false)
+    private String tagIds;
+
     public JSONObject getExtra() {
         return extra;
     }
@@ -44,6 +50,21 @@ public class FrontIcon extends Model<FrontIcon> {
         this.extra = extra;
     }
 
+    public String getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(String tagIds) {
+        this.tagIds = tagIds;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
 
     public String getDescribe() {
         return describe;
