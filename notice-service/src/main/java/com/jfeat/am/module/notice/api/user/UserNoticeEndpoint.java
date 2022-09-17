@@ -118,6 +118,7 @@ public class UserNoticeEndpoint {
         notice.setTitle(title);
         notice.setContent(content);
         notice.setEnabled(enabled);
+        notice.setNoticeType(Notice.NOTICE_Type_NOTICE);
 
         if (META.enabledSaas()) {
             notice.setOrgId(JWTKit.getOrgId());

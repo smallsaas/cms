@@ -66,7 +66,10 @@ public class NoticeEndpoint {
     @ApiOperation(value = "添加公告", response = Notice.class)
     public Tip createNotice(@RequestBody Notice entity) {
         entity.setAuthor(JWTKit.getAccount());
-        entity.setOrgId(JWTKit.getOrgId());
+//        entity.setOrgId(JWTKit.getOrgId());
+        if (entity.getPictureUrl()==null || entity.getPictureUrl().equals("")){
+            throw new BusinessException(BusinessCode.BadRequest,"封面图为必传值");
+        }
         return SuccessTip.create(noticeService.createMaster(entity, new NoticeFilter()));
     }
 
@@ -87,6 +90,9 @@ public class NoticeEndpoint {
     @PutMapping("/{id}")
     @ApiOperation(value = "修改公告", response = Notice.class)
     public Tip updateNotice(@PathVariable Long id, @RequestBody Notice entity) {
+        if (entity.getPictureUrl()==null||entity.getPictureUrl().equals("")){
+            throw new BusinessException(BusinessCode.BadRequest,"封面图为必传值");
+        }
         entity.setId(id);
         return SuccessTip.create(noticeService.updateMaster(entity, new NoticeFilter()));
     }
@@ -267,5 +273,37 @@ public class NoticeEndpoint {
         QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
         noticeQueryWrapper.eq(Notice.NAME,name);
         return SuccessTip.create(noticeMapper.selectOne(noticeQueryWrapper));
+    }
+
+    @PutMapping("/setNoticeStick/{id}")
+    public Tip setNoticeStick(@PathVariable("id") Long id){
+        Notice notice = queryNoticeDao.selectById(id);
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc(Notice.SORT_NUM).last("limit 1");
+        Notice maxNotice =  noticeMapper.selectOne(queryWrapper);
+
+        if (notice!=null){
+            notice.setStick(Notice.STICK_TOP);
+            if (maxNotice!=null && notice.getSortNum()!=null){
+                notice.setSortNum(maxNotice.getSortNum()+1);
+            }else {
+                notice.setSortNum(1);
+            }
+            notice.setStick(Notice.STICK_TOP);
+            return SuccessTip.create(noticeMapper.updateById(notice));
+        }
+        return SuccessTip.create();
+    }
+
+    @PutMapping("/cancelNoticeStick/{id}")
+    public Tip cancelNoticeStick(@PathVariable("id") Long id){
+        Notice notice = queryNoticeDao.selectById(id);
+        if (notice!=null){
+            notice.setStick(Notice.STICK_TOP);
+            notice.setSortNum(1);
+            notice.setStick(Notice.STICK_NOT_TOP);
+            return SuccessTip.create(noticeMapper.updateById(notice));
+        }
+        return SuccessTip.create();
     }
 }
