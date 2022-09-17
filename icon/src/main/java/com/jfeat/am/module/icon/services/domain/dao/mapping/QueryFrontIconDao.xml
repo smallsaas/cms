@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.icon.services.domain.dao.QueryFrontIconDao">
+    <sql id="Base_Column_List">
+        t_front_icon
+        .
+        id
+        , t_front_icon.icon, t_front_icon.name as 'name',t_front_icon.describe as 'describe'
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="FrontIconModel">
+        SELECT t_front_icon.*
+        FROM t_front_icon
+        WHERE t_front_icon.id = #{id}
+        GROUP BY t_front_icon.id
+    </select>
+
+
+    <select id="findFrontIconPage" resultType="FrontIconRecord" parameterType="FrontIconRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_front_icon
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND t_front_icon.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.icon != null and record.icon!= ''">
+            AND t_front_icon.icon LIKE CONCAT('%',#{record.icon},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_front_icon.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_front_icon.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_front_icon.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR t_front_icon.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+        ORDER by t_front_icon.id
+    </select>
+</mapper>

@@ -21,6 +21,7 @@
         <module>term-config</module>
         <module>feedback-service</module>
         <module>notice-service</module>
+        <module>icon</module>
 
 <!--        <module>notification-service</module>-->
 <!--        <module>survey-service</module>-->
