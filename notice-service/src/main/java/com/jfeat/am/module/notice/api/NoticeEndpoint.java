@@ -13,6 +13,7 @@ import com.jfeat.am.module.notice.services.persistence.model.Notice;
 import com.jfeat.am.module.notice.services.service.NoticeService;
 import com.jfeat.am.module.notice.services.service.filter.NoticeFilter;
 import com.jfeat.am.module.notice.services.service.utils.ReaderFile;
+import com.jfeat.am.module.notice.services.service.utils.RegexScript;
 import com.jfeat.am.module.notice.task.AuditNoticeJob;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -67,9 +68,12 @@ public class NoticeEndpoint {
     public Tip createNotice(@RequestBody Notice entity) {
         entity.setAuthor(JWTKit.getAccount());
 //        entity.setOrgId(JWTKit.getOrgId());
-        if (entity.getPictureUrl()==null || entity.getPictureUrl().equals("")){
-            throw new BusinessException(BusinessCode.BadRequest,"封面图为必传值");
+        if (entity.getContent()!=null){
+            entity.setPictureUrl(RegexScript.getImageUrl(entity.getContent()));
         }
+//        if (entity.getPictureUrl()==null || entity.getPictureUrl().equals("")){
+//            throw new BusinessException(BusinessCode.BadRequest,"封面图为必传值");
+//        }
         return SuccessTip.create(noticeService.createMaster(entity, new NoticeFilter()));
     }
 
@@ -90,11 +94,12 @@ public class NoticeEndpoint {
     @PutMapping("/{id}")
     @ApiOperation(value = "修改公告", response = Notice.class)
     public Tip updateNotice(@PathVariable Long id, @RequestBody Notice entity) {
-        if (entity.getPictureUrl()==null||entity.getPictureUrl().equals("")){
-            throw new BusinessException(BusinessCode.BadRequest,"封面图为必传值");
+        if (entity.getContent()!=null){
+            entity.setPictureUrl(RegexScript.getImageUrl(entity.getContent()));
         }
+
         entity.setId(id);
-        return SuccessTip.create(noticeService.updateMaster(entity, new NoticeFilter()));
+        return SuccessTip.create(noticeMapper.updateById(entity));
     }
 
     @DeleteMapping("/{id}")
