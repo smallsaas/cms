@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssDao">
+    <sql id="Base_Column_List">
+        t_rss.id, t_rss.uuid, t_rss.orgId, t_rss.name, t_rss.status, t_rss.sort_number AS sortNumber, t_rss.note, t_rss.create_time AS createTime, t_rss.update_time AS updateTime
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="RssModel">
+        SELECT t_rss.*
+        FROM t_rss
+        WHERE t_rss.id = #{id}
+        GROUP BY t_rss.id
+    </select>
+
+
+    <select id="findRssPage" resultType="RssRecord" parameterType="RssRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_rss
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND t_rss.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.uuid != null and record.uuid!= ''">
+            AND t_rss.uuid LIKE CONCAT('%',#{record.uuid},'%')
+        </if>
+        <if test="record.orgId != null and record.orgId>0 ">
+            AND t_rss.orgId LIKE CONCAT('%',#{record.orgId},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+        <if test="record.status != null and record.status>0 ">
+            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+
+        <if test="record.sortNumber != null and record.sortNumber>0 ">
+            AND t_rss.sort_number LIKE CONCAT('%',#{record.sortNumber},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND t_rss.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_rss.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND t_rss.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_rss.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR t_rss.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+        ORDER BY update_time DESC
+        , create_time DESC
+    </select>
+
+
+<!--    子查询-->
+    <resultMap id="RssMap" type="RssRecord">
+        <id column="id" property="id" />
+        <result column="uuid" property="uuid" />
+        <result column="orgId" property="orgId" />
+        <result column="name" property="name" />
+        <result column="status" property="status" />
+        <result column="sort_number" property="sortNumber" />
+        <result column="note" property="note" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <collection property="rssItemModelList" ofType="com.jfeat.module.rss.services.gen.crud.model.RssItemModel" select="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao.queryRssItemByPid" column="{pid=id}">
+            <id column="id" property="id" />
+            <result column="pid" property="pid" />
+            <result column="title" property="title" />
+            <result column="pictures" property="pictures" />
+            <result column="status" property="status" />
+            <result column="sort_number" property="sortNumber" />
+            <result column="note" property="note" />
+            <result column="create_time" property="createTime" />
+            <result column="update_time" property="updateTime" />
+        </collection>
+    </resultMap>
+
+    <select id="queryRssWithItem" resultMap="RssMap" parameterType="RssRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_rss
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND t_rss.id = #{record.id}
+        </if>
+        <if test="record.uuid != null and record.uuid!= ''">
+            AND t_rss.uuid LIKE CONCAT('%',#{record.uuid},'%')
+        </if>
+        <if test="record.orgId != null and record.orgId>0 ">
+            AND t_rss.orgId LIKE CONCAT('%',#{record.orgId},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+        <if test="record.status != null and record.status>0 ">
+            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+
+        <if test="record.sortNumber != null and record.sortNumber>0 ">
+            AND t_rss.sort_number LIKE CONCAT('%',#{record.sortNumber},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND t_rss.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_rss.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND t_rss.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_rss.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR t_rss.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+        ORDER BY update_time DESC
+        , create_time DESC
+    </select>
+
+</mapper>
