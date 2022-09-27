@@ -11,13 +11,16 @@
         <result column="status" property="status" />
         <result column="sort_number" property="sortNumber" />
         <result column="note" property="note" />
+        <result column="font_weight" property="fontWeight" />
+        <result column="font_size" property="fontSize" />
+        <result column="line_height" property="lineHeight" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pid, title, pictures, status, sort_number, note, create_time, update_time
+        id, pid, title, pictures, status, sort_number, note, create_time, update_time,font_weight,font_size,line_height
     </sql>
 
 </mapper>

@@ -18,11 +18,17 @@ spring:
       preferred-json-mapper: fastjson
 #  jackson:
 #    date-format: yyyy-MM-dd HH:mm:ss
+###################  jwt配置  ###################
+jwt:
+  encoded-key: L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==
+  normal-encoded-key: bm9ybWFsLWVuY29kZWQta2V5
+  tll-mills: 2592000000  # 30 Days = 3600*1000*24*30
+  #token-type: Bearer
+  #tll-mills:
+  #token-type: Bearer
+  #enable-attempt-login: false
 
-
-crud-plus:
-  features:
-
+########################################################################
 mybatis-plus:
   mapper-locations: classpath*:com/jfeat/**/mapping/*.xml
   typeAliasesPackage: com.jfeat.**.model
@@ -45,17 +51,30 @@ mybatis-plus:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+#    url: jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    #    url: jdbc:mysql://localhost:3306/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root
-    password: root
+#    password: root
+    password: zb2014@888
     driver-class-name: com.mysql.jdbc.Driver
     filters: log4j,wall,mergeStat
     sql-script-encoding: UTF-8
     schema: classpath*:sql/**/*-schema.sql
-    data: classpath*:sql/**/*-data.sql
+    data: classpath*:sql/**V/*-data.sql
     initialize: false
+
+crud-plus:
+  features:
+    - eav
+    - saas
+    - tag
+io:
+  excel-template-dir: "excel-templates"
 
 logging:
   level: debug
-  file: logs/access.log
+  file: logs/trace.log
+
+
 ---

@@ -2,10 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao">
     <sql id="Base_Column_List">
-        t_rss_item
-        .
-        id
-        , t_rss_item.pid, t_rss_item.title, t_rss_item.pictures, t_rss_item.status, t_rss_item.sort_number AS sortNumber, t_rss_item.note, t_rss_item.create_time AS createTime, t_rss_item.update_time AS updateTime
+        t_rss_item.id,
+t_rss_item.pid,
+t_rss_item.title,
+t_rss_item.pictures,
+t_rss_item.status,
+t_rss_item.sort_number AS sortNumber,
+t_rss_item.note,
+t_rss_item.font_weight AS fontWeight,
+t_rss_item.font_size AS fontSize,
+t_rss_item.line_height AS lineHeight,
+t_rss_item.create_time AS createTime,
+t_rss_item.update_time AS updateTime
     </sql>
 
 
@@ -81,9 +89,9 @@
 <!--    批量插入-->
     <insert id="batchAddRssItem">
         insert into t_rss_item
-        (pid,title,pictures,status,sort_number,note) values
+        (pid,title,pictures,status,sort_number,note,font_weight,font_size,line_height) values
         <foreach collection="rssItemList" item="item" separator=",">
-            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note})
+            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.fontWeight},#{item.fontSize},#{item.lineHeight})
         </foreach>
     </insert>
 
