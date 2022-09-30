@@ -53,7 +53,7 @@ mybatis-plus:
     refresh-mapper: true
     logic-delete-value: -1
     logic-not-delete-value: 1
-    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true #配置的缓存的全局开关
@@ -86,26 +86,29 @@ am:
   shiro-cache-redis: false
 ---
 
+
 ##########################################################
 ###################  开发环境的profile  ###################
 ##########################################################
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://localhost:3307/test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: root
-      password: root
-      filters: log4j,wall,mergeStat
-      initialize: true
-      schema: classpath*:sql/*-schema.sql
-      data: classpath*:sql/*-data.sql
+    url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    #url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/unicom?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    #url: jdbc:mysql://localhost:3307/uaas-saas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username: root
+    # password: root
+    password: zb2014@888
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: log4j,wall,mergeStat
+    sql-script-encoding: UTF-8
+    schema: classpath*:sql/**/*-schema.sql
+    data: classpath*:sql/**/*-data.sql
+    initialize: false
 
 logging:
   level: debug
-  file: logs/sbmessage.log
-
-am:
-  shiro-cache-redis: false
+  file: logs/trace.log
 ---
 
 ##########################################################

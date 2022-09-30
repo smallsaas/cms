@@ -1,14 +1,11 @@
-package com.jfeat.am.module.cms.api;
+package com.jfeat.am.module.evaluation.api;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
-import com.jfeat.am.module.cms.services.definition.EvaluationType;
-import com.jfeat.am.module.cms.services.request.IdsRequest;
-import com.jfeat.am.module.evaluation.api.permission.EvaluationPermission;
 import com.jfeat.am.module.evaluation.services.crud.filter.StockEvaluationFilter;
+import com.jfeat.am.module.evaluation.services.domain.model.EvaluationType;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationStarRecord;
-import com.jfeat.am.module.notification.services.crud.service.SubscriptionService;
-import com.jfeat.am.module.notification.services.crud.service.UserNotifyService;
-import com.jfeat.am.module.notification.services.persistence.model.Notify;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -16,7 +13,6 @@ import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.dao.DuplicateKeyException;
 import com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationDao;
-import com.jfeat.am.module.log.annotation.BusinessLog;
 
 import com.jfeat.am.module.evaluation.services.domain.service.StockEvaluationService;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord;
@@ -56,10 +51,10 @@ public class CMSEvaluationEndpoint  {
 
     @Resource
     StockEvaluationService stockEvaluationService;
-    @Resource
-    UserNotifyService userNotifyService;
-    @Resource
-    SubscriptionService subscriptionService;
+//    @Resource
+//    UserNotifyService userNotifyService;
+//    @Resource
+//    SubscriptionService subscriptionService;
 
     @Resource
     QueryStockEvaluationDao queryStockEvaluationDao;
@@ -103,18 +98,19 @@ public class CMSEvaluationEndpoint  {
             actions.add("UnFavorite");
             actions.add("UnFlower");
 
-            subscriptionService.subscribe(userId,modelId, "Evaluation",actions);
-            Notify notify = new Notify();
-            notify.setTargetId(entity.getStockId());
-            notify.setTargetType(entity.getStockType());
-            notify.setOriginType(entity.getOriginType());
-            notify.setOriginId(entity.getOriginId());
-            notify.setSenderId(entity.getMemberId());
-            notify.setContent(entity.getContent());
-            notify.setSourceId(modelId);
-            notify.setSourceType(EvaluationType.Evaluation.toString());
-            notify.setAction("Evaluation");
-            userNotifyService.createRemind(notify);
+            // 通知部分
+//            subscriptionService.subscribe(userId,modelId, "Evaluation",actions);
+//            Notify notify = new Notify();
+//            notify.setTargetId(entity.getStockId());
+//            notify.setTargetType(entity.getStockType());
+//            notify.setOriginType(entity.getOriginType());
+//            notify.setOriginId(entity.getOriginId());
+//            notify.setSenderId(entity.getMemberId());
+//            notify.setContent(entity.getContent());
+//            notify.setSourceId(modelId);
+//            notify.setSourceType(EvaluationType.Evaluation.toString());
+//            notify.setAction("Evaluation");
+//            userNotifyService.createRemind(notify);
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
@@ -251,15 +247,15 @@ public class CMSEvaluationEndpoint  {
         return SuccessTip.create(result);
     }
 
-    @PostMapping("/evaluations/bulk/search")
-    @ApiOperation("根据Ids批量查询评价")
-    public Tip bulkQueryEvaluations(@RequestBody IdsRequest idsRquest) {
-        Page<StockEvaluationRecord> page = new Page<>();
-        page.setSize(idsRquest.getPageSize() == null ? 10 : idsRquest.getPageSize());
-        page.setCurrent(idsRquest.getPageNum() == null ? 1 : idsRquest.getPageNum());
-        page.setRecords(queryStockEvaluationDao.bulkFindEvaluations(page, idsRquest.getIds(),idsRquest.getStockIds(), idsRquest.getStockType(), idsRquest.getStarValue()));
-        return SuccessTip.create(page);
-    }
+//    @PostMapping("/evaluations/bulk/search")
+//    @ApiOperation("根据Ids批量查询评价")
+//    public Tip bulkQueryEvaluations(@RequestBody IdsRequest idsRquest) {
+//        Page<StockEvaluationRecord> page = new Page<>();
+//        page.setSize(idsRquest.getPageSize() == null ? 10 : idsRquest.getPageSize());
+//        page.setCurrent(idsRquest.getPageNum() == null ? 1 : idsRquest.getPageNum());
+//        page.setRecords(queryStockEvaluationDao.bulkFindEvaluations(page, idsRquest.getIds(),idsRquest.getStockIds(), idsRquest.getStockType(), idsRquest.getStarValue()));
+//        return SuccessTip.create(page);
+//    }
 
 
 }
