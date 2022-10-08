@@ -86,21 +86,8 @@
         <result column="note" property="note" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
-        <collection property="rssItemModelList" ofType="com.jfeat.module.rss.services.gen.crud.model.RssItemModel" select="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao.queryRssItemByPid" column="{pid=id}">
-            <id column="id" property="id" />
-            <result column="pid" property="pid" />
-            <result column="title" property="title" />
-            <result column="pictures" property="pictures" />
-            <result column="status" property="status" />
-            <result column="sort_number" property="sortNumber" />
-            <result column="note" property="note" />
+        <collection property="rssItemList" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssItem" select="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao.queryRssItemByPid" column="{pid=id}">
 
-            <result column="font_weight" property="fontWeight" />
-            <result column="font_size" property="fontSize" />
-            <result column="line_height" property="lineHeight" />
-
-            <result column="create_time" property="createTime" />
-            <result column="update_time" property="updateTime" />
         </collection>
     </resultMap>
 
@@ -163,5 +150,13 @@
         ORDER BY update_time DESC
         , create_time DESC
     </select>
+
+    <insert id="batchAddRss">
+        insert into t_rss
+        (t_rss.id, t_rss.uuid, t_rss.orgId, t_rss.name, t_rss.status, t_rss.sort_number, t_rss.note) values
+        <foreach collection="recordList" item="item" separator=",">
+            (#{item.id},#{item.uuid},#{ite.orgId},#{item.name},#{item.status},#{item.sortNumber},#{item.note})
+        </foreach>
+    </insert>
 
 </mapper>

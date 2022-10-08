@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,6 +57,16 @@ public class Rss extends Model<Rss> {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @TableField
+    private List<RssItem> rssItemList;
+
+    public List<RssItem> getRssItemList() {
+        return rssItemList;
+    }
+
+    public void setRssItemList(List<RssItem> rssItemList) {
+        this.rssItemList = rssItemList;
+    }
 
     public Long getId() {
         return id;

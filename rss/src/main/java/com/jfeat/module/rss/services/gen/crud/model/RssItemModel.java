@@ -6,10 +6,14 @@ package com.jfeat.module.rss.services.gen.crud.model;
 
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
 
+import java.util.List;
+
 /**
  * Created by Code generator on 2022-09-26
  *  * slaves.size() : 0
  *  * modelpack : $modelpack
  */
 public class RssItemModel extends RssItem{
+
+
 }

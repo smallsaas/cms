@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao">
+    <sql id="Base_Column_List">
+        t_rss_component.id,
+        t_rss_component.rss_item_id AS rssItemId,
+        t_rss_component.name,
+        t_rss_component.component_name AS componentName,
+        t_rss_component.component_type AS componentType,
+        t_rss_component.component_option AS componentOption,
+        t_rss_component.component_form_input_option AS componentFormInputOption,
+        t_rss_component.component_tag AS componentTag
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="RssComponentModel">
+        SELECT t_rss_component.*
+        FROM t_rss_component
+        WHERE t_rss_component.id = #{id}
+        GROUP BY t_rss_component.id
+    </select>
+
+
+    <select id="findRssComponentPage" resultType="RssComponentRecord" parameterType="RssComponentRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_rss_component
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND t_rss_component.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.rssItemId != null and record.rssItemId>0 ">
+            AND t_rss_component.rss_item_id LIKE CONCAT('%',#{record.rssItemId},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_rss_component.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+
+
+        <if test="record.componentName != null and record.componentName!= ''">
+            AND t_rss_component.component_name LIKE CONCAT('%',#{record.componentName},'%')
+        </if>
+
+
+        <if test="record.componentType != null and record.componentType!= ''">
+            AND t_rss_component.component_type LIKE CONCAT('%',#{record.componentType},'%')
+        </if>
+
+
+        <if test="record.componentOption != null and record.componentOption!= ''">
+            AND t_rss_component.component_option LIKE CONCAT('%',#{record.componentOption},'%')
+        </if>
+
+
+        <if test="record.componentFormInputOption != null and record.componentFormInputOption!= ''">
+            AND t_rss_component.component_form_input_option LIKE CONCAT('%',#{record.componentFormInputOption},'%')
+        </if>
+
+
+        <if test="record.componentTag != null and record.componentTag!= ''">
+            AND t_rss_component.component_tag LIKE CONCAT('%',#{record.componentTag},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_rss_component.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss_component.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR t_rss_component.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+    </select>
+
+    <resultMap id="RssComponentMap" type="RssComponentModel">
+        <id column="id" property="id" />
+        <result column="rss_item_id" property="rssItemId" />
+        <result column="name" property="name" />
+        <result column="component_name" property="componentName" />
+        <result column="component_type" property="componentType" />
+        <result column="component_option" property="componentOption" />
+        <result column="component_form_input_option" property="componentFormInputOption" />
+        <result column="component_tag" property="componentTag" />
+        <collection property="rssComponentPropList" select="com.jfeat.module.rss.services.domain.dao.QueryRssComponentPropDao.queryComponentProp" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssComponentProp" column="id">
+            <id column="id" property="id" />
+            <result column="component_id" property="componentId" />
+            <result column="prop_name" property="propName" />
+            <result column="prop_tips" property="propTips" />
+            <result column="prop_default_value" property="propDefaultValue" />
+            <result column="data_type" property="dataType" />
+            <result column="option_name" property="optionName" />
+        </collection>
+    </resultMap>
+
+    <select id="queryComponent" resultMap="RssComponentMap">
+        SELECT t_rss_component.*
+        FROM t_rss_component
+        WHERE t_rss_component.rss_item_id = #{rssItemId}
+    </select>
+
+    <insert id="batchAdd">
+        insert into t_rss_component
+        (t_rss_component.id,
+         t_rss_component.rss_item_id,
+         t_rss_component.name,
+         t_rss_component.component_name,
+         t_rss_component.component_type,
+         t_rss_component.component_option,
+         t_rss_component.component_form_input_option,
+         t_rss_component.component_tag )
+         values
+        <foreach collection="rssComponentModelList" item="item" separator=",">
+            (#{item.id},#{item.rssItemId},#{item.name},#{item.componentName},#{item.componentType},#{item.componentOption},#{item.componentFormInputOption},#{item.componentTag})
+        </foreach>
+    </insert>
+</mapper>

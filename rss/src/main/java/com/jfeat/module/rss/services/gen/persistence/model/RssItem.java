@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.gen.persistence.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -9,7 +10,9 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.jfeat.module.rss.services.gen.crud.model.RssComponentModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -60,6 +63,17 @@ public class RssItem extends Model<RssItem> {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+
+    @TableField(exist = false)
+    List<RssComponent> rssComponentList;
+
+    public List<RssComponent> getRssComponentList() {
+        return rssComponentList;
+    }
+
+    public void setRssComponentList(List<RssComponent> rssComponentList) {
+        this.rssComponentList = rssComponentList;
+    }
 
     public Long getId() {
         return id;

@@ -15,13 +15,13 @@ import java.util.List;
  * Created by Code generator on 2022-09-26
  */
 public interface QueryRssDao extends QueryMasterDao<Rss> {
-   /*
-    * Query entity list by page
-    */
+    /*
+     * Query entity list by page
+     */
     List<RssRecord> findRssPage(Page<RssRecord> page, @Param("record") RssRecord record,
-                                            @Param("tag") String tag,
-                                            @Param("search") String search, @Param("orderBy") String orderBy,
-                                            @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+                                @Param("tag") String tag,
+                                @Param("search") String search, @Param("orderBy") String orderBy,
+                                @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     /*
      * Query entity model for details
@@ -35,8 +35,10 @@ public interface QueryRssDao extends QueryMasterDao<Rss> {
     List<RssModel> queryMasterModelList(@Param("masterId") Object masterId);
 
 
- List<RssRecord> queryRssWithItem(Page<RssRecord> page, @Param("record") RssRecord record,
-                             @Param("tag") String tag,
-                             @Param("search") String search, @Param("orderBy") String orderBy,
-                             @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    List<RssRecord> queryRssWithItem(Page<RssRecord> page, @Param("record") RssRecord record,
+                                     @Param("tag") String tag,
+                                     @Param("search") String search, @Param("orderBy") String orderBy,
+                                     @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    int batchAddRss(@Param("recordList") List<RssRecord> recordList);
 }

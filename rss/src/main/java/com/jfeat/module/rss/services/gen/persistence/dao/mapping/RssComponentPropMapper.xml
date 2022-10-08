@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.rss.services.gen.persistence.dao.RssComponentPropMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.rss.services.gen.persistence.model.RssComponentProp">
+        <id column="id" property="id" />
+        <result column="component_id" property="componentId" />
+        <result column="prop_name" property="propName" />
+        <result column="prop_tips" property="propTips" />
+        <result column="prop_default_value" property="propDefaultValue" />
+        <result column="data_type" property="dataType" />
+        <result column="option_name" property="optionName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, component_id, prop_name, prop_tips, prop_default_value, data_type, option_name
+    </sql>
+
+
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.rss.services.gen.persistence.dao.RssComponentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.rss.services.gen.persistence.model.RssComponent">
+        <id column="id" property="id" />
+        <result column="rss_item_id" property="rssItemId" />
+        <result column="name" property="name" />
+        <result column="component_name" property="componentName" />
+        <result column="component_type" property="componentType" />
+        <result column="component_option" property="componentOption" />
+        <result column="component_form_input_option" property="componentFormInputOption" />
+        <result column="component_tag" property="componentTag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, rss_item_id, name, component_name, component_type, component_option, component_form_input_option, component_tag
+    </sql>
+
+</mapper>

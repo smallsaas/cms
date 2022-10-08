@@ -3,17 +3,17 @@
 <mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao">
     <sql id="Base_Column_List">
         t_rss_item.id,
-t_rss_item.pid,
-t_rss_item.title,
-t_rss_item.pictures,
-t_rss_item.status,
-t_rss_item.sort_number AS sortNumber,
-t_rss_item.note,
-t_rss_item.font_weight AS fontWeight,
-t_rss_item.font_size AS fontSize,
-t_rss_item.line_height AS lineHeight,
-t_rss_item.create_time AS createTime,
-t_rss_item.update_time AS updateTime
+        t_rss_item.pid,
+        t_rss_item.title,
+        t_rss_item.pictures,
+        t_rss_item.status,
+        t_rss_item.sort_number AS sortNumber,
+        t_rss_item.note,
+        t_rss_item.font_weight AS fontWeight,
+        t_rss_item.font_size AS fontSize,
+        t_rss_item.line_height AS lineHeight,
+        t_rss_item.create_time AS createTime,
+        t_rss_item.update_time AS updateTime
     </sql>
 
 
@@ -95,8 +95,71 @@ t_rss_item.update_time AS updateTime
         </foreach>
     </insert>
 
+    <insert id="batchAddRssItemModel">
+        insert into t_rss_item
+        (pid,title,pictures,status,sort_number,note,font_weight,font_size,line_height) values
+        <foreach collection="rssItemList" item="item" separator=",">
+            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.fontWeight},#{item.fontSize},#{item.lineHeight})
+        </foreach>
+    </insert>
+
 <!--    根据父id 查询 -->
-    <select id="queryRssItemByPid" resultType="RssItemModel">
+
+    <resultMap id="RssItemMap" type="RssItemModel">
+        <id column="id" property="id" />
+        <result column="pid" property="pid" />
+        <result column="title" property="title" />
+        <result column="pictures" property="pictures" />
+        <result column="status" property="status" />
+        <result column="sort_number" property="sortNumber" />
+        <result column="note" property="note" />
+        <result column="font_weight" property="fontWeight" />
+        <result column="font_size" property="fontSize" />
+        <result column="line_height" property="lineHeight" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <collection property="rssComponentList" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssComponent" select="com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao.queryComponent"  column="id">
+        </collection>
+    </resultMap>
+
+    <select id="queryRssItemByPid" resultMap="RssItemMap">
         SELECT * from t_rss_item where t_rss_item.pid=#{pid}
     </select>
+
+    <update id="updateRssItemModel" parameterType="RssItemModel">
+        update t_rss_item
+        <set>
+            <if test="record.pid != null and record.pid>0 ">
+                t_rss_item.pid  = #{record.pid}
+            </if>
+            <if test="record.title != null and record.title!= ''">
+                AND t_rss_item.title =#{record.title}
+            </if>
+            <if test="record.pictures != null and record.pictures!= ''">
+                AND t_rss_item.pictures = #{record.pictures}
+            </if>
+            <if test="record.status != null and record.status>0 ">
+                AND t_rss_item.status =#{record.status}
+            </if>
+
+            <if test="record.sortNumber != null and record.sortNumber>0 ">
+                AND t_rss_item.sort_number =#{record.sortNumber}
+            </if>
+            <if test="record.note != null and record.note!= ''">
+                AND t_rss_item.note = #{record.note}
+            </if>
+
+            <if test="record.createTime != null and record.createTime>0 ">
+                AND t_rss_item.create_time  = #{record.createTime}
+            </if>
+
+            <if test="record.updateTime != null and record.updateTime>0 ">
+                AND t_rss_item.update_time = #{record.updateTime}
+            </if>
+        </set>
+        where id = #{record.id}
+
+    </update>
+
+
 </mapper>

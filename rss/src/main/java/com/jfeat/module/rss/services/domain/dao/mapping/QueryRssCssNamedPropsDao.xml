@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssCssNamedPropsDao">
+                                                                                                                                                                                                                                                                                                                                                <sql id="Base_Column_List">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        t_rss_css_named_props.id, t_rss_css_named_props.rss_item_id AS rssItemId, t_rss_css_named_props.appid, t_rss_css_named_props.tags, t_rss_css_named_props.name, t_rss_css_named_props.css_name AS cssName, t_rss_css_named_props.css_value AS cssValue, t_rss_css_named_props.data_type AS dataType, t_rss_css_named_props.option_name AS optionName
+    </sql>
+
+    
+    
+    <select id="queryMasterModel" resultType="RssCssNamedPropsModel">
+       SELECT t_rss_css_named_props.*
+       FROM t_rss_css_named_props
+       WHERE t_rss_css_named_props.id=#{id}
+       GROUP BY t_rss_css_named_props.id
+    </select>
+
+
+
+                                    
+    <select id="findRssCssNamedPropsPage" resultType="RssCssNamedPropsRecord" parameterType="RssCssNamedPropsRecord">
+            SELECT <include refid="Base_Column_List"/>
+
+        
+
+        FROM t_rss_css_named_props
+
+        
+        
+        WHERE 1=1
+        
+
+        
+                                                                            <if test="record.id != null and record.id>0 ">
+                                    AND t_rss_css_named_props.id LIKE CONCAT('%',#{record.id},'%')
+                            </if>
+                                                                    
+
+                                                                                                        <if test="record.rssItemId != null and record.rssItemId>0 ">
+                                    AND t_rss_css_named_props.rss_item_id LIKE CONCAT('%',#{record.rssItemId},'%')
+                            </if>
+                                                                    <if test="record.appid != null and record.appid!= ''">
+                                    AND t_rss_css_named_props.appid LIKE CONCAT('%',#{record.appid},'%')
+                            </if>
+                                                                    <if test="record.tags != null and record.tags!= ''">
+                                    AND t_rss_css_named_props.tags LIKE CONCAT('%',#{record.tags},'%')
+                            </if>
+                                                                    <if test="record.name != null and record.name!= ''">
+                                    AND t_rss_css_named_props.name LIKE CONCAT('%',#{record.name},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.cssName != null and record.cssName!= ''">
+                                    AND t_rss_css_named_props.css_name LIKE CONCAT('%',#{record.cssName},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.cssValue != null and record.cssValue!= ''">
+                                    AND t_rss_css_named_props.css_value LIKE CONCAT('%',#{record.cssValue},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.dataType != null and record.dataType!= ''">
+                                    AND t_rss_css_named_props.data_type LIKE CONCAT('%',#{record.dataType},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.optionName != null and record.optionName!= ''">
+                                    AND t_rss_css_named_props.option_name LIKE CONCAT('%',#{record.optionName},'%')
+                            </if>
+        
+        <if test="startTime != null">
+            <![CDATA[AND t_rss_css_named_props.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss_css_named_props.end_time <= DATE(#{endTime}]]>
+        </if>
+            <!--
+        <if test="search != null and search != ''">
+            OR t_rss_css_named_props.name LIKE CONCAT('%',#{search},'%')
+        </if>
+        -->
+                                    </select>
+</mapper>

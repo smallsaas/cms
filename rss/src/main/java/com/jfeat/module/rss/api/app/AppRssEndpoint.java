@@ -2,28 +2,27 @@ package com.jfeat.module.rss.api.app;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.crud.plus.CRUDObject;
-import com.jfeat.crud.plus.DefaultFilterResult;
 import com.jfeat.crud.plus.META;
-import com.jfeat.module.rss.api.permission.RssPermission;
+import com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
+import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
+import com.jfeat.module.rss.services.domain.service.ComponentTypeRegexService;
+import com.jfeat.module.rss.services.domain.service.RssComponentService;
+import com.jfeat.module.rss.services.domain.service.RssItemService;
 import com.jfeat.module.rss.services.domain.service.RssOverModelService;
-import com.jfeat.module.rss.services.gen.crud.model.RssItemModel;
 import com.jfeat.module.rss.services.gen.crud.model.RssModel;
+import com.jfeat.module.rss.services.gen.persistence.model.RssComponent;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +41,22 @@ public class AppRssEndpoint {
 
     @Resource
     QueryRssDao queryRssDao;
+
+
+    @Resource
+    ComponentTypeRegexService componentTypeRegexService;
+
+    @Resource
+    QueryRssItemDao queryRssItemDao;
+
+    @Resource
+    QueryRssComponentDao queryRssComponentDao;
+
+    @Resource
+    RssItemService rssItemService;
+
+    @Resource
+    RssComponentService rssComponentService;
 
 
     // 要查询[从表]关联数据，取消下行注释
@@ -179,5 +194,22 @@ public class AppRssEndpoint {
         return SuccessTip.create(page);
     }
 
+
+
+    @PostMapping("/preview")
+    public Tip updatePreview(@RequestBody RssRecord rssRecord){
+        return SuccessTip.create(rssOverModelService.updateRssRecord(rssRecord));
+    }
+
+    @GetMapping("/preview/{id}")
+    public Tip getPreView(@PathVariable("id")Long id){
+        RssRecord record = new RssRecord();
+        record.setId(id);
+        List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
+        if (recordList!=null && recordList.size()==1){
+            return SuccessTip.create(recordList.get(0));
+        }
+        return SuccessTip.create();
+    }
 
 }
