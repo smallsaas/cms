@@ -2,6 +2,7 @@ package com.jfeat.am.module.evaluation.services.domain.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationStarRecord;
 import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationAddition;
@@ -12,6 +13,7 @@ import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation
 /**
  * Created by Code Generator on 2018-07-16
  */
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class StockEvaluationModel extends StockEvaluation{
         private List<StockEvaluationAddition> stockEvaluationAdditions;
         private List<StockEvaluationImage> images;

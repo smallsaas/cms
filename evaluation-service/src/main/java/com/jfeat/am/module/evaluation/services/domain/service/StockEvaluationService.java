@@ -2,6 +2,7 @@ package com.jfeat.am.module.evaluation.services.domain.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.evaluation.services.crud.service.CRUDStockEvaluationService;
+import com.jfeat.am.module.evaluation.services.domain.model.StockEvaluationModel;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord;
 import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation;
 
@@ -12,6 +13,8 @@ import java.util.List;
  */
 public interface StockEvaluationService extends CRUDStockEvaluationService{
 
+
+    StockEvaluationModel createOne(StockEvaluationModel entity);
 
     /**
      * 评价用户，以及当前用户是否可以删除

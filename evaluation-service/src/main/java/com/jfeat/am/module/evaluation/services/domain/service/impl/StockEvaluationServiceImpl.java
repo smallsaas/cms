@@ -3,7 +3,9 @@ package com.jfeat.am.module.evaluation.services.domain.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
+import com.jfeat.am.module.evaluation.services.crud.filter.StockEvaluationFilter;
 import com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationDao;
+import com.jfeat.am.module.evaluation.services.domain.model.EvaluationType;
 import com.jfeat.am.module.evaluation.services.domain.model.StockEvaluationModel;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord;
 import com.jfeat.am.module.evaluation.services.domain.service.StockEvaluationService;
@@ -11,6 +13,9 @@ import com.jfeat.am.module.evaluation.services.domain.service.StockEvaluationSer
 import com.jfeat.am.module.evaluation.services.crud.service.impl.CRUDStockEvaluationServiceImpl;
 import com.jfeat.am.module.evaluation.services.persistence.dao.StockEvaluationMapper;
 import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +40,52 @@ public class StockEvaluationServiceImpl extends CRUDStockEvaluationServiceImpl i
     @Resource
     QueryStockEvaluationDao queryStockEvaluationDao;
 
+    @Override
+    public StockEvaluationModel createOne(StockEvaluationModel entity){
+        Integer affected = 0;
+        Long userId = JWTKit.getUserId();
+        entity.setMemberId(userId);
+
+        if(entity.getMemberName() == null || "".equals(entity.getMemberName())) {
+            String userName = JWTKit.getAccount();
+            entity.setMemberName(userName);
+        }
+        // 评论对象不为Evaluation时,originId、originType即stockId,stockType
+        if(!EvaluationType.Evaluation.toString().equals(entity.getStockType())) {
+            entity.setOriginId(entity.getStockId());
+            entity.setOriginType(entity.getStockType());
+        }
+        try {
+            StockEvaluationFilter filter = new StockEvaluationFilter();
+            affected += stockEvaluationService.createMaster(entity, filter, null, null);
+            Long modelId = (Long) filter.result().get("id") == null ? null : (Long) filter.result().get("id");
+            entity.setId(modelId);
+            // 插入消息通知
+//            List<String> actions = new ArrayList<>();
+//            actions.add("Evaluation");
+//            actions.add("Flower");
+//            actions.add("Favorite");
+//            actions.add("UnFavorite");
+//            actions.add("UnFlower");
+
+            // 通知部分
+//            subscriptionService.subscribe(userId,modelId, "Evaluation",actions);
+//            Notify notify = new Notify();
+//            notify.setTargetId(entity.getStockId());
+//            notify.setTargetType(entity.getStockType());
+//            notify.setOriginType(entity.getOriginType());
+//            notify.setOriginId(entity.getOriginId());
+//            notify.setSenderId(entity.getMemberId());
+//            notify.setContent(entity.getContent());
+//            notify.setSourceId(modelId);
+//            notify.setSourceType(EvaluationType.Evaluation.toString());
+//            notify.setAction("Evaluation");
+//            userNotifyService.createRemind(notify);
+        } catch (DuplicateKeyException e) {
+            throw new BusinessException(BusinessCode.DuplicateKey);
+        }
+        return entity;
+    };
 
     /**
      * 评价用户，以及当前用户是否可以删除

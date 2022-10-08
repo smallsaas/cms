@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 
@@ -20,6 +21,7 @@ import java.util.Date;
  * @since 2018-07-16
  */
 @TableName("t_stock_evaluation")
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class StockEvaluation extends Model<StockEvaluation> {
 
     private static final long serialVersionUID = 1L;

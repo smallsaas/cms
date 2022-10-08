@@ -1,0 +1,94 @@
+@endpoint = http://localhost:8080
+@evaluationId = 
+@evaluationsType =TEST
+
+### web端登录
+POST {{endpoint}}/api/sys/oauth/login
+content-type: application/json
+
+{
+
+    "account":"admin",
+    "password":"111111"
+
+}
+
+
+
+### 评价列表
+GET {{endpoint}}/api/cms/evaluations?stockType=TEST&stockId=5
+
+### 评价列表
+GET {{endpoint}}/api/cms/evaluations/{{evaluationsType}}/3
+
+### 评价数量
+GET {{endpoint}}/api/cms/evaluations/starCount
+
+### 新增评价
+
+POST {{endpoint}}/api/cms/evaluations
+Authorization: 
+content-type: application/json
+
+{
+    "stockId":"5",
+    "stockType":"TEST",
+    "content":"评价内容"
+}
+
+
+### 新增评价
+
+POST {{endpoint}}/api/cms/evaluations/{{evaluationsType}}/3
+Authorization: 
+content-type: application/json
+
+{
+    "content":"评价内容"
+}
+
+
+
+
+
+### 详情评论
+
+GET {{endpoint}}/api/cms/evaluations/2
+
+### 修改评论
+
+PUT {{endpoint}}/api/cms/evaluations/3
+content-type: application/json
+
+{
+    "content":"评价内容2"
+}
+
+### 删除评论
+
+DELETE {{endpoint}}/api/cms/evaluations/2
+
+
+
+####################### 追加评论
+
+### 追加评价 - 只能追加自己的评论 或者 具有 追加评价权限的用户进行追加
+POST {{endpoint}}/api/cms/evaluation/4/addition
+content-type: application/json
+
+{
+    "content":"评价内容"
+}
+
+### 追加评价 - 修改
+PUT {{endpoint}}/api/cms/evaluation/addition/1
+content-type: application/json
+
+{
+    "content":"修改评论内容"
+}
+
+### 追加评价 - 删除
+DELETE {{endpoint}}/api/cms/evaluation/addition/1
+content-type: application/json
+
