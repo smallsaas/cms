@@ -11,13 +11,11 @@ public class FileUtil {
 
 //    读取全部文件
 
-    public static Map<String, String> readProperties(File file) {
+    public static Map<String, String> readProperties(InputStream in) {
         Map<String, String> map = new HashMap<String, String>();
-        InputStream in = null;
         Properties p = new Properties();
-        ;
         try {
-            in = new BufferedInputStream(new FileInputStream(file));
+
             p.load(in);
             in.close();
         } catch (Exception e) {

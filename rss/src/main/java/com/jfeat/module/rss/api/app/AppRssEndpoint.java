@@ -1,13 +1,17 @@
 package com.jfeat.module.rss.api.app;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jfeat.am.crud.tag.services.persistence.dao.StockTagRelationMapper;
+import com.jfeat.am.crud.tag.services.persistence.model.StockTagRelation;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.crud.plus.CRUDObject;
 import com.jfeat.crud.plus.META;
+import com.jfeat.crud.plus.annotation.SQLTag;
 import com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
@@ -27,9 +31,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @Api("Rss")
@@ -58,6 +64,9 @@ public class AppRssEndpoint {
     @Resource
     RssComponentService rssComponentService;
 
+    @Resource
+    StockTagRelationMapper stockTagRelationMapper;
+
 
     // 要查询[从表]关联数据，取消下行注释
     // @Resource
@@ -68,26 +77,41 @@ public class AppRssEndpoint {
     public Tip createRss(@RequestBody List<RssItem> rssItemModelList) {
         Integer affected = 0;
         RssModel rssModel = new RssModel();
-        rssModel.setUuid(UUID.randomUUID().toString());
+        String uuid = UUID.randomUUID().toString();
+        rssModel.setUuid(uuid);
+        rssModel.setName(uuid);
         affected = rssOverModelService.createRss(rssModel,rssItemModelList);
 
         return SuccessTip.create(affected);
     }
 
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "查看 Rss", response = RssModel.class)
-    public Tip getRss(@PathVariable Long id) {
-        CRUDObject<RssModel> entity = rssOverModelService
-                .registerQueryMasterDao(queryRssDao)
-                .retrieveMaster(id, null, null, null);
-        if (entity != null) {
-            return SuccessTip.create(entity.toJSONObject());
-        } else {
-            return SuccessTip.create();
-        }
+//    @GetMapping("/{id}")
+//    @ApiOperation(value = "查看 Rss", response = RssModel.class)
+//    public Tip getRss(@PathVariable Long id) {
+//        CRUDObject<RssModel> entity = rssOverModelService
+//                .registerQueryMasterDao(queryRssDao)
+//                .retrieveMaster(id, null, null, null);
+//        if (entity != null) {
+//            return SuccessTip.create(entity.toJSONObject());
+//        } else {
+//            return SuccessTip.create();
+//        }
+//
+//    }
 
+    @GetMapping("/{id}")
+    public Tip getPreView(@PathVariable("id")Long id){
+        RssRecord record = new RssRecord();
+        record.setId(id);
+        List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
+        if (recordList!=null && recordList.size()==1){
+            return SuccessTip.create(recordList.get(0));
+        }
+        return SuccessTip.create();
     }
+
+
 
     @PutMapping("/{id}")
     @ApiOperation(value = "修改 Rss", response = RssModel.class)
@@ -133,11 +157,13 @@ public class AppRssEndpoint {
             @ApiImplicitParam(name = "orderBy", dataType = "String"),
             @ApiImplicitParam(name = "sort", dataType = "String")
     })
+
     public Tip queryRssPage(Page<RssRecord> page,
                             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                             // for tag feature query
                             @RequestParam(name = "tag", required = false) String tag,
+                            @RequestParam(name = "tagId", required = false) Long tagId,
                             // end tag
                             @RequestParam(name = "search", required = false) String search,
 
@@ -172,6 +198,8 @@ public class AppRssEndpoint {
             }
             orderBy = "`" + orderBy + "`" + " " + sort;
         }
+
+
         page.setCurrent(pageNum);
         page.setSize(pageSize);
 
@@ -185,11 +213,24 @@ public class AppRssEndpoint {
         record.setCreateTime(createTime);
         record.setUpdateTime(updateTime);
 
+        List<RssRecord> rssPage = new ArrayList<>();
+        if (tagId!=null && tagId==-1){
+            List<Long> ids = new ArrayList<>();
+            QueryWrapper<StockTagRelation> stockTagRelationQueryWrapper = new QueryWrapper<>();
+            stockTagRelationQueryWrapper.eq(StockTagRelation.STOCK_TYPE,rssOverModelService.getEntityName());
+            List<StockTagRelation> stockTagRelationList = stockTagRelationMapper.selectList(stockTagRelationQueryWrapper);
 
-        List<RssRecord> rssPage = queryRssDao.queryRssWithItem(page, record, tag, search, orderBy, null, null);
+            ids = stockTagRelationList.stream().map(StockTagRelation::getStockId).collect(Collectors.toList());
+
+            rssPage = queryRssDao.queryRssWithItemNotTag(page, record, ids,tag, search, orderBy, null, null);
+        }else {
+            rssPage = queryRssDao.queryRssWithItem(page, record, tag, search, orderBy, null, null);
+        }
+
 
 
         page.setRecords(rssPage);
+
 
         return SuccessTip.create(page);
     }
@@ -198,18 +239,9 @@ public class AppRssEndpoint {
 
     @PostMapping("/preview")
     public Tip updatePreview(@RequestBody RssRecord rssRecord){
-        return SuccessTip.create(rssOverModelService.updateRssRecord(rssRecord));
+        return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
     }
 
-    @GetMapping("/preview/{id}")
-    public Tip getPreView(@PathVariable("id")Long id){
-        RssRecord record = new RssRecord();
-        record.setId(id);
-        List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
-        if (recordList!=null && recordList.size()==1){
-            return SuccessTip.create(recordList.get(0));
-        }
-        return SuccessTip.create();
-    }
+
 
 }

@@ -9,6 +9,7 @@ import com.jfeat.module.rss.services.domain.service.RssItemService;
 import com.jfeat.module.rss.services.gen.crud.model.RssItemModel;
 import com.jfeat.module.rss.services.gen.crud.service.impl.CRUDRssItemServiceImpl;
 import com.jfeat.module.rss.services.gen.persistence.dao.RssComponentMapper;
+import com.jfeat.module.rss.services.gen.persistence.dao.RssComponentPropMapper;
 import com.jfeat.module.rss.services.gen.persistence.dao.RssItemMapper;
 import com.jfeat.module.rss.services.gen.persistence.model.RssComponent;
 import com.jfeat.module.rss.services.gen.persistence.model.RssComponentProp;
@@ -51,6 +52,9 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
 
     @Resource
     ComponentTypeRegexService componentTypeRegexService;
+
+    @Resource
+    RssComponentPropMapper rssComponentPropMapper;
 
 
     @Override
@@ -156,6 +160,29 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
         }
 
         return affect;
+    }
+
+    @Override
+    public Integer deleteRssComponent(RssItem rssItem) {
+        Integer affected = 0;
+        QueryWrapper<RssComponent> rssComponentQueryWrapper = new QueryWrapper<>();
+        rssComponentQueryWrapper.eq(RssComponent.RSS_ITEM_ID,rssItem.getId());
+        List<RssComponent> rssComponentList = rssComponentMapper.selectList(rssComponentQueryWrapper);
+
+        if (rssComponentList!=null && rssComponentList.size()>0){
+
+            List<Long> rssComponentIds = rssComponentList.stream().map(RssComponent::getId).collect(Collectors.toList());
+
+            if (rssComponentIds!=null &&rssComponentIds.size()>0){
+                QueryWrapper<RssComponentProp> rssComponentPropQueryWrapper = new QueryWrapper<>();
+                rssComponentPropQueryWrapper.in(RssComponentProp.COMPONENT_ID,rssComponentIds);
+               affected+= rssComponentPropMapper.delete(rssComponentPropQueryWrapper);
+            }
+
+            affected+=rssComponentMapper.delete(rssComponentQueryWrapper);
+
+        }
+        return affected;
     }
 
 }

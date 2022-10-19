@@ -147,8 +147,74 @@
         OR t_rss.name LIKE CONCAT('%',#{search},'%')
     </if>
     -->
-        ORDER BY update_time DESC
-        , create_time DESC
+        ORDER BY t_rss.update_time DESC
+        , t_rss.create_time DESC
+    </select>
+
+
+    <select id="queryRssWithItemNotTag" resultMap="RssMap" parameterType="RssRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_rss
+
+
+        WHERE 1=1
+
+
+        <if test="ids != null and ids.size() ">
+           and not exists (select 1 where t_rss.id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+
+        <if test="record.uuid != null and record.uuid!= ''">
+            AND t_rss.uuid LIKE CONCAT('%',#{record.uuid},'%')
+        </if>
+        <if test="record.orgId != null and record.orgId>0 ">
+            AND t_rss.orgId LIKE CONCAT('%',#{record.orgId},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+        <if test="record.status != null and record.status>0 ">
+            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        </if>
+
+
+        <if test="record.sortNumber != null and record.sortNumber>0 ">
+            AND t_rss.sort_number LIKE CONCAT('%',#{record.sortNumber},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND t_rss.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_rss.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND t_rss.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_rss.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR t_rss.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+        ORDER BY t_rss.update_time DESC
+        , t_rss.create_time DESC
     </select>
 
     <insert id="batchAddRss">

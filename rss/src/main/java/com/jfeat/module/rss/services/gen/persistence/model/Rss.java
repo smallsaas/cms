@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.gen.persistence.model;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -57,8 +58,43 @@ public class Rss extends Model<Rss> {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    @TableField
+    @TableField(exist = false)
     private List<RssItem> rssItemList;
+
+
+
+    @TableField(exist = false)
+    private JSONObject extra;
+
+    @TableField(exist = false)
+    private String tags;
+
+    @TableField(exist = false)
+    private String tagIds;
+
+    public JSONObject getExtra() {
+        return extra;
+    }
+
+    public void setExtra(JSONObject extra) {
+        this.extra = extra;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(String tagIds) {
+        this.tagIds = tagIds;
+    }
 
     public List<RssItem> getRssItemList() {
         return rssItemList;

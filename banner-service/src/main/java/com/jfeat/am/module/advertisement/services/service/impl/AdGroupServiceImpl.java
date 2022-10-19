@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
+import com.jfeat.am.module.advertisement.services.service.TenantUtilsService;
 import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
+import com.jfeat.org.services.persistence.model.SysOrg;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -24,6 +27,12 @@ import java.util.List;
 public class AdGroupServiceImpl extends CRUDServiceOnlyImpl<AdGroup> implements AdGroupService {
     @Resource
     private AdGroupMapper adGroupMapper;
+
+    @Resource
+    private AdGroupService adGroupService;
+
+    @Resource
+    private TenantUtilsService tenantUtilsService;
 
     @Override
     protected BaseMapper<AdGroup> getMasterMapper() {
@@ -46,7 +55,37 @@ public class AdGroupServiceImpl extends CRUDServiceOnlyImpl<AdGroup> implements 
             return  adGroups;
         }
 
-    };
+    }
+
+    @Override
+    @Transactional
+    public List<AdGroup> getCurrentAdGroup(Long orgId,String appid) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq(AdGroup.ORG_ID,orgId);
+        if (appid!=null&& !"".equals(appid)){
+            queryWrapper.eq(AdGroup.APPID,appid);
+        }
+        List<AdGroup> adGroupList = adGroupMapper.selectList(queryWrapper);
+        if (adGroupList==null || adGroupList.size()==0){
+            SysOrg sysOrg = tenantUtilsService.getTenantInfo(orgId);
+
+            String name = "";
+            if (sysOrg!=null && sysOrg.getName()!=null){
+                name= sysOrg.getName();
+            }
+
+            AdGroup adGroup = new AdGroup();
+            adGroup.setOrgId(orgId);
+            adGroup.setIdentifier("banner");
+            adGroup.setAppid(appid);
+            adGroup.setName(name.concat("首页轮播"));
+            adGroupService.createMaster(adGroup);
+            adGroupList.add(adGroup);
+        }
+        return adGroupList;
+    }
+
+
 
 
 }

@@ -16,4 +16,8 @@ import java.util.List;
 public interface AdGroupService extends CRUDServiceOnly<AdGroup> {
 
     public List<AdGroup> getAllAdGroup(String search);
+
+    List<AdGroup> getCurrentAdGroup(Long orgId,String appid);
+
+
 }

@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.domain.dao;
 
+import com.jfeat.crud.plus.annotation.SQLTag;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -35,7 +36,14 @@ public interface QueryRssDao extends QueryMasterDao<Rss> {
     List<RssModel> queryMasterModelList(@Param("masterId") Object masterId);
 
 
+    @SQLTag("Rss")
     List<RssRecord> queryRssWithItem(Page<RssRecord> page, @Param("record") RssRecord record,
+                                     @Param("tag") String tag,
+                                     @Param("search") String search, @Param("orderBy") String orderBy,
+                                     @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    List<RssRecord> queryRssWithItemNotTag(Page<RssRecord> page, @Param("record") RssRecord record,
+                                     @Param("ids") List<Long> ids,
                                      @Param("tag") String tag,
                                      @Param("search") String search, @Param("orderBy") String orderBy,
                                      @Param("startTime") Date startTime, @Param("endTime") Date endTime);

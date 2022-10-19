@@ -24,6 +24,9 @@ public class AdGroup extends Model<AdGroup> {
 	private Long id;
 	private String name;
 	private String identifier;
+	private String appid;
+
+	private Long orgId;
 
 	public String getIdentifier() {
 		return identifier;
@@ -33,12 +36,30 @@ public class AdGroup extends Model<AdGroup> {
 		this.identifier = identifier;
 	}
 
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+
+	public String getAppid() {
+		return appid;
+	}
+
+	public void setAppid(String appid) {
+		this.appid = appid;
+	}
+
 	/**
      * 广告组标识
      */
 /*
 	private String identifier;
 */
+
+
 
 
 	public Long getId() {
@@ -73,6 +94,10 @@ public class AdGroup extends Model<AdGroup> {
 	public static final String NAME = "name";
 
 	public static final String IDENTIFIER = "identifier";
+
+	public static final String APPID = "appid";
+
+	public static final String ORG_ID = "org_id";
 
 	@Override
 	protected Serializable pkVal() {

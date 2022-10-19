@@ -2,9 +2,12 @@ package com.jfeat.module.rss.services.domain.service.impl;
 
 import com.jfeat.module.rss.services.domain.service.ComponentTypeRegexService;
 import com.jfeat.module.rss.utils.FileUtil;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 @Service
@@ -14,8 +17,19 @@ public class ComponentTypeRegexServiceImp implements ComponentTypeRegexService {
 
     @Override
     public Map<String, String> getALlRegex() {
+//        String path  = this.getClass().getP
+//        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile()+File.separator+fileName;
+//        String path = ClassLoader.getSystemClassLoader().getResource(fileName).getPath();
         String path = this.getClass().getClassLoader().getResource(fileName).getPath();
-        return FileUtil.readProperties(new File(path));
+        ClassPathResource classPathResource = new ClassPathResource(fileName);
+        try {
+            InputStream inputStream = classPathResource.getInputStream();
+            return FileUtil.readProperties(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     @Override

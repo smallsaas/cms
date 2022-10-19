@@ -200,8 +200,27 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
             }
 
         }
-
         return affect;
     }
+
+    @Override
+    public Integer updateAndParseRss(RssRecord rssRecord) {
+        Integer affected = 0;
+        if (rssRecord.getRssItemList()!=null && rssRecord.getRssItemList().size()>0){
+
+//            删除子项
+            for (RssItem rssItem:rssRecord.getRssItemList()){
+                affected+=rssItemService.deleteRssComponent(rssItem);
+            }
+
+            for (RssItem rssItem:rssRecord.getRssItemList()){
+                affected+=rssItemMapper.updateById(rssItem);
+                affected+=rssItemService.parserRssItem(rssItem);
+            }
+
+        }
+        return affected;
+    }
+
 
 }

@@ -2,16 +2,19 @@ package com.jfeat.am.module.advertisement.api.user;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao;
 import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
 import com.jfeat.am.module.advertisement.services.domain.model.AdImage;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdLibraryRecord;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
+import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.am.module.advertisement.services.service.AdService;
+import com.jfeat.am.module.advertisement.services.service.TenantUtilsService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -38,6 +41,12 @@ public class UserAdEndpoint {
     QueryAdDao queryAdDao;
 
     @Resource
+    AdGroupMapper adGroupMapper;
+
+    @Resource
+    TenantUtilsService tenantUtilsService;
+
+    @Resource
     private AdGroupService adGroupService;
 
     @GetMapping("/ad/groups")
@@ -46,9 +55,24 @@ public class UserAdEndpoint {
                             @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                             @RequestParam(name = "search", required = false) String search) {
+        Long userId = JWTKit.getUserId();
+        if (userId==null){
+            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+        }
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(adGroupService.getAllAdGroup(search));
+        Long orgId = tenantUtilsService.getCurrentOrgId(userId);
+//        大匠
+        List<AdGroup> house = adGroupService.getCurrentAdGroup(orgId,"1");
+
+//        小匠
+        QueryWrapper<AdGroup> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(AdGroup.APPID,"2");
+        List<AdGroup> rentAdGroups = adGroupMapper.selectList(queryWrapper);
+
+        house.addAll(rentAdGroups);
+
+        page.setRecords(house);
 
         return SuccessTip.create(page);
     }
