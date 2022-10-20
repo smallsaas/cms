@@ -86,26 +86,14 @@ public class AppRssEndpoint {
     }
 
 
-//    @GetMapping("/{id}")
-//    @ApiOperation(value = "查看 Rss", response = RssModel.class)
-//    public Tip getRss(@PathVariable Long id) {
-//        CRUDObject<RssModel> entity = rssOverModelService
-//                .registerQueryMasterDao(queryRssDao)
-//                .retrieveMaster(id, null, null, null);
-//        if (entity != null) {
-//            return SuccessTip.create(entity.toJSONObject());
-//        } else {
-//            return SuccessTip.create();
-//        }
-//
-//    }
-
     @GetMapping("/{id}")
+    @ApiOperation(value = "查询rss详情")
     public Tip getPreView(@PathVariable("id")Long id){
         RssRecord record = new RssRecord();
         record.setId(id);
         List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
         if (recordList!=null && recordList.size()==1){
+            rssOverModelService.andCss(recordList);
             return SuccessTip.create(recordList.get(0));
         }
         return SuccessTip.create();
@@ -113,22 +101,46 @@ public class AppRssEndpoint {
 
 
 
-    @PutMapping("/{id}")
-    @ApiOperation(value = "修改 Rss", response = RssModel.class)
-    public Tip updateRss(@PathVariable Long id, @RequestBody RssModel entity) {
-        entity.setId(id);
-        if (entity.getItems()==null){
-            throw new BusinessException(BusinessCode.BadRequest,"items不能为空");
-        }else {
-            for (RssItem rssItem:entity.getItems()){
-                rssItem.setPid(entity.getId());
-            }
-        }
-        // use update flags
-        int newOptions = META.UPDATE_CASCADING_DELETION_FLAG;  //default to delete not exist items
-        // newOptions = FlagUtil.setFlag(newOptions, META.UPDATE_ALL_COLUMNS_FLAG);
+//    @PutMapping("/{id}")
+//    @ApiOperation(value = "修改 Rss", response = RssModel.class)
+//    public Tip updateRss(@PathVariable Long id, @RequestBody RssModel entity) {
+//        entity.setId(id);
+//        if (entity.getItems()==null){
+//            throw new BusinessException(BusinessCode.BadRequest,"items不能为空");
+//        }else {
+//            for (RssItem rssItem:entity.getItems()){
+//                rssItem.setPid(entity.getId());
+//            }
+//        }
+//        // use update flags
+//        int newOptions = META.UPDATE_CASCADING_DELETION_FLAG;  //default to delete not exist items
+//        // newOptions = FlagUtil.setFlag(newOptions, META.UPDATE_ALL_COLUMNS_FLAG);
+//
+//        return SuccessTip.create(rssOverModelService.updateMaster(entity, null, null, null, newOptions));
+//    }
 
-        return SuccessTip.create(rssOverModelService.updateMaster(entity, null, null, null, newOptions));
+//    @PutMapping("/{id}")
+//    @ApiOperation(value = "修改 Rss", response = RssModel.class)
+//    public Tip updateRss(@PathVariable Long id, @RequestBody RssModel entity) {
+//        entity.setId(id);
+//        if (entity.getItems()==null){
+//            throw new BusinessException(BusinessCode.BadRequest,"items不能为空");
+//        }else {
+//            for (RssItem rssItem:entity.getItems()){
+//                rssItem.setPid(entity.getId());
+//            }
+//        }
+//        // use update flags
+//        int newOptions = META.UPDATE_CASCADING_DELETION_FLAG;  //default to delete not exist items
+//        // newOptions = FlagUtil.setFlag(newOptions, META.UPDATE_ALL_COLUMNS_FLAG);
+//        return SuccessTip.create(rssOverModelService.updateMaster(entity, null, null, null, newOptions));
+//    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "更新 Rss 并重新解析值",response = RssRecord.class)
+    public Tip updatePreview(@PathVariable Long id,@RequestBody RssRecord rssRecord){
+        rssRecord.setId(id);
+        return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
     }
 
 
@@ -157,7 +169,7 @@ public class AppRssEndpoint {
             @ApiImplicitParam(name = "orderBy", dataType = "String"),
             @ApiImplicitParam(name = "sort", dataType = "String")
     })
-
+    @ApiOperation(value = "Rss 列表信息", response = RssRecord.class)
     public Tip queryRssPage(Page<RssRecord> page,
                             @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -219,9 +231,7 @@ public class AppRssEndpoint {
             QueryWrapper<StockTagRelation> stockTagRelationQueryWrapper = new QueryWrapper<>();
             stockTagRelationQueryWrapper.eq(StockTagRelation.STOCK_TYPE,rssOverModelService.getEntityName());
             List<StockTagRelation> stockTagRelationList = stockTagRelationMapper.selectList(stockTagRelationQueryWrapper);
-
             ids = stockTagRelationList.stream().map(StockTagRelation::getStockId).collect(Collectors.toList());
-
             rssPage = queryRssDao.queryRssWithItemNotTag(page, record, ids,tag, search, orderBy, null, null);
         }else {
             rssPage = queryRssDao.queryRssWithItem(page, record, tag, search, orderBy, null, null);
@@ -229,6 +239,8 @@ public class AppRssEndpoint {
 
 
 
+
+        rssOverModelService.andCss(rssPage);
         page.setRecords(rssPage);
 
 
@@ -238,6 +250,7 @@ public class AppRssEndpoint {
 
 
     @PostMapping("/preview")
+    @ApiOperation(value = "更新 Rss 并重新解析值",response = RssRecord.class)
     public Tip updatePreview(@RequestBody RssRecord rssRecord){
         return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
     }

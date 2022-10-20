@@ -12,6 +12,11 @@
         t_rss_item.font_weight AS fontWeight,
         t_rss_item.font_size AS fontSize,
         t_rss_item.line_height AS lineHeight,
+        t_rss_item.image_sort imageSort,
+        t_rss_item.image_ratio AS imageRatio,
+        t_rss_item.image_expression AS imageExpression,
+        t_rss_item.image_container AS imageContainer,
+        t_rss_item.image_style AS imageStyle,
         t_rss_item.create_time AS createTime,
         t_rss_item.update_time AS updateTime
     </sql>
@@ -89,11 +94,13 @@
 <!--    批量插入-->
     <insert id="batchAddRssItem">
         insert into t_rss_item
-        (pid,title,pictures,status,sort_number,note,font_weight,font_size,line_height) values
+        (pid,title,pictures,status,sort_number,note,font_weight,font_size,line_height,image_sort,image_ratio,image_expression,image_container,image_style) values
         <foreach collection="rssItemList" item="item" separator=",">
-            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.fontWeight},#{item.fontSize},#{item.lineHeight})
+            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.fontWeight},#{item.fontSize},#{item.lineHeight},#{item.imageSort},#{item.imageRatio},#{item.imageExpression},#{item.imageContainer},#{item.imageStyle})
         </foreach>
     </insert>
+
+
 
     <insert id="batchAddRssItemModel">
         insert into t_rss_item
@@ -116,6 +123,13 @@
         <result column="font_weight" property="fontWeight" />
         <result column="font_size" property="fontSize" />
         <result column="line_height" property="lineHeight" />
+
+        <result column="image_sort" property="imageSort" />
+        <result column="image_ratio" property="imageRatio" />
+        <result column="image_expression" property="imageExpression" />
+        <result column="image_container" property="imageContainer" />
+        <result column="image_style" property="imageStyle" />
+
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <collection property="rssComponentList" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssComponent" select="com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao.queryComponent"  column="id">

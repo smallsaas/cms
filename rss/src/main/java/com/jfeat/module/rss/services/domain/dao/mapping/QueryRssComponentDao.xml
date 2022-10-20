@@ -9,7 +9,8 @@
         t_rss_component.component_type AS componentType,
         t_rss_component.component_option AS componentOption,
         t_rss_component.component_form_input_option AS componentFormInputOption,
-        t_rss_component.component_tag AS componentTag
+        t_rss_component.component_tag AS componentTag,
+        t_rss_component.css_name AS cssName
     </sql>
 
 
@@ -91,6 +92,7 @@
         <result column="component_option" property="componentOption" />
         <result column="component_form_input_option" property="componentFormInputOption" />
         <result column="component_tag" property="componentTag" />
+        <result column="css_name" property="cssName"/>
         <collection property="rssComponentPropList" select="com.jfeat.module.rss.services.domain.dao.QueryRssComponentPropDao.queryComponentProp" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssComponentProp" column="id">
             <id column="id" property="id" />
             <result column="component_id" property="componentId" />

@@ -55,7 +55,7 @@ import com.alibaba.fastjson.JSONArray;
  */
 @RestController
 @Api("RssCssPropOption")
-@RequestMapping("/api/crud/rss/rssCssPropOption/rssCssPropOptions")
+@RequestMapping("/api/u/rss/rssCssPropOption/rssCssPropOptions")
 public class RssCssPropOptionEndpoint {
 
     @Resource

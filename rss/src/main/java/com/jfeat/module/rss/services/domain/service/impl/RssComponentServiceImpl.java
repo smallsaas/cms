@@ -2,6 +2,8 @@ package com.jfeat.module.rss.services.domain.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.module.rss.services.domain.dao.QueryRssComponentPropDao;
+import com.jfeat.module.rss.services.domain.service.ComponentTypeRegexService;
+import com.jfeat.module.rss.services.domain.service.RssComponentPropService;
 import com.jfeat.module.rss.services.domain.service.RssComponentService;
 import com.jfeat.module.rss.services.gen.crud.service.impl.CRUDRssComponentServiceImpl;
 import com.jfeat.module.rss.services.gen.persistence.dao.RssComponentPropMapper;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +37,15 @@ public class RssComponentServiceImpl extends CRUDRssComponentServiceImpl impleme
 
     @Resource
     QueryRssComponentPropDao queryRssComponentPropDao;
+
+    @Resource
+    ComponentTypeRegexService componentTypeRegexService;
+
+//    @Resource
+//    RssComponentService rssComponentService;
+
+    @Resource
+    RssComponentPropService rssComponentPropService;
 
     @Override
     protected String entityName() {
@@ -97,7 +109,6 @@ public class RssComponentServiceImpl extends CRUDRssComponentServiceImpl impleme
 
 
 
-
             }else {
                 affect  +=queryRssComponentPropDao.batchAdd(rssComponent.getRssComponentPropList());
             }
@@ -108,4 +119,41 @@ public class RssComponentServiceImpl extends CRUDRssComponentServiceImpl impleme
 
         return affect;
     }
+
+    @Override
+    public Integer parserComponent(RssItem rssItem, List<String> componentProp) {
+        Long componentId = null;
+        Integer affect = 0;
+        Map<String,String> regexMap =  componentTypeRegexService.getALlRegex();
+        for (int j=0;j<componentProp.size();j++){
+
+            Boolean flag = false;
+
+            if (j==0){
+                String type = "title";
+                for (String key:regexMap.keySet()){
+                    if (componentProp.get(j).startsWith(regexMap.get(key))){
+                        flag=true;
+                        type = key;
+                        break;
+                    }
+                }
+                RssComponent rssComponent = new RssComponent();
+                rssComponent.setComponentName(type);
+                rssComponent.setComponentType(type);
+                rssComponent.setRssItemId(rssItem.getId());
+                affect += createMaster(rssComponent);
+                componentId = rssComponent.getId();
+            }
+
+            if (!flag){
+                RssComponentProp rssComponentProp = new RssComponentProp();
+                rssComponentProp.setComponentId(componentId);
+                rssComponentProp.setPropDefaultValue(componentProp.get(j));
+                affect += rssComponentPropService.createMaster(rssComponentProp);
+            }
+        }
+        return affect;
+    }
+
 }

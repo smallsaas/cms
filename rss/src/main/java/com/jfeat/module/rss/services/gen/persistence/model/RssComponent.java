@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.gen.persistence.model;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -51,8 +52,31 @@ public class RssComponent extends Model<RssComponent> {
     @ApiModelProperty(value = "组件类型子分类")
     private String componentTag;
 
+    @ApiModelProperty("cssName")
+    private String cssName;
+
+    @TableField(exist = false)
+    private JSONObject css;
+
     @TableField(exist = false)
     List<RssComponentProp> rssComponentPropList;
+
+
+    public String getCssName() {
+        return cssName;
+    }
+
+    public void setCssName(String cssName) {
+        this.cssName = cssName;
+    }
+
+    public JSONObject getCss() {
+        return css;
+    }
+
+    public void setCss(JSONObject css) {
+        this.css = css;
+    }
 
     public List<RssComponentProp> getRssComponentPropList() {
         return rssComponentPropList;

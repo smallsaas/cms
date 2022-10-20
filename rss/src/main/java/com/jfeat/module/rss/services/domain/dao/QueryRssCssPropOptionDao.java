@@ -33,4 +33,8 @@ public interface QueryRssCssPropOptionDao extends QueryMasterDao<RssCssPropOptio
      * Query entity model list for slave items
      */
     List<RssCssPropOptionModel> queryMasterModelList(@Param("masterId") Object masterId);
+
+    List<RssCssPropOption> queryRssCssPropOptionByCssNameId(@Param("id") Long id);
+
+    Integer batchAddRssCssPropOption(@Param("rssCssPropOptionList") List<RssCssPropOption> rssCssPropOptionList);
 }

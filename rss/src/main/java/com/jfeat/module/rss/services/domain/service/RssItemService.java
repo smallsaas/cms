@@ -12,4 +12,6 @@ public interface RssItemService extends CRUDRssItemService {
     Integer updateRssItem(RssItem rssItem);
 
     Integer deleteRssComponent(RssItem rssItem);
+
+    Integer deleteRssItem(Long id);
 }

@@ -1,5 +1,7 @@
 package com.jfeat.module.rss.services.domain.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -9,9 +11,7 @@ import com.jfeat.crud.plus.DefaultFilterResult;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
-import com.jfeat.module.rss.services.domain.service.RssComponentService;
-import com.jfeat.module.rss.services.domain.service.RssItemService;
-import com.jfeat.module.rss.services.domain.service.RssOverModelService;
+import com.jfeat.module.rss.services.domain.service.*;
 import com.jfeat.module.rss.services.gen.crud.model.RssComponentModel;
 import com.jfeat.module.rss.services.gen.crud.model.RssComponentPropModel;
 import com.jfeat.module.rss.services.gen.crud.model.RssItemModel;
@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +67,13 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
     @Resource
     RssComponentService rssComponentService;
 
+
+    @Resource
+    RssCssNamedPropsService rssCssNamedPropsService;
+
+    @Resource
+    ImageRegexService imageRegexService;
+
     @Override
     protected String entityName() {
         return "Rss";
@@ -85,13 +93,32 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
                 if (pid == null) {
                     throw new BusinessException(BusinessCode.DatabaseInsertError, "未找到pid");
                 }
+
+
                 for (RssItem rssItem : rssItemList) {
                     rssItem.setPid(pid);
+//                    解析image
+                    if (rssItem.getImageExpression()!=null && rssItem.getImageExpression().equals("")){
+                        List<String> stringList = imageRegexService.parseImageExpression(rssItem.getImageExpression());
+                        if (stringList!=null && stringList.size()>0){
+                            rssItem.setImageSort(stringList.get(0));
+                            if (stringList.size()>1){
+                                rssItem.setImageRatio(stringList.get(1));
+                            }
+                        }
+                    }
+
                 }
+
+//                批量插入
                 affected += queryRssItemDao.batchAddRssItem(rssItemList);
+
+
                 QueryWrapper<RssItem> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq(RssItem.PID,pid);
                 List<RssItem> rssItems = rssItemMapper.selectList(queryWrapper);
+
+//                解析数据
                 for (RssItem rssItem:rssItems){
                     affected+=rssItemService.parserRssItem(rssItem);
                 }
@@ -208,18 +235,92 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
         Integer affected = 0;
         if (rssRecord.getRssItemList()!=null && rssRecord.getRssItemList().size()>0){
 
+            QueryWrapper<RssItem> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq(RssItem.PID,rssRecord.getId());
+            affected+=rssItemMapper.delete(queryWrapper);
 //            删除子项
             for (RssItem rssItem:rssRecord.getRssItemList()){
-                affected+=rssItemService.deleteRssComponent(rssItem);
+
+//                解析image
+                if (rssItem.getImageExpression()!=null && !rssItem.getImageExpression().equals("")){
+                    List<String> stringList = imageRegexService.parseImageExpression(rssItem.getImageExpression());
+                    if (stringList!=null && stringList.size()>0){
+                        rssItem.setImageSort(stringList.get(0));
+                        if (stringList.size()>1){
+                            rssItem.setImageRatio(stringList.get(1));
+                        }
+                    }
+                }
+
+                if (rssItem.getId()!=null){
+                    rssItemService.deleteRssItem(rssItem.getId());
+                    affected+=rssItemService.deleteRssComponent(rssItem);
+                    rssItem.setId(null);
+                }
             }
 
             for (RssItem rssItem:rssRecord.getRssItemList()){
-                affected+=rssItemMapper.updateById(rssItem);
+                if (rssItem.getId()==null){
+                    try {
+                        rssItem.setPid(rssRecord.getId());
+                        affected += rssItemService.createMaster(rssItem);
+                    } catch (DuplicateKeyException e) {
+                        throw new BusinessException(BusinessCode.DuplicateKey);
+                    }
+                }else {
+                    affected+=rssItemMapper.updateById(rssItem);
+                }
                 affected+=rssItemService.parserRssItem(rssItem);
             }
 
         }
         return affected;
+    }
+
+    @Override
+    public List<RssRecord> andCss(List<RssRecord> recordList) {
+
+        if (recordList!=null && recordList.size()>0){
+            Map<String, JSONObject> map =  rssCssNamedPropsService.getAllCssJson();
+            for (RssRecord record:recordList){
+
+
+                List<RssItem> rssItemList = record.getRssItemList();
+
+                if (rssItemList!=null && rssItemList.size()>0){
+                    for (RssItem rssItem:rssItemList){
+
+                        if (rssItem.getImageContainer()!=null && map.containsKey(rssItem.getImageContainer())){
+                            JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssItem.getImageContainer())));
+                            rssItem.setImageContainerJson(jsonObject);
+                        }
+
+                        if (rssItem.getImageStyle()!=null && map.containsKey(rssItem.getImageStyle())){
+                            JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssItem.getImageStyle())));
+                            rssItem.setImageStyleJson(jsonObject);
+                        }
+
+                        List<RssComponent> rssComponentList = rssItem.getRssComponentList();
+
+                        if (rssComponentList!=null && rssComponentList.size()>0){
+
+                            for (RssComponent rssComponent:rssComponentList){
+                                if (rssComponent.getCssName()!=null&&rssComponent.getComponentType().equals("css")){
+
+                                    if (map.containsKey(rssComponent.getCssName())){
+                                        rssComponent.setCss(map.get(rssComponent.getCssName()));
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }
+        return recordList;
     }
 
 

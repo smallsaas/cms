@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.gen.persistence.model;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -54,6 +55,22 @@ public class RssItem extends Model<RssItem> {
 
     private Integer lineHeight;
 
+    private String imageSort;
+
+    private String imageRatio;
+
+    private String imageExpression;
+
+    private String imageContainer;
+
+    private String imageStyle;
+
+    @TableField(exist = false)
+    private JSONObject imageStyleJson;
+
+    @TableField(exist = false)
+    private JSONObject imageContainerJson;
+
     @ApiModelProperty(value = "备用")
     private String note;
 
@@ -66,6 +83,63 @@ public class RssItem extends Model<RssItem> {
 
     @TableField(exist = false)
     List<RssComponent> rssComponentList;
+
+
+    public String getImageSort() {
+        return imageSort;
+    }
+
+    public void setImageSort(String imageSort) {
+        this.imageSort = imageSort;
+    }
+
+    public String getImageRatio() {
+        return imageRatio;
+    }
+
+    public void setImageRatio(String imageRatio) {
+        this.imageRatio = imageRatio;
+    }
+
+    public String getImageExpression() {
+        return imageExpression;
+    }
+
+    public void setImageExpression(String imageExpression) {
+        this.imageExpression = imageExpression;
+    }
+
+    public String getImageContainer() {
+        return imageContainer;
+    }
+
+    public void setImageContainer(String imageContainer) {
+        this.imageContainer = imageContainer;
+    }
+
+    public String getImageStyle() {
+        return imageStyle;
+    }
+
+    public void setImageStyle(String imageStyle) {
+        this.imageStyle = imageStyle;
+    }
+
+    public JSONObject getImageStyleJson() {
+        return imageStyleJson;
+    }
+
+    public void setImageStyleJson(JSONObject imageStyleJson) {
+        this.imageStyleJson = imageStyleJson;
+    }
+
+    public JSONObject getImageContainerJson() {
+        return imageContainerJson;
+    }
+
+    public void setImageContainerJson(JSONObject imageContainerJson) {
+        this.imageContainerJson = imageContainerJson;
+    }
 
     public List<RssComponent> getRssComponentList() {
         return rssComponentList;

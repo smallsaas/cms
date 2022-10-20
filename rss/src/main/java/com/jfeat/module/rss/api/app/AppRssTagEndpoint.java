@@ -10,8 +10,15 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
+import com.jfeat.module.rss.services.domain.dao.QueryRssCssNamedPropsDao;
+import com.jfeat.module.rss.services.domain.model.RssCssNamedPropsRecord;
 import com.jfeat.module.rss.services.domain.service.RssOverModelService;
+import com.jfeat.module.rss.services.gen.persistence.model.Rss;
+import com.jfeat.module.rss.services.gen.persistence.model.RssCssNamedProps;
 import com.jfeat.module.rss.services.gen.persistence.model.RssTag;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,7 +29,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/u/rssTag")
-public class RssTagEndpoint {
+public class AppRssTagEndpoint {
 
     @Resource
     StockTagMapper stockTagMapper;
@@ -36,7 +43,16 @@ public class RssTagEndpoint {
     @Resource
     RssOverModelService rssOverModelService;
 
+    @Resource
+    QueryRssCssNamedPropsDao queryRssCssNamedPropsDao;
+
     @GetMapping
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", dataType = "Integer"),
+            @ApiImplicitParam(name = "rssId", dataType = "Long"),
+            @ApiImplicitParam(name = "other", dataType = "String"),
+    })
     public Tip getTagList(@RequestParam(name = "tagType", required = false, defaultValue = "Rss") String tagType,
                           @RequestParam(name = "rssId",required = false) Long rssId,
                           @RequestParam(name = "other",required = false) String other) {
@@ -93,6 +109,7 @@ public class RssTagEndpoint {
 
 //    添加
     @PostMapping
+    @ApiOperation(value = "添加rssTag",response = RssTag.class)
     public Tip createRssTag(@RequestBody RssTag entity){
 
         Integer affected = 0;
@@ -121,6 +138,7 @@ public class RssTagEndpoint {
 
 //    删除
     @DeleteMapping("/{id}/{rssId}")
+    @ApiOperation(value = "删除Rss 标签")
     public Tip deleteRssTag(@PathVariable("id")Long id,@PathVariable("rssId")Long rssId){
         QueryWrapper<StockTagRelation> stockTagRelationQueryWrapper = new QueryWrapper<>();
         stockTagRelationQueryWrapper.eq(StockTagRelation.STOCK_ID,rssId);
@@ -130,6 +148,7 @@ public class RssTagEndpoint {
     }
 
     @PostMapping("/bulk")
+    @ApiOperation(value = "批量修改和添加 rss标签",response = RssTag.class)
     public Tip updateRssTag(@RequestBody List<RssTag> entity){
         Integer affected = 0;
         if (entity!=null && entity.size()>0){
@@ -147,6 +166,7 @@ public class RssTagEndpoint {
 
         }
         return SuccessTip.create(affected);
-
     }
+
+
 }

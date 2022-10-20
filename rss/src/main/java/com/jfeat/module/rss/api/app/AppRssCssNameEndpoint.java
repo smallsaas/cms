@@ -1,6 +1,4 @@
-
-package com.jfeat.module.rss.api.manage;
-
+package com.jfeat.module.rss.api.app;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.common.annotation.Permission;
@@ -24,19 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * <p>
- * api
- * </p>
- *
- * @author Code generator
- * @since 2022-09-30
- */
-@RestController
-@Api("RssCssNamedProps")
-@RequestMapping("/api/u/rss/rssCssNamedProps/rssCssNamedPropses")
-public class RssCssNamedPropsEndpoint {
 
+@RestController
+@Api("Rss")
+@RequestMapping("/api/u/rss/css/cssName")
+public class AppRssCssNameEndpoint {
     @Resource
     RssCssNamedPropsService rssCssNamedPropsService;
 
@@ -45,45 +35,45 @@ public class RssCssNamedPropsEndpoint {
 
 
     @BusinessLog(name = "RssCssNamedProps", value = "create RssCssNamedProps")
-    @Permission(RssCssNamedPropsPermission.RSSCSSNAMEDPROPS_NEW)
     @PostMapping
     @ApiOperation(value = "新建 RssCssNamedProps", response = RssCssNamedProps.class)
     public Tip createRssCssNamedProps(@RequestBody RssCssNamedProps entity) {
-        Integer affected = 0;
-        try {
-            affected = rssCssNamedPropsService.createMaster(entity);
-        } catch (DuplicateKeyException e) {
-            throw new BusinessException(BusinessCode.DuplicateKey);
-        }
 
-        return SuccessTip.create(affected);
+        return SuccessTip.create(rssCssNamedPropsService.createRssNameProp(entity));
     }
 
     @Permission(RssCssNamedPropsPermission.RSSCSSNAMEDPROPS_VIEW)
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 RssCssNamedProps", response = RssCssNamedProps.class)
     public Tip getRssCssNamedProps(@PathVariable Long id) {
-        return SuccessTip.create(rssCssNamedPropsService.queryMasterModel(queryRssCssNamedPropsDao, id));
+
+        RssCssNamedPropsRecord record = new RssCssNamedPropsRecord();
+        record.setId(id);
+
+
+        List<RssCssNamedProps> rssCssNamedPropsPage = queryRssCssNamedPropsDao.findRssCssNamedPropsWithItems(null, record, null, null, null, null, null);
+        if (rssCssNamedPropsPage!=null && rssCssNamedPropsPage.size()==1){
+            return SuccessTip.create(rssCssNamedPropsPage.get(0));
+        }
+
+        return SuccessTip.create(null);
     }
 
     @BusinessLog(name = "RssCssNamedProps", value = "update RssCssNamedProps")
-    @Permission(RssCssNamedPropsPermission.RSSCSSNAMEDPROPS_EDIT)
     @PutMapping("/{id}")
     @ApiOperation(value = "修改 RssCssNamedProps", response = RssCssNamedProps.class)
     public Tip updateRssCssNamedProps(@PathVariable Long id, @RequestBody RssCssNamedProps entity) {
         entity.setId(id);
-        return SuccessTip.create(rssCssNamedPropsService.updateMaster(entity));
+        return SuccessTip.create(rssCssNamedPropsService.updateRssNameProp(entity));
     }
 
     @BusinessLog(name = "RssCssNamedProps", value = "delete RssCssNamedProps")
-    @Permission(RssCssNamedPropsPermission.RSSCSSNAMEDPROPS_DELETE)
     @DeleteMapping("/{id}")
     @ApiOperation("删除 RssCssNamedProps")
     public Tip deleteRssCssNamedProps(@PathVariable Long id) {
-        return SuccessTip.create(rssCssNamedPropsService.deleteMaster(id));
+        return SuccessTip.create(rssCssNamedPropsService.deleteRssNameProp(id));
     }
 
-    @Permission(RssCssNamedPropsPermission.RSSCSSNAMEDPROPS_VIEW)
     @ApiOperation(value = "RssCssNamedProps 列表信息", response = RssCssNamedPropsRecord.class)
     @GetMapping
     @ApiImplicitParams({
@@ -102,7 +92,7 @@ public class RssCssNamedPropsEndpoint {
             @ApiImplicitParam(name = "orderBy", dataType = "String"),
             @ApiImplicitParam(name = "sort", dataType = "String")
     })
-    public Tip queryRssCssNamedPropsPage(Page<RssCssNamedPropsRecord> page,
+    public Tip queryRssCssNamedPropsPage(Page<RssCssNamedProps> page,
                                          @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                                          @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                          // for tag feature query
@@ -153,12 +143,10 @@ public class RssCssNamedPropsEndpoint {
         record.setOptionName(optionName);
 
 
-        List<RssCssNamedPropsRecord> rssCssNamedPropsPage = queryRssCssNamedPropsDao.findRssCssNamedPropsPage(page, record, tag, search, orderBy, null, null);
-
+        List<RssCssNamedProps> rssCssNamedPropsPage = queryRssCssNamedPropsDao.findRssCssNamedPropsWithItems(page, record, tag, search, orderBy, null, null);
 
         page.setRecords(rssCssNamedPropsPage);
 
         return SuccessTip.create(page);
     }
 }
-

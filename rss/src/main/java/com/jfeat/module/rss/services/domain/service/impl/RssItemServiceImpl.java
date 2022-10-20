@@ -19,8 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -63,44 +66,118 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
     }
 
 
+//    @Override
+//    public Integer parserRssItem(RssItem rssItem) {
+//
+//        Integer affect = 0;
+//        String text = rssItem.getTitle();
+//        String lineStr[] = text.split("/n");
+//
+//        List<String> componentProp = new ArrayList<>();
+//        for (String s : lineStr) {
+//            String lineDate[] = s.split(",| ");
+//            for (String str : lineDate) {
+//                componentProp.add(str);
+//            }
+//        }
+//
+//
+//        String type = null;
+//        Long componentId = null;
+//        for (String prop : componentProp) {
+//            if (componentTypeRegexService.getKeyByRegex(prop)!=null) {
+//                type = componentTypeRegexService.getKeyByRegex(prop);
+//                RssComponent rssComponent = new RssComponent();
+//                rssComponent.setComponentName(type);
+//                rssComponent.setComponentType(type);
+//                rssComponent.setRssItemId(rssItem.getId());
+//                affect += rssComponentService.createMaster(rssComponent);
+//                componentId = rssComponent.getId();
+//                continue;
+//            }
+//            if (type != null && componentId != null) {
+//                RssComponentProp rssComponentProp = new RssComponentProp();
+//                rssComponentProp.setComponentId(componentId);
+//                rssComponentProp.setPropDefaultValue(prop);
+//                affect += rssComponentPropService.createMaster(rssComponentProp);
+//            }
+//        }
+//
+//
+//        return affect;
+//    }
+
     @Override
+    @Transactional
     public Integer parserRssItem(RssItem rssItem) {
 
         Integer affect = 0;
         String text = rssItem.getTitle();
-        String lineStr[] = text.split("/n");
 
-        List<String> componentProp = new ArrayList<>();
+//        获取每一行的数据
+        String lineStr[] = text.split("\n");
+
+
+        List<List<String>> componentPropData = new ArrayList<>();
+
         for (String s : lineStr) {
             String lineDate[] = s.split(",| ");
-            for (String str : lineDate) {
-                componentProp.add(str);
-            }
+            componentPropData.add(Arrays.asList(lineDate));
         }
 
+        for (int i = 0; i < componentPropData.size(); i++) {
+            List<String> componentProp = componentPropData.get(i);
+            Long componentId = null;
 
-        String type = null;
-        Long componentId = null;
-        for (String prop : componentProp) {
-            if (componentTypeRegexService.getKeyByRegex(prop)!=null) {
-                type = componentTypeRegexService.getKeyByRegex(prop);
-                RssComponent rssComponent = new RssComponent();
-                rssComponent.setComponentName(type);
-                rssComponent.setComponentType(type);
-                rssComponent.setRssItemId(rssItem.getId());
-                affect += rssComponentService.createMaster(rssComponent);
-                componentId = rssComponent.getId();
-                continue;
-            }
-            if (type != null && componentId != null) {
-                RssComponentProp rssComponentProp = new RssComponentProp();
-                rssComponentProp.setComponentId(componentId);
-                rssComponentProp.setPropDefaultValue(prop);
-                affect += rssComponentPropService.createMaster(rssComponentProp);
+            Map<String, String> regexMap = componentTypeRegexService.getALlRegex();
+            for (int j = 0; j < componentProp.size(); j++) {
+
+                Boolean flag = false;
+
+                if (j == 0) {
+                    String content = componentProp.get(j);
+                    String pattern = "^<(.*)>.*";
+                    String type = "title";
+
+                    boolean isMatch = Pattern.matches(pattern, content);
+                    if (isMatch) {
+                        flag = true;
+                        type="css";
+                    }else {
+                        for (String key : regexMap.keySet()) {
+                            if (componentProp.get(j).startsWith(regexMap.get(key))) {
+                                flag = true;
+                                type = key;
+                                break;
+                            }
+                        }
+                    }
+
+                    RssComponent rssComponent = new RssComponent();
+                    rssComponent.setComponentName(type);
+                    rssComponent.setComponentType(type);
+                    rssComponent.setRssItemId(rssItem.getId());
+                    if (isMatch){
+                        Pattern r = Pattern.compile(pattern);
+                        Matcher m = r.matcher(content);
+                        if (m.find()){
+                            rssComponent.setCssName(m.group(1));
+                        }
+
+                    }
+
+                    affect += rssComponentService.createMaster(rssComponent);
+                    componentId = rssComponent.getId();
+                }
+
+                if (!flag) {
+                    RssComponentProp rssComponentProp = new RssComponentProp();
+                    rssComponentProp.setComponentId(componentId);
+                    rssComponentProp.setPropDefaultValue(componentProp.get(j));
+                    affect += rssComponentPropService.createMaster(rssComponentProp);
+                }
             }
         }
-
-
         return affect;
     }
 
@@ -150,7 +227,6 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
                     affect += rssComponentMapper.delete(itemQueryWrapper);
                 }
 
-
             } else {
                 affect += queryRssComponentDao.batchAdd(rssItem.getRssComponentList());
             }
@@ -166,20 +242,45 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
     public Integer deleteRssComponent(RssItem rssItem) {
         Integer affected = 0;
         QueryWrapper<RssComponent> rssComponentQueryWrapper = new QueryWrapper<>();
-        rssComponentQueryWrapper.eq(RssComponent.RSS_ITEM_ID,rssItem.getId());
+        rssComponentQueryWrapper.eq(RssComponent.RSS_ITEM_ID, rssItem.getId());
         List<RssComponent> rssComponentList = rssComponentMapper.selectList(rssComponentQueryWrapper);
 
-        if (rssComponentList!=null && rssComponentList.size()>0){
+        if (rssComponentList != null && rssComponentList.size() > 0) {
 
             List<Long> rssComponentIds = rssComponentList.stream().map(RssComponent::getId).collect(Collectors.toList());
 
-            if (rssComponentIds!=null &&rssComponentIds.size()>0){
+            if (rssComponentIds != null && rssComponentIds.size() > 0) {
                 QueryWrapper<RssComponentProp> rssComponentPropQueryWrapper = new QueryWrapper<>();
-                rssComponentPropQueryWrapper.in(RssComponentProp.COMPONENT_ID,rssComponentIds);
-               affected+= rssComponentPropMapper.delete(rssComponentPropQueryWrapper);
+                rssComponentPropQueryWrapper.in(RssComponentProp.COMPONENT_ID, rssComponentIds);
+                affected += rssComponentPropMapper.delete(rssComponentPropQueryWrapper);
             }
 
-            affected+=rssComponentMapper.delete(rssComponentQueryWrapper);
+            affected += rssComponentMapper.delete(rssComponentQueryWrapper);
+
+        }
+        return affected;
+    }
+
+    @Override
+    @Transactional
+    public Integer deleteRssItem(Long id) {
+        Integer affected = 0;
+        affected+=deleteMaster(id);
+        QueryWrapper<RssComponent> rssComponentQueryWrapper = new QueryWrapper<>();
+        rssComponentQueryWrapper.eq(RssComponent.RSS_ITEM_ID, id);
+        List<RssComponent> rssComponentList = rssComponentMapper.selectList(rssComponentQueryWrapper);
+
+        if (rssComponentList != null && rssComponentList.size() > 0) {
+
+            List<Long> rssComponentIds = rssComponentList.stream().map(RssComponent::getId).collect(Collectors.toList());
+
+            if (rssComponentIds != null && rssComponentIds.size() > 0) {
+                QueryWrapper<RssComponentProp> rssComponentPropQueryWrapper = new QueryWrapper<>();
+                rssComponentPropQueryWrapper.in(RssComponentProp.COMPONENT_ID, rssComponentIds);
+                affected += rssComponentPropMapper.delete(rssComponentPropQueryWrapper);
+            }
+
+            affected += rssComponentMapper.delete(rssComponentQueryWrapper);
 
         }
         return affected;

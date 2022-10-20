@@ -15,13 +15,13 @@ import java.util.List;
  * Created by Code generator on 2022-09-30
  */
 public interface QueryRssCssNamedPropsDao extends QueryMasterDao<RssCssNamedProps> {
-   /*
-    * Query entity list by page
-    */
+    /*
+     * Query entity list by page
+     */
     List<RssCssNamedPropsRecord> findRssCssNamedPropsPage(Page<RssCssNamedPropsRecord> page, @Param("record") RssCssNamedPropsRecord record,
-                                            @Param("tag") String tag,
-                                            @Param("search") String search, @Param("orderBy") String orderBy,
-                                            @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+                                                          @Param("tag") String tag,
+                                                          @Param("search") String search, @Param("orderBy") String orderBy,
+                                                          @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     /*
      * Query entity model for details
@@ -33,4 +33,13 @@ public interface QueryRssCssNamedPropsDao extends QueryMasterDao<RssCssNamedProp
      * Query entity model list for slave items
      */
     List<RssCssNamedPropsModel> queryMasterModelList(@Param("masterId") Object masterId);
+
+
+    List<RssCssNamedProps> findRssCssNamedPropsWithItems(Page<RssCssNamedProps> page, @Param("record") RssCssNamedPropsRecord record,
+                                                               @Param("tag") String tag,
+                                                               @Param("search") String search, @Param("orderBy") String orderBy,
+                                                               @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+
+    RssCssNamedProps queryRssCssNamePropsWithItems(@Param("record") RssCssNamedProps record);
 }

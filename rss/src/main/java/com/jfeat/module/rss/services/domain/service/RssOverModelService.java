@@ -24,4 +24,6 @@ public interface RssOverModelService extends CRUDRssOverModelService {
 
     Integer updateAndParseRss(RssRecord rssRecord);
 
+    List<RssRecord> andCss(List<RssRecord> recordList);
+
 }
