@@ -24,11 +24,16 @@ import com.jfeat.module.rss.services.gen.persistence.model.Rss;
 import com.jfeat.module.rss.services.gen.persistence.model.RssComponent;
 import com.jfeat.module.rss.services.gen.persistence.model.RssComponentProp;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
+import org.apache.commons.io.IOUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -277,6 +282,8 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
         return affected;
     }
 
+
+
     @Override
     public List<RssRecord> andCss(List<RssRecord> recordList) {
 
@@ -308,7 +315,8 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
                                 if (rssComponent.getCssName()!=null&&rssComponent.getComponentType().equals("css")){
 
                                     if (map.containsKey(rssComponent.getCssName())){
-                                        rssComponent.setCss(map.get(rssComponent.getCssName()));
+                                        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssComponent.getCssName())));
+                                        rssComponent.setCss(jsonObject);
                                     }
                                 }
                             }
@@ -321,6 +329,31 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
 
         }
         return recordList;
+    }
+
+    @Override
+    public String uploadRssFile(MultipartFile file) {
+        BufferedReader reader = null;
+        try {
+            //用流读取文件
+            reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            String line;
+            StringBuffer content = new StringBuffer();
+            // 读取想定文件
+            while ((line = reader.readLine()) != null) {
+                content.append(line+"\n");
+            }
+            return content.toString();
+        } catch (IOException e) {
+
+        } finally {
+            if (reader != null) {
+                IOUtils.closeQuietly(reader);
+            }
+        }
+
+        return null;
+
     }
 
 

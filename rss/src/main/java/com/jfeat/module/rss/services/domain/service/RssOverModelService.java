@@ -6,6 +6,7 @@ import com.jfeat.module.rss.services.gen.crud.model.RssModel;
 import com.jfeat.module.rss.services.gen.crud.service.CRUDRssOverModelService;
 import com.jfeat.module.rss.services.gen.persistence.model.Rss;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface RssOverModelService extends CRUDRssOverModelService {
     Integer updateAndParseRss(RssRecord rssRecord);
 
     List<RssRecord> andCss(List<RssRecord> recordList);
+
+    String uploadRssFile(MultipartFile file);
 
 }

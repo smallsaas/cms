@@ -2,10 +2,7 @@ package com.jfeat.module.rss.services.domain.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao;
-import com.jfeat.module.rss.services.domain.service.ComponentTypeRegexService;
-import com.jfeat.module.rss.services.domain.service.RssComponentPropService;
-import com.jfeat.module.rss.services.domain.service.RssComponentService;
-import com.jfeat.module.rss.services.domain.service.RssItemService;
+import com.jfeat.module.rss.services.domain.service.*;
 import com.jfeat.module.rss.services.gen.crud.model.RssItemModel;
 import com.jfeat.module.rss.services.gen.crud.service.impl.CRUDRssItemServiceImpl;
 import com.jfeat.module.rss.services.gen.persistence.dao.RssComponentMapper;
@@ -18,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -58,6 +52,12 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
 
     @Resource
     RssComponentPropMapper rssComponentPropMapper;
+
+    @Resource
+    RssRulesService rssRulesService;
+
+    @Resource
+    RssIntermediateControl rssIntermediateControl;
 
 
     @Override
@@ -107,6 +107,81 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
 //        return affect;
 //    }
 
+//    @Override
+//    @Transactional
+//    public Integer parserRssItem(RssItem rssItem) {
+//
+//        Integer affect = 0;
+//        String text = rssItem.getTitle();
+//
+////        获取每一行的数据
+//        String lineStr[] = text.split("\n");
+//
+//
+//        List<List<String>> componentPropData = new ArrayList<>();
+//
+//        for (String s : lineStr) {
+//            String lineDate[] = s.split(",| ");
+//            componentPropData.add(Arrays.asList(lineDate));
+//        }
+//
+//        for (int i = 0; i < componentPropData.size(); i++) {
+//            List<String> componentProp = componentPropData.get(i);
+//            Long componentId = null;
+//
+//            Map<String, String> regexMap = componentTypeRegexService.getALlRegex();
+//            for (int j = 0; j < componentProp.size(); j++) {
+//
+//                Boolean flag = false;
+//
+//                if (j == 0) {
+//                    String content = componentProp.get(j);
+//                    String pattern = "^<(.*)>.*";
+//                    String type = "title";
+//
+//                    boolean isMatch = Pattern.matches(pattern, content);
+//                    if (isMatch) {
+//                        flag = true;
+//                        type="css";
+//                    }else {
+//                        for (String key : regexMap.keySet()) {
+//                            if (componentProp.get(j).startsWith(regexMap.get(key))) {
+//                                flag = true;
+//                                type = key;
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    RssComponent rssComponent = new RssComponent();
+//                    rssComponent.setComponentName(type);
+//                    rssComponent.setComponentType(type);
+//                    rssComponent.setRssItemId(rssItem.getId());
+//                    if (isMatch){
+//                        Pattern r = Pattern.compile(pattern);
+//                        Matcher m = r.matcher(content);
+//                        if (m.find()){
+//                            rssComponent.setCssName(m.group(1));
+//                        }
+//
+//                    }
+//
+//                    affect += rssComponentService.createMaster(rssComponent);
+//                    componentId = rssComponent.getId();
+//                }
+//
+//                if (!flag) {
+//                    RssComponentProp rssComponentProp = new RssComponentProp();
+//                    rssComponentProp.setComponentId(componentId);
+//                    rssComponentProp.setPropDefaultValue(componentProp.get(j));
+//                    affect += rssComponentPropService.createMaster(rssComponentProp);
+//                }
+//            }
+//        }
+//        return affect;
+//    }
+
+
     @Override
     @Transactional
     public Integer parserRssItem(RssItem rssItem) {
@@ -120,66 +195,21 @@ public class RssItemServiceImpl extends CRUDRssItemServiceImpl implements RssIte
 
         List<List<String>> componentPropData = new ArrayList<>();
 
+        Queue<String> queue = new LinkedList<>();
+
         for (String s : lineStr) {
-            String lineDate[] = s.split(",| ");
-            componentPropData.add(Arrays.asList(lineDate));
+            queue.offer(s);
+
         }
 
-        for (int i = 0; i < componentPropData.size(); i++) {
-            List<String> componentProp = componentPropData.get(i);
-            Long componentId = null;
 
-            Map<String, String> regexMap = componentTypeRegexService.getALlRegex();
-            for (int j = 0; j < componentProp.size(); j++) {
+        rssIntermediateControl.involve(rssItem,queue);
 
-                Boolean flag = false;
 
-                if (j == 0) {
-                    String content = componentProp.get(j);
-                    String pattern = "^<(.*)>.*";
-                    String type = "title";
-
-                    boolean isMatch = Pattern.matches(pattern, content);
-                    if (isMatch) {
-                        flag = true;
-                        type="css";
-                    }else {
-                        for (String key : regexMap.keySet()) {
-                            if (componentProp.get(j).startsWith(regexMap.get(key))) {
-                                flag = true;
-                                type = key;
-                                break;
-                            }
-                        }
-                    }
-
-                    RssComponent rssComponent = new RssComponent();
-                    rssComponent.setComponentName(type);
-                    rssComponent.setComponentType(type);
-                    rssComponent.setRssItemId(rssItem.getId());
-                    if (isMatch){
-                        Pattern r = Pattern.compile(pattern);
-                        Matcher m = r.matcher(content);
-                        if (m.find()){
-                            rssComponent.setCssName(m.group(1));
-                        }
-
-                    }
-
-                    affect += rssComponentService.createMaster(rssComponent);
-                    componentId = rssComponent.getId();
-                }
-
-                if (!flag) {
-                    RssComponentProp rssComponentProp = new RssComponentProp();
-                    rssComponentProp.setComponentId(componentId);
-                    rssComponentProp.setPropDefaultValue(componentProp.get(j));
-                    affect += rssComponentPropService.createMaster(rssComponentProp);
-                }
-            }
-        }
         return affect;
     }
+
+
 
     @Override
     @Transactional

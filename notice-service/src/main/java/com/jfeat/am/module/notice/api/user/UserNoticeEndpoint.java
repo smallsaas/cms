@@ -52,6 +52,8 @@ public class UserNoticeEndpoint {
     @Resource
     NoticeFilter noticeFilter;
 
+
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查看公告", response = Notice.class)
     public Tip getNotice(@PathVariable Long id) {
@@ -83,10 +85,12 @@ public class UserNoticeEndpoint {
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "content", required = false) String content) {
 
-//        Long userId = JWTKit.getUserId();
-//        if (userId==null){
-//            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
-//        }
+        Long userId = JWTKit.getUserId();
+        if (userId==null){
+            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+        }
+
+
 
         page.setCurrent(pageNum);
 
@@ -114,6 +118,8 @@ public class UserNoticeEndpoint {
 
         NoticeRequest notice = new NoticeRequest();
         //notice.setType(type);
+        JWTKit.getOrgId();
+
         notice.setStatus(status);
         notice.setTitle(title);
         notice.setContent(content);

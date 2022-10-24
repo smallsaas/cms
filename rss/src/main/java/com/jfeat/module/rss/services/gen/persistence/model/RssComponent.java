@@ -55,12 +55,63 @@ public class RssComponent extends Model<RssComponent> {
     @ApiModelProperty("cssName")
     private String cssName;
 
+    private String cssValue;
+
+    private String componentStyle;
+
+    private String componentStyleValue;
+
+    private String componentArrangement;
+
+
+    private String componentArrangementValue;
+
     @TableField(exist = false)
     private JSONObject css;
 
     @TableField(exist = false)
     List<RssComponentProp> rssComponentPropList;
 
+
+    public String getCssValue() {
+        return cssValue;
+    }
+
+    public void setCssValue(String cssValue) {
+        this.cssValue = cssValue;
+    }
+
+    public String getComponentStyle() {
+        return componentStyle;
+    }
+
+    public void setComponentStyle(String componentStyle) {
+        this.componentStyle = componentStyle;
+    }
+
+    public String getComponentStyleValue() {
+        return componentStyleValue;
+    }
+
+    public void setComponentStyleValue(String componentStyleValue) {
+        this.componentStyleValue = componentStyleValue;
+    }
+
+    public String getComponentArrangement() {
+        return componentArrangement;
+    }
+
+    public void setComponentArrangement(String componentArrangement) {
+        this.componentArrangement = componentArrangement;
+    }
+
+    public String getComponentArrangementValue() {
+        return componentArrangementValue;
+    }
+
+    public void setComponentArrangementValue(String componentArrangementValue) {
+        this.componentArrangementValue = componentArrangementValue;
+    }
 
     public String getCssName() {
         return cssName;

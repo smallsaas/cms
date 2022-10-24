@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @Api("Rss")
-@RequestMapping("/api/u/rss/css/cssName")
+@RequestMapping("/api/u/rss/cssStyle")
 public class AppRssCssNameEndpoint {
     @Resource
     RssCssNamedPropsService rssCssNamedPropsService;

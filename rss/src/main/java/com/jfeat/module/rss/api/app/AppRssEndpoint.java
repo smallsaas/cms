@@ -16,11 +16,9 @@ import com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
-import com.jfeat.module.rss.services.domain.service.ComponentTypeRegexService;
-import com.jfeat.module.rss.services.domain.service.RssComponentService;
-import com.jfeat.module.rss.services.domain.service.RssItemService;
-import com.jfeat.module.rss.services.domain.service.RssOverModelService;
+import com.jfeat.module.rss.services.domain.service.*;
 import com.jfeat.module.rss.services.gen.crud.model.RssModel;
+import com.jfeat.module.rss.services.gen.persistence.model.Rss;
 import com.jfeat.module.rss.services.gen.persistence.model.RssComponent;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
 import io.swagger.annotations.Api;
@@ -29,6 +27,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Api("Rss")
-@RequestMapping("/api/u/rss")
+@RequestMapping("/api/u/rss/master")
 public class AppRssEndpoint {
 
     @Resource
@@ -67,6 +66,9 @@ public class AppRssEndpoint {
     @Resource
     StockTagRelationMapper stockTagRelationMapper;
 
+    @Resource
+    RssStyleControl rssStyleControl;
+
 
     // 要查询[从表]关联数据，取消下行注释
     // @Resource
@@ -93,7 +95,7 @@ public class AppRssEndpoint {
         record.setId(id);
         List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
         if (recordList!=null && recordList.size()==1){
-            rssOverModelService.andCss(recordList);
+            rssStyleControl.andRssStyleValue(recordList);
             return SuccessTip.create(recordList.get(0));
         }
         return SuccessTip.create();
@@ -237,10 +239,7 @@ public class AppRssEndpoint {
             rssPage = queryRssDao.queryRssWithItem(page, record, tag, search, orderBy, null, null);
         }
 
-
-
-
-        rssOverModelService.andCss(rssPage);
+        rssStyleControl.andRssStyleValue(rssPage);
         page.setRecords(rssPage);
 
 
@@ -253,6 +252,33 @@ public class AppRssEndpoint {
     @ApiOperation(value = "更新 Rss 并重新解析值",response = RssRecord.class)
     public Tip updatePreview(@RequestBody RssRecord rssRecord){
         return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
+    }
+
+
+    @PostMapping("/uploadRss")
+    public SuccessTip uploadRssFile(@RequestParam(value = "file") MultipartFile file) {
+        //判断是否为空
+        if (file == null || file.isEmpty()) {
+           throw new BusinessException(BusinessCode.EmptyNotAllowed,"file is empty");
+        }
+        String rssItemString =  rssOverModelService.uploadRssFile(file);
+
+        Integer affected = 0;
+        RssModel rssModel = new RssModel();
+        String uuid = UUID.randomUUID().toString();
+        rssModel.setUuid(uuid);
+        rssModel.setName(uuid);
+
+        List<RssItem> rssItemModelList = new ArrayList<>();
+        RssItem rssItem = new RssItem();
+        rssItem.setTitle(rssItemString);
+        rssItemModelList.add(rssItem);
+
+
+        affected = rssOverModelService.createRss(rssModel,rssItemModelList);
+
+        //读取成功返回文件名称
+        return SuccessTip.create(affected);
     }
 
 

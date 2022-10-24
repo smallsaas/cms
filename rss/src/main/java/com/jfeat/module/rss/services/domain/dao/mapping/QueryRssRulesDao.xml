@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssRulesDao">
+                                                                                                                                                                                                                                                                                                                                                                <sql id="Base_Column_List">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        t_rss_rules.id, t_rss_rules.name, t_rss_rules.symbol, t_rss_rules.decollator, t_rss_rules.hand_method AS handMethod, t_rss_rules.category, t_rss_rules.note, t_rss_rules.create_time AS createTime, t_rss_rules.update_time AS updateTime
+    </sql>
+
+    
+    
+    <select id="queryMasterModel" resultType="RssRulesModel">
+       SELECT t_rss_rules.*
+       FROM t_rss_rules
+       WHERE t_rss_rules.id=#{id}
+       GROUP BY t_rss_rules.id
+    </select>
+
+
+
+                                    
+    <select id="findRssRulesPage" resultType="RssRulesRecord" parameterType="RssRulesRecord">
+            SELECT <include refid="Base_Column_List"/>
+
+        
+
+        FROM t_rss_rules
+
+        
+        
+        WHERE 1=1
+        
+
+        
+                                                                            <if test="record.id != null and record.id>0 ">
+                                    AND t_rss_rules.id LIKE CONCAT('%',#{record.id},'%')
+                            </if>
+                                                                    <if test="record.name != null and record.name!= ''">
+                                    AND t_rss_rules.name LIKE CONCAT('%',#{record.name},'%')
+                            </if>
+                                                                    <if test="record.symbol != null and record.symbol!= ''">
+                                    AND t_rss_rules.symbol LIKE CONCAT('%',#{record.symbol},'%')
+                            </if>
+                                                                    <if test="record.decollator != null and record.decollator!= ''">
+                                    AND t_rss_rules.decollator LIKE CONCAT('%',#{record.decollator},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.handMethod != null and record.handMethod!= ''">
+                                    AND t_rss_rules.hand_method LIKE CONCAT('%',#{record.handMethod},'%')
+                            </if>
+                                                                    <if test="record.category != null and record.category!= ''">
+                                    AND t_rss_rules.category LIKE CONCAT('%',#{record.category},'%')
+                            </if>
+                                                                    <if test="record.note != null and record.note!= ''">
+                                    AND t_rss_rules.note LIKE CONCAT('%',#{record.note},'%')
+                            </if>
+                                                                                
+
+                                                                                        <if test="record.createTime != null and record.createTime>0 ">
+                                    AND t_rss_rules.create_time LIKE CONCAT('%',#{record.createTime},'%')
+                            </if>
+                                                                                
+
+                                                                                        <if test="record.updateTime != null and record.updateTime>0 ">
+                                    AND t_rss_rules.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+                            </if>
+        
+        <if test="startTime != null">
+            <![CDATA[AND t_rss_rules.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss_rules.end_time <= DATE(#{endTime}]]>
+        </if>
+            <!--
+        <if test="search != null and search != ''">
+            OR t_rss_rules.name LIKE CONCAT('%',#{search},'%')
+        </if>
+        -->
+                            ORDER BY update_time DESC
+                                                    , create_time DESC
+                        </select>
+</mapper>
