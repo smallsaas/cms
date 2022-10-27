@@ -66,12 +66,22 @@ public class RssComponent extends Model<RssComponent> {
 
     private String componentArrangementValue;
 
+    private String componentLimit;
+
     @TableField(exist = false)
     private JSONObject css;
 
     @TableField(exist = false)
     List<RssComponentProp> rssComponentPropList;
 
+
+    public String getComponentLimit() {
+        return componentLimit;
+    }
+
+    public void setComponentLimit(String componentLimit) {
+        this.componentLimit = componentLimit;
+    }
 
     public String getCssValue() {
         return cssValue;

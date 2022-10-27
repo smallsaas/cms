@@ -133,4 +133,39 @@ public class RssImageNameOverModelServiceImpl extends CRUDRssImageNameOverModelS
         }
         return map;
     }
+
+    @Override
+    public Map<String, List<JSONObject>> getAllRssImageToList() {
+        RssImageNameRecord rssImageNameRecord = new RssImageNameRecord();
+        List<RssImageNameRecord> rssImageNameRecordList =  queryRssImageNameDao.findRssImageNamePageWithItem(null,rssImageNameRecord,null,null,null,null,null);
+        Map<String,List<JSONObject>> map = new HashMap<>();
+        if (rssImageNameRecordList!=null && rssImageNameRecordList.size()>0){
+
+            for (RssImageNameRecord record:rssImageNameRecordList){
+                if (record.getName()!=null && !record.getName().equals("")){
+                    if (record.getRssImagePropList()!=null && record.getRssImagePropList().size()>0){
+
+                        List<JSONObject> jsonObjects = new ArrayList<>();
+                        for (RssImageProp rssImageProp:record.getRssImagePropList()){
+                            JSONObject jsonObject = new JSONObject();
+                            if (rssImageProp.getImagePath()!=null){
+                                jsonObject.put("url",rssImageProp.getImagePath());
+                                jsonObjects.add(jsonObject);
+                            }
+
+                        }
+
+                        map.put(record.getName(),jsonObjects);
+
+
+                    }else {
+                        map.put(record.getName(),null);
+                    }
+                }
+
+            }
+
+        }
+        return map;
+    }
 }

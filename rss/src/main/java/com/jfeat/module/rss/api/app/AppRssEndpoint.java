@@ -234,14 +234,12 @@ public class AppRssEndpoint {
             stockTagRelationQueryWrapper.eq(StockTagRelation.STOCK_TYPE,rssOverModelService.getEntityName());
             List<StockTagRelation> stockTagRelationList = stockTagRelationMapper.selectList(stockTagRelationQueryWrapper);
             ids = stockTagRelationList.stream().map(StockTagRelation::getStockId).collect(Collectors.toList());
-            rssPage = queryRssDao.queryRssWithItemNotTag(page, record, ids,tag, search, orderBy, null, null);
+            rssPage = queryRssDao.queryRssWithItemNotComponentAndTag(page, record, ids,tag, search, orderBy, null, null);
         }else {
-            rssPage = queryRssDao.queryRssWithItem(page, record, tag, search, orderBy, null, null);
+            rssPage = queryRssDao.queryRssWithItemNotComponent(page, record, tag, search, orderBy, null, null);
         }
 
-        rssStyleControl.andRssStyleValue(rssPage);
         page.setRecords(rssPage);
-
 
         return SuccessTip.create(page);
     }

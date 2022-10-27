@@ -40,5 +40,7 @@ public interface QueryRssItemDao extends QueryMasterDao<RssItem> {
 
     List<RssItemModel> queryRssItemByPid(@Param("pid") Long pid);
 
+    List<RssItemModel> queryRssItemNotComponentByPid(@Param("pid") Long pid);
+
     Integer updateRssItemModel(@Param("record") RssItemModel rssItemModel);
 }

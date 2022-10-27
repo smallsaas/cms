@@ -140,6 +140,11 @@
         SELECT * from t_rss_item where t_rss_item.pid=#{pid}
     </select>
 
+
+    <select id="queryRssItemNotComponentByPid" resultType="RssItemModel">
+        SELECT * from t_rss_item where t_rss_item.pid=#{pid}
+    </select>
+
     <update id="updateRssItemModel" parameterType="RssItemModel">
         update t_rss_item
         <set>

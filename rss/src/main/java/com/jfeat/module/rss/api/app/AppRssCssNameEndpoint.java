@@ -29,11 +29,8 @@ import java.util.List;
 public class AppRssCssNameEndpoint {
     @Resource
     RssCssNamedPropsService rssCssNamedPropsService;
-
     @Resource
     QueryRssCssNamedPropsDao queryRssCssNamedPropsDao;
-
-
     @BusinessLog(name = "RssCssNamedProps", value = "create RssCssNamedProps")
     @PostMapping
     @ApiOperation(value = "新建 RssCssNamedProps", response = RssCssNamedProps.class)
@@ -41,7 +38,6 @@ public class AppRssCssNameEndpoint {
 
         return SuccessTip.create(rssCssNamedPropsService.createRssNameProp(entity));
     }
-
     @Permission(RssCssNamedPropsPermission.RSSCSSNAMEDPROPS_VIEW)
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 RssCssNamedProps", response = RssCssNamedProps.class)
@@ -141,8 +137,6 @@ public class AppRssCssNameEndpoint {
         record.setCssValue(cssValue);
         record.setDataType(dataType);
         record.setOptionName(optionName);
-
-
         List<RssCssNamedProps> rssCssNamedPropsPage = queryRssCssNamedPropsDao.findRssCssNamedPropsWithItems(page, record, tag, search, orderBy, null, null);
 
         page.setRecords(rssCssNamedPropsPage);

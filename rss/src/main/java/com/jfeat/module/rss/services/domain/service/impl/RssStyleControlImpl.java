@@ -54,18 +54,20 @@ public class RssStyleControlImpl implements RssStyleControl {
                         if (rssComponentList!=null && rssComponentList.size()>0){
 
                             for (RssComponent rssComponent:rssComponentList){
-                                if (rssComponent.getComponentStyle()!=null&&rssComponent.getComponentType().equals("uploadImage")){
+                                if (rssComponent.getComponentStyle()!=null&&(rssComponent.getComponentType().equals("uploadImage")||rssComponent.getComponentType().equals("showImage"))){
 
                                     if (imageStyleMap.containsKey(rssComponent.getComponentStyle())){
                                        rssComponent.setComponentStyleValue(imageStyleMap.get(rssComponent.getComponentStyle()));
                                     }
 
-                                }else {
-                                    if (map.containsKey(rssComponent.getComponentStyle())){
-                                        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssComponent.getComponentStyle())));
-                                        rssComponent.setCss(jsonObject);
-                                    }
                                 }
+
+                                if (map.containsKey(rssComponent.getCssName())){
+                                    JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssComponent.getCssName())));
+                                    rssComponent.setCss(jsonObject);
+                                }
+
+
                             }
 
 

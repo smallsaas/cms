@@ -13,4 +13,18 @@ import java.util.Queue;
 public interface RssRulesService extends CRUDRssRulesService {
 
     Integer parseRssByCommon(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByImage(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByTitle(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByBulleList(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByLink(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByRichText(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByTable(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+//    Integer parseRssByImageTest(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
 }

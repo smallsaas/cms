@@ -82,10 +82,12 @@
 
     <insert id="batchAdd">
         insert  into t_rss_component_prop
-        (t_rss_component_prop.id, t_rss_component_prop.component_id , t_rss_component_prop.prop_name , t_rss_component_prop.prop_tips , t_rss_component_prop.prop_default_value , t_rss_component_prop.data_type, t_rss_component_prop.option_name)
+        (t_rss_component_prop.id, t_rss_component_prop.component_id , t_rss_component_prop.prop_name , t_rss_component_prop.prop_tips , t_rss_component_prop.prop_default_value , t_rss_component_prop.data_type, t_rss_component_prop.option_name,
+        t_rss_component_prop.prop_style,t_rss_component_prop.prop_style_value,t_rss_component_prop.prop_css_name,t_rss_component_prop.prop_css_value,t_rss_component_prop.prop_arrangement,t_rss_component_prop.prop_arrangement_value,t_rss_component_prop.prop_limit)
         values
         <foreach collection="componentPropModelList" item="item" separator=",">
-            (#{item.id},#{item.componentId},#{item.propName},#{item.propTips},#{item.propDefaultValue},#{item.dataType},#{item.optionName})
+            (#{item.id},#{item.componentId},#{item.propName},#{item.propTips},#{item.propDefaultValue},#{item.dataType},#{item.optionName},
+             #{item.propStyle},#{item.propStyleValue},#{item.propCssName},#{item.propCssValue},#{item.propArrangement},#{item.propArrangementValue},#{item.propLimit})
         </foreach>
     </insert>
 </mapper>

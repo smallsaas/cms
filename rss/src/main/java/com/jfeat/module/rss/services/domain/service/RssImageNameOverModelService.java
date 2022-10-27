@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.domain.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfeat.module.rss.services.domain.model.RssImageNameRecord;
 import com.jfeat.module.rss.services.gen.crud.model.RssImageNameModel;
 import com.jfeat.module.rss.services.gen.crud.service.CRUDRssImageNameOverModelService;
@@ -19,5 +20,6 @@ public interface RssImageNameOverModelService extends CRUDRssImageNameOverModelS
 
     Map<String,String> getAllRssImageToMap();
 
+    Map<String,List<JSONObject>> getAllRssImageToList();
 
 }
