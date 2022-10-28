@@ -928,6 +928,19 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
                 String numberImage = getMatchValue(arrangementItem, ".*\\[(.*)\\].*");
                 String imageHigh = getMatchValue(arrangementItem, ".*\\{(.*)\\}.*");
 
+                if (imageHigh!=null&& imageHigh.contains(":")){
+                    String ratio[] = imageHigh.split(":");
+                    try {
+                        Double left = Double.parseDouble(ratio[0]);
+                        Double right = Double.parseDouble(ratio[1]);
+                        Double result = left/right;
+                        imageHigh = "[".concat(String.valueOf(result)).concat("]");
+
+                    }catch (Exception e){
+                        imageHigh = "[1]";
+                    }
+                }
+
 //                设置排列比例 或者数量
                 rssComponent.setComponentArrangementValue(numberImage);
                 rssComponent.setRssItemId(rssItem.getId());
@@ -1005,16 +1018,36 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
 
                     int imageNumber = 9;
 
+                    int rowNumber = 3;
+                    int columnNumber =3;
+
                     if (numberImage != null) {
-                        try {
-                            imageNumber = Integer.parseInt(numberImage);
-                        } catch (Exception e) {
-                            imageNumber = 9;
+
+//                        第一个是列 第二个是行
+                        String numberStr[] = numberImage.split(",");
+                        if (numberStr!=null&&numberStr.length>0){
+                            try {
+                                columnNumber = Integer.parseInt(numberStr[0]);
+                            } catch (Exception e) {
+                                columnNumber = 3;
+                            }
+
+                            if (numberStr.length>1){
+                                try {
+                                    rowNumber = Integer.parseInt(numberStr[1]);
+                                } catch (Exception e) {
+                                    rowNumber = 3;
+                                }
+                            }
+
                         }
+
+                        imageNumber = columnNumber*rowNumber;
 
                     }
 //                    设置排列方式
                     rssComponent.setComponentArrangement("#");
+                    rssComponent.setComponentArrangementValue(String.valueOf(columnNumber));
                     for (int i = 0; i < imageNumber && !stringQueue.isEmpty(); i++) {
                         RssComponentProp rssComponentProp = new RssComponentProp();
                         rssComponentProp.setPropDefaultValue(stringQueue.poll());
