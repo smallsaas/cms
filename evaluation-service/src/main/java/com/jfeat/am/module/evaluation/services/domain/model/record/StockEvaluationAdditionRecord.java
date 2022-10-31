@@ -6,5 +6,22 @@ import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation
  * Created by Code Generator on 2018-07-16
  */
 public class StockEvaluationAdditionRecord extends StockEvaluationAddition{
-    
+    private String userName;
+    private String avatar;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }

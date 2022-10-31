@@ -28,7 +28,25 @@ public class StockEvaluationRecord extends StockEvaluation{
     private Integer isReply;
     private Date replyTime;
 
+    private String userName;
 
+    private String avatar;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public List<StockEvaluationRecord> getReplys() {
         return replys;

@@ -51,6 +51,8 @@
       <result column="toName" property="toName" />
       <result column="isReply" property="isReply" />
       <result column="replyTime" property="replyTime"/>
+      <result column="name" property="userName"/>
+      <result column="avatar" property="avatar"/>
       <collection property="images" ofType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationImage"
         select="findImagesByEvalutionId" column="id">
       </collection>
@@ -94,18 +96,22 @@
         GROUP BY t_stock_evaluation_star.star_value
     </select>
 
+
+
+
     <select id="findStockEvaluationPageWithReplys" resultMap="EvalutionsResultMap" parameterType="StockEvaluationRecord">
-        SELECT t_stock_evaluation.*, "" AS commentName, 0 AS isReply,
+        SELECT t_stock_evaluation.*,t_end_user.`name`,t_end_user.avatar, "" AS commentName, 0 AS isReply,
         case
         WHEN t_stock_evaluation.member_id = #{memberId} THEN '1'
         ELSE  '0' END  as isDeleteAllow
         FROM t_stock_evaluation LEFT JOIN t_stock_evaluation_star
         ON t_stock_evaluation_star.evaluate_id = t_stock_evaluation.id
+        LEFT JOIN t_end_user ON t_end_user.id = t_stock_evaluation.member_id
         WHERE t_stock_evaluation.stock_type != "Evaluation"
         AND t_stock_evaluation.is_display = 1
         <include refid="FindEvaluationCondition"></include>
         UNION
-        SELECT t_stock_evaluation.*
+        SELECT t_stock_evaluation.*,t_end_user.`name`,t_end_user.avatar
         FROM
         (
             SELECT t_stock_evaluation.*, A.member_name AS commentName, 1 AS isReply,
@@ -118,6 +124,7 @@
         ) t_stock_evaluation
         LEFT JOIN t_stock_evaluation_star
         ON t_stock_evaluation_star.evaluate_id = t_stock_evaluation.id
+        LEFT JOIN t_end_user ON t_end_user.id = t_stock_evaluation.member_id
         WHERE 1=1
         <include refid="FindEvaluationCondition"></include>
         ORDER BY is_stick DESC,create_time DESC
