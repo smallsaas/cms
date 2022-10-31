@@ -7,6 +7,7 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
+import com.jfeat.crud.core.util.RedisKit;
 import com.jfeat.module.rss.api.permission.RssComponentPropPermission;
 import com.jfeat.module.rss.services.domain.dao.QueryRssComponentPropDao;
 import com.jfeat.module.rss.services.domain.model.RssComponentPropRecord;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,10 +36,18 @@ public class AppRssComponentPropEndpoint {
     QueryRssComponentPropDao queryRssComponentPropDao;
 
 
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
+
+    private static String redistKey="RSS:Id:";
+
     @BusinessLog(name = "RssComponentProp", value = "create RssComponentProp")
-    @PostMapping
+    @PostMapping("/{rssId}")
     @ApiOperation(value = "新建 RssComponentProp", response = RssComponentProp.class)
-    public Tip createRssComponentProp(@RequestBody RssComponentProp entity) {
+    public Tip createRssComponentProp(@PathVariable("rssId")Long rssId, @RequestBody RssComponentProp entity) {
+        if (RedisKit.isSanity()){
+            stringRedisTemplate.delete(redistKey.concat(String.valueOf(rssId)));
+        }
         Integer affected = 0;
         try {
             affected = rssComponentPropService.createMaster(entity);
@@ -49,9 +59,12 @@ public class AppRssComponentPropEndpoint {
     }
 
     @BusinessLog(name = "RssComponentProp", value = "create RssComponentProp")
-    @PostMapping("/batch")
+    @PostMapping("/{rssId}/batch")
     @ApiOperation(value = "新建 RssComponentProp", response = RssComponentProp.class)
-    public Tip BatchCreateRssComponentProp(@RequestBody List<RssComponentProp> entity) {
+    public Tip BatchCreateRssComponentProp(@PathVariable("rssId")Long rssId,@RequestBody List<RssComponentProp> entity) {
+        if (RedisKit.isSanity()){
+            stringRedisTemplate.delete(redistKey.concat(String.valueOf(rssId)));
+        }
         return SuccessTip.create( queryRssComponentPropDao.batchAdd(entity));
     }
 
@@ -62,17 +75,23 @@ public class AppRssComponentPropEndpoint {
     }
 
     @BusinessLog(name = "RssComponentProp", value = "update RssComponentProp")
-    @PutMapping("/{id}")
+    @PutMapping("/{rssId}/{id}")
     @ApiOperation(value = "修改 RssComponentProp", response = RssComponentProp.class)
-    public Tip updateRssComponentProp(@PathVariable Long id, @RequestBody RssComponentProp entity) {
+    public Tip updateRssComponentProp(@PathVariable("rssId")Long rssId,@PathVariable Long id, @RequestBody RssComponentProp entity) {
+        if (RedisKit.isSanity()){
+            stringRedisTemplate.delete(redistKey.concat(String.valueOf(rssId)));
+        }
         entity.setId(id);
         return SuccessTip.create(rssComponentPropService.updateMaster(entity));
     }
 
     @BusinessLog(name = "RssComponentProp", value = "delete RssComponentProp")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{rssId}/{id}")
     @ApiOperation("删除 RssComponentProp")
-    public Tip deleteRssComponentProp(@PathVariable Long id) {
+    public Tip deleteRssComponentProp(@PathVariable("rssId")Long rssId,@PathVariable Long id) {
+        if (RedisKit.isSanity()){
+            stringRedisTemplate.delete(redistKey.concat(String.valueOf(rssId)));
+        }
         return SuccessTip.create(rssComponentPropService.deleteMaster(id));
     }
 

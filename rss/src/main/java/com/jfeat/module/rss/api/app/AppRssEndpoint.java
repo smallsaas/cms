@@ -1,6 +1,9 @@
 package com.jfeat.module.rss.api.app;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.crud.tag.services.persistence.dao.StockTagRelationMapper;
@@ -9,22 +12,20 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.crud.plus.CRUDObject;
-import com.jfeat.crud.plus.META;
-import com.jfeat.crud.plus.annotation.SQLTag;
-import com.jfeat.module.rss.services.domain.dao.QueryRssComponentDao;
+import com.jfeat.crud.core.util.RedisKit;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
-import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
-import com.jfeat.module.rss.services.domain.service.*;
+import com.jfeat.module.rss.services.domain.service.RssOverModelService;
+import com.jfeat.module.rss.services.domain.service.RssStyleControl;
 import com.jfeat.module.rss.services.gen.crud.model.RssModel;
-import com.jfeat.module.rss.services.gen.persistence.model.Rss;
-import com.jfeat.module.rss.services.gen.persistence.model.RssComponent;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,100 +49,64 @@ public class AppRssEndpoint {
     @Resource
     QueryRssDao queryRssDao;
 
-
-    @Resource
-    ComponentTypeRegexService componentTypeRegexService;
-
-    @Resource
-    QueryRssItemDao queryRssItemDao;
-
-    @Resource
-    QueryRssComponentDao queryRssComponentDao;
-
-    @Resource
-    RssItemService rssItemService;
-
-    @Resource
-    RssComponentService rssComponentService;
-
     @Resource
     StockTagRelationMapper stockTagRelationMapper;
 
     @Resource
     RssStyleControl rssStyleControl;
 
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
-    // 要查询[从表]关联数据，取消下行注释
-    // @Resource
-    // QueryRssItemDao queryRssItemDao;
+    private static String redistKey="RSS:Id:";
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @PostMapping
     @ApiOperation(value = "新建 Rss", response = RssModel.class)
     public Tip createRss(@RequestBody List<RssItem> rssItemModelList) {
+
         Integer affected = 0;
         RssModel rssModel = new RssModel();
         String uuid = UUID.randomUUID().toString();
         rssModel.setUuid(uuid);
         rssModel.setName(uuid);
-        affected = rssOverModelService.createRss(rssModel,rssItemModelList);
-
+        affected = rssOverModelService.createRss(rssModel, rssItemModelList);
         return SuccessTip.create(affected);
     }
 
 
     @GetMapping("/{id}")
     @ApiOperation(value = "查询rss详情")
-    public Tip getPreView(@PathVariable("id")Long id){
+    public Tip getPreView(@PathVariable("id") Long id) {
         RssRecord record = new RssRecord();
+        String key = redistKey.concat(String.valueOf(id));
         record.setId(id);
         List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
-        if (recordList!=null && recordList.size()==1){
-            rssStyleControl.andRssStyleValue(recordList);
-            return SuccessTip.create(recordList.get(0));
+        if (recordList != null && recordList.size() == 1) {
+            if (RedisKit.isSanity() && stringRedisTemplate.hasKey(key) && stringRedisTemplate.opsForValue().getOperations().getExpire(key)>0){
+                String value = (String) stringRedisTemplate.opsForValue().get(key);
+                JSON json = JSONObject.parseObject(value);
+                logger.info("返回rss缓存数据",json.toString());
+                return SuccessTip.create(json);
+            }else {
+                rssStyleControl.andRssStyleValue(recordList);
+                stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(recordList.get(0),SerializerFeature.WriteMapNullValue),24, TimeUnit.HOURS);
+                return SuccessTip.create(recordList.get(0));
+            }
+
         }
         return SuccessTip.create();
     }
 
 
-
-//    @PutMapping("/{id}")
-//    @ApiOperation(value = "修改 Rss", response = RssModel.class)
-//    public Tip updateRss(@PathVariable Long id, @RequestBody RssModel entity) {
-//        entity.setId(id);
-//        if (entity.getItems()==null){
-//            throw new BusinessException(BusinessCode.BadRequest,"items不能为空");
-//        }else {
-//            for (RssItem rssItem:entity.getItems()){
-//                rssItem.setPid(entity.getId());
-//            }
-//        }
-//        // use update flags
-//        int newOptions = META.UPDATE_CASCADING_DELETION_FLAG;  //default to delete not exist items
-//        // newOptions = FlagUtil.setFlag(newOptions, META.UPDATE_ALL_COLUMNS_FLAG);
-//
-//        return SuccessTip.create(rssOverModelService.updateMaster(entity, null, null, null, newOptions));
-//    }
-
-//    @PutMapping("/{id}")
-//    @ApiOperation(value = "修改 Rss", response = RssModel.class)
-//    public Tip updateRss(@PathVariable Long id, @RequestBody RssModel entity) {
-//        entity.setId(id);
-//        if (entity.getItems()==null){
-//            throw new BusinessException(BusinessCode.BadRequest,"items不能为空");
-//        }else {
-//            for (RssItem rssItem:entity.getItems()){
-//                rssItem.setPid(entity.getId());
-//            }
-//        }
-//        // use update flags
-//        int newOptions = META.UPDATE_CASCADING_DELETION_FLAG;  //default to delete not exist items
-//        // newOptions = FlagUtil.setFlag(newOptions, META.UPDATE_ALL_COLUMNS_FLAG);
-//        return SuccessTip.create(rssOverModelService.updateMaster(entity, null, null, null, newOptions));
-//    }
-
     @PutMapping("/{id}")
-    @ApiOperation(value = "更新 Rss 并重新解析值",response = RssRecord.class)
-    public Tip updatePreview(@PathVariable Long id,@RequestBody RssRecord rssRecord){
+    @ApiOperation(value = "更新 Rss 并重新解析值", response = RssRecord.class)
+    public Tip updatePreview(@PathVariable Long id, @RequestBody RssRecord rssRecord) {
+        if (RedisKit.isSanity()){
+            stringRedisTemplate.delete(redistKey.concat(String.valueOf(id)));
+        }
         rssRecord.setId(id);
         return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
     }
@@ -149,9 +115,11 @@ public class AppRssEndpoint {
     @DeleteMapping("/{id}")
     @ApiOperation("删除 Rss")
     public Tip deleteRss(@PathVariable Long id) {
+        if (RedisKit.isSanity()){
+            stringRedisTemplate.delete(redistKey.concat(String.valueOf(id)));
+        }
         return SuccessTip.create(rssOverModelService.deleteRss(id));
     }
-
 
 
     @GetMapping
@@ -228,14 +196,14 @@ public class AppRssEndpoint {
         record.setUpdateTime(updateTime);
 
         List<RssRecord> rssPage = new ArrayList<>();
-        if (tagId!=null && tagId==-1){
+        if (tagId != null && tagId == -1) {
             List<Long> ids = new ArrayList<>();
             QueryWrapper<StockTagRelation> stockTagRelationQueryWrapper = new QueryWrapper<>();
-            stockTagRelationQueryWrapper.eq(StockTagRelation.STOCK_TYPE,rssOverModelService.getEntityName());
+            stockTagRelationQueryWrapper.eq(StockTagRelation.STOCK_TYPE, rssOverModelService.getEntityName());
             List<StockTagRelation> stockTagRelationList = stockTagRelationMapper.selectList(stockTagRelationQueryWrapper);
             ids = stockTagRelationList.stream().map(StockTagRelation::getStockId).collect(Collectors.toList());
-            rssPage = queryRssDao.queryRssWithItemNotComponentAndTag(page, record, ids,tag, search, orderBy, null, null);
-        }else {
+            rssPage = queryRssDao.queryRssWithItemNotComponentAndTag(page, record, ids, tag, search, orderBy, null, null);
+        } else {
             rssPage = queryRssDao.queryRssWithItemNotComponent(page, record, tag, search, orderBy, null, null);
         }
 
@@ -245,10 +213,9 @@ public class AppRssEndpoint {
     }
 
 
-
     @PostMapping("/preview")
-    @ApiOperation(value = "更新 Rss 并重新解析值",response = RssRecord.class)
-    public Tip updatePreview(@RequestBody RssRecord rssRecord){
+    @ApiOperation(value = "更新 Rss 并重新解析值", response = RssRecord.class)
+    public Tip updatePreview(@RequestBody RssRecord rssRecord) {
         return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
     }
 
@@ -257,9 +224,9 @@ public class AppRssEndpoint {
     public SuccessTip uploadRssFile(@RequestParam(value = "file") MultipartFile file) {
         //判断是否为空
         if (file == null || file.isEmpty()) {
-           throw new BusinessException(BusinessCode.EmptyNotAllowed,"file is empty");
+            throw new BusinessException(BusinessCode.EmptyNotAllowed, "file is empty");
         }
-        String rssItemString =  rssOverModelService.uploadRssFile(file);
+        String rssItemString = rssOverModelService.uploadRssFile(file);
 
         Integer affected = 0;
         RssModel rssModel = new RssModel();
@@ -273,12 +240,11 @@ public class AppRssEndpoint {
         rssItemModelList.add(rssItem);
 
 
-        affected = rssOverModelService.createRss(rssModel,rssItemModelList);
+        affected = rssOverModelService.createRss(rssModel, rssItemModelList);
 
         //读取成功返回文件名称
         return SuccessTip.create(affected);
     }
-
 
 
 }
