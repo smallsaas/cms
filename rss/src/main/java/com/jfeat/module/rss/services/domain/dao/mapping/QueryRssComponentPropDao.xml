@@ -89,5 +89,19 @@
             (#{item.id},#{item.componentId},#{item.propName},#{item.propTips},#{item.propDefaultValue},#{item.dataType},#{item.optionName},
              #{item.propStyle},#{item.propStyleValue},#{item.propCssName},#{item.propCssValue},#{item.propArrangement},#{item.propArrangementValue},#{item.propLimit})
         </foreach>
+        ON DUPLICATE KEY UPDATE
+            t_rss_component_prop.component_id = values(component_id) ,
+            t_rss_component_prop.prop_name  = values(prop_name) ,
+            t_rss_component_prop.prop_tips = values(prop_tips)  ,
+            t_rss_component_prop.prop_default_value  = values(prop_default_value) ,
+            t_rss_component_prop.data_type = values(data_type) ,
+            t_rss_component_prop.option_name = values(option_name) ,
+        t_rss_component_prop.prop_style = values(prop_style) ,
+            t_rss_component_prop.prop_style_value = values(prop_style_value) ,
+            t_rss_component_prop.prop_css_name = values(prop_css_name) ,
+            t_rss_component_prop.prop_css_value = values(prop_css_value) ,
+            t_rss_component_prop.prop_arrangement = values(prop_arrangement) ,
+            t_rss_component_prop.prop_arrangement_value = values(prop_arrangement_value) ,
+            t_rss_component_prop.prop_limit = values(prop_limit)
     </insert>
 </mapper>

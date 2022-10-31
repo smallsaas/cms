@@ -48,6 +48,13 @@ public class AppRssComponentPropEndpoint {
         return SuccessTip.create(affected);
     }
 
+    @BusinessLog(name = "RssComponentProp", value = "create RssComponentProp")
+    @PostMapping("/batch")
+    @ApiOperation(value = "新建 RssComponentProp", response = RssComponentProp.class)
+    public Tip BatchCreateRssComponentProp(@RequestBody List<RssComponentProp> entity) {
+        return SuccessTip.create( queryRssComponentPropDao.batchAdd(entity));
+    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 RssComponentProp", response = RssComponentProp.class)
     public Tip getRssComponentProp(@PathVariable Long id) {
