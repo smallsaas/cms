@@ -6,6 +6,9 @@ import com.jfeat.am.module.evaluation.services.domain.model.StockEvaluationAddit
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationAdditionRecord;
 import com.jfeat.am.module.evaluation.services.domain.service.StockEvaluationAdditionService;
 import com.jfeat.am.module.evaluation.services.domain.service.StockEvaluationService;
+import com.jfeat.am.module.evaluation.services.persistence.dao.StockEvaluationAdditionMapper;
+import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation;
+import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationAddition;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -42,6 +45,9 @@ public class AppCMSEvaluationAdditionEndpoint {
 
     @Resource
     QueryStockEvaluationAdditionDao queryStockEvaluationAdditionDao;
+
+    @Resource
+    StockEvaluationAdditionMapper stockEvaluationAdditionMapper;
 
     @BusinessLog(name = "StockEvaluationAddition", value = "create StockEvaluationAddition")
     @PostMapping("/{evaluationId}/addition")
@@ -133,6 +139,22 @@ public class AppCMSEvaluationAdditionEndpoint {
         page.setRecords(queryStockEvaluationAdditionDao.findStockEvaluationAdditionPage(page, record, orderBy));
 
         return SuccessTip.create(page);
+    }
+
+
+    @PostMapping("/addition/{id}/star/approval")
+    @ApiOperation("点赞评论")
+    public Tip addEvaluationStar(@PathVariable Long id) {
+        StockEvaluationAddition stockEvaluation = stockEvaluationAdditionMapper.selectById(id);
+        if (stockEvaluation==null){
+            throw new BusinessException(BusinessCode.BadRequest,"该评论不存在");
+        }
+        if (stockEvaluation.getStar()==null || stockEvaluation.getStar()<=0){
+            stockEvaluation.setStar(1);
+        }else {
+            stockEvaluation.setStar(stockEvaluation.getStar()+1);
+        }
+        return SuccessTip.create(stockEvaluationAdditionMapper.updateById(stockEvaluation));
     }
 
 

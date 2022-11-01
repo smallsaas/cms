@@ -53,6 +53,8 @@
       <result column="replyTime" property="replyTime"/>
       <result column="name" property="userName"/>
       <result column="avatar" property="avatar"/>
+      <result column="star" property="star"/>
+      <result column="dislike" property="dislike"/>
       <collection property="images" ofType="com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluationImage"
         select="findImagesByEvalutionId" column="id">
       </collection>

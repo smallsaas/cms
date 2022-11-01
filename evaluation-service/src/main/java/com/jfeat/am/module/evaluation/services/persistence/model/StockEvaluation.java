@@ -87,9 +87,31 @@ public class StockEvaluation extends Model<StockEvaluation> {
     @TableField("trade_time")
     private Date tradeTime;
 
+    @TableField("star")
+    private Integer star;
+
+    @TableField("dislike")
+    private Integer dislike;
+
     private Long originId;
 
     private String originType;
+
+    public Integer getStar() {
+        return star;
+    }
+
+    public void setStar(Integer star) {
+        this.star = star;
+    }
+
+    public Integer getDislike() {
+        return dislike;
+    }
+
+    public void setDislike(Integer dislike) {
+        this.dislike = dislike;
+    }
 
     public Long getOriginId() {
         return originId;

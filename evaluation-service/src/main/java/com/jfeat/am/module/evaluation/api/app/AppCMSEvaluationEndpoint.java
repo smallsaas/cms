@@ -1,5 +1,6 @@
 package com.jfeat.am.module.evaluation.api.app;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.evaluation.services.domain.dao.QueryStockEvaluationDao;
@@ -7,7 +8,11 @@ import com.jfeat.am.module.evaluation.services.domain.model.StockEvaluationModel
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationRecord;
 import com.jfeat.am.module.evaluation.services.domain.model.record.StockEvaluationStarRecord;
 import com.jfeat.am.module.evaluation.services.domain.service.StockEvaluationService;
+import com.jfeat.am.module.evaluation.services.persistence.dao.StockEvaluationMapper;
+import com.jfeat.am.module.evaluation.services.persistence.model.StockEvaluation;
 import com.jfeat.crud.base.annotation.BusinessLog;
+import com.jfeat.crud.base.exception.BusinessCode;
+import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
@@ -46,6 +51,9 @@ public class AppCMSEvaluationEndpoint {
 
     @Resource
     QueryStockEvaluationDao queryStockEvaluationDao;
+
+    @Resource
+    StockEvaluationMapper stockEvaluationMapper;
 
 
 
@@ -125,8 +133,6 @@ public class AppCMSEvaluationEndpoint {
                                      @RequestParam(name = "originType", required = false) String originType,
                                      @RequestParam(name = "isLayered", required = false, defaultValue = "false") Boolean isLayered,
                                      @RequestParam(name = "isDisplay", required = false, defaultValue = "1") Integer isDisplay
-
-
     ) {
 
         page.setCurrent(pageNum);
@@ -254,6 +260,21 @@ public class AppCMSEvaluationEndpoint {
 //        page.setRecords(queryStockEvaluationDao.bulkFindEvaluations(page, idsRquest.getIds(),idsRquest.getStockIds(), idsRquest.getStockType(), idsRquest.getStarValue()));
 //        return SuccessTip.create(page);
 //    }
+
+    @PostMapping("/evaluations/{id}/star/approval")
+    @ApiOperation("点赞评论")
+    public Tip addEvaluationStar(@PathVariable Long id) {
+        StockEvaluation stockEvaluation = stockEvaluationMapper.selectById(id);
+        if (stockEvaluation==null){
+            throw new BusinessException(BusinessCode.BadRequest,"该评论不存在");
+        }
+        if (stockEvaluation.getStar()==null || stockEvaluation.getStar()<=0){
+            stockEvaluation.setStar(1);
+        }else {
+            stockEvaluation.setStar(stockEvaluation.getStar()+1);
+        }
+        return SuccessTip.create(stockEvaluationMapper.updateById(stockEvaluation));
+    }
 
 
 }

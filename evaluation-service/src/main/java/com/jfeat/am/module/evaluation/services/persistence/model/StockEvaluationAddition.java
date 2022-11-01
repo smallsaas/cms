@@ -49,6 +49,27 @@ public class StockEvaluationAddition extends Model<StockEvaluationAddition> {
 	@TableField("create_time")
 	private Date createTime;
 
+	@TableField("star")
+	private Integer star;
+
+	@TableField("dislike")
+	private Integer dislike;
+
+	public Integer getStar() {
+		return star;
+	}
+
+	public void setStar(Integer star) {
+		this.star = star;
+	}
+
+	public Integer getDislike() {
+		return dislike;
+	}
+
+	public void setDislike(Integer dislike) {
+		this.dislike = dislike;
+	}
 
 	public Long getId() {
 		return id;
