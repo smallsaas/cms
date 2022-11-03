@@ -34,7 +34,7 @@ import java.util.List;
  */
 @RestController
 @Api("RssCssNamedProps")
-@RequestMapping("/api/u/rss/rssCssNamedProps/rssCssNamedPropses")
+@RequestMapping("/api/crud/rss/rssCssNamedProps/rssCssNamedPropses")
 public class RssCssNamedPropsEndpoint {
 
     @Resource
