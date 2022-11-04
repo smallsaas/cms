@@ -68,8 +68,18 @@ public class RssComponent extends Model<RssComponent> {
 
     private String componentLimit;
 
+    private String albumName;
+
     @TableField(exist = false)
     private JSONObject css;
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
 
     @TableField(exist = false)
     List<RssComponentProp> rssComponentPropList;

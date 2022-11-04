@@ -772,12 +772,15 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
 
         //        判断是否有图片集
         String albumPattern = ".*<<(.*)>>.*";
+
+//        相册名
+        String imageCollectionName = null;
         boolean isMatchAlbum = Pattern.matches(albumPattern, data);
         if (isMatchAlbum) {
             Pattern r = Pattern.compile(albumPattern);
             Matcher m = r.matcher(data);
             if (m.find()) {
-                String imageCollectionName = m.group(1);
+                imageCollectionName = m.group(1);
 //                查看图片集图片列表
                 Map<String, List<JSONObject>> allRssImageToList = rssImageNameOverModelService.getAllRssImageToList();
 
@@ -785,6 +788,8 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
                     imageCollectionJsonList = allRssImageToList.get(imageCollectionName);
                 }
                 String componentStyle = "<<".concat(m.group(1)).concat(">>");
+
+
                 String startToMid = data.substring(0, data.indexOf(componentStyle));
                 String midToEnd = data.substring(startToMid.length() + componentStyle.length());
                 data = startToMid.concat(midToEnd).strip();
@@ -898,6 +903,7 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
             List<RssComponentProp> rssComponentPropList = new ArrayList<>();
             RssComponent rssComponent = new RssComponent();
             rssComponent.setComponentStyle(containerStyle);
+            rssComponent.setAlbumName(imageCollectionName);
             rssComponent.setRssItemId(rssItem.getId());
             rssComponent.setComponentType(type);
 
@@ -948,6 +954,7 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
 //                设置容器高度
                 rssComponent.setComponentLimit(imageHigh);
                 rssComponent.setComponentStyle(containerStyle);
+                rssComponent.setAlbumName(imageCollectionName);
 
                 List<RssComponentProp> rssComponentPropList = new ArrayList<>();
 //                如果为空就跳出

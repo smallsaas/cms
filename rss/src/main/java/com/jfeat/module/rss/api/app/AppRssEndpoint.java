@@ -85,14 +85,20 @@ public class AppRssEndpoint {
         record.setId(id);
         List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
         if (recordList != null && recordList.size() == 1) {
-            if (RedisKit.isSanity() && stringRedisTemplate.hasKey(key) && stringRedisTemplate.opsForValue().getOperations().getExpire(key)>0){
-                String value = (String) stringRedisTemplate.opsForValue().get(key);
-                JSON json = JSONObject.parseObject(value);
-                logger.info("返回rss缓存数据",json.toString());
-                return SuccessTip.create(json);
+            if (RedisKit.isSanity() ){
+                if (stringRedisTemplate.hasKey(key) && stringRedisTemplate.opsForValue().getOperations().getExpire(key)>0){
+                    String value = (String) stringRedisTemplate.opsForValue().get(key);
+                    JSON json = JSONObject.parseObject(value);
+                    logger.info("返回rss缓存数据",json.toString());
+                    return SuccessTip.create(json);
+                }else {
+                    rssStyleControl.andRssStyleValue(recordList);
+                    stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(recordList.get(0),SerializerFeature.WriteMapNullValue),24, TimeUnit.HOURS);
+                    return SuccessTip.create(recordList.get(0));
+                }
+
             }else {
                 rssStyleControl.andRssStyleValue(recordList);
-                stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(recordList.get(0),SerializerFeature.WriteMapNullValue),24, TimeUnit.HOURS);
                 return SuccessTip.create(recordList.get(0));
             }
 
