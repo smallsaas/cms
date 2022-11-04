@@ -8,6 +8,7 @@ import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.plus.CRUDServiceModel;
 import com.jfeat.crud.plus.DefaultFilterResult;
+import com.jfeat.module.lc_low_auto_page_style.services.domain.service.LowAutoPageRssStyleService;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
@@ -74,7 +75,7 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
 
 
     @Resource
-    RssCssNamedPropsService rssCssNamedPropsService;
+    LowAutoPageRssStyleService lowAutoPageRssStyleService;
 
     @Resource
     ImageRegexService imageRegexService;
@@ -288,7 +289,7 @@ public class RssOverModelServiceImpl extends CRUDRssOverModelServiceImpl impleme
     public List<RssRecord> andCss(List<RssRecord> recordList) {
 
         if (recordList!=null && recordList.size()>0){
-            Map<String, JSONObject> map =  rssCssNamedPropsService.getAllCssJson();
+            Map<String, JSONObject> map =  lowAutoPageRssStyleService.getAllStyleJsonMap();
             for (RssRecord record:recordList){
 
 

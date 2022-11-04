@@ -10,11 +10,7 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.module.rss.services.domain.dao.QueryRssCssNamedPropsDao;
-import com.jfeat.module.rss.services.domain.model.RssCssNamedPropsRecord;
 import com.jfeat.module.rss.services.domain.service.RssOverModelService;
-import com.jfeat.module.rss.services.gen.persistence.model.Rss;
-import com.jfeat.module.rss.services.gen.persistence.model.RssCssNamedProps;
 import com.jfeat.module.rss.services.gen.persistence.model.RssTag;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -43,8 +39,6 @@ public class AppRssTagEndpoint {
     @Resource
     RssOverModelService rssOverModelService;
 
-    @Resource
-    QueryRssCssNamedPropsDao queryRssCssNamedPropsDao;
 
     @GetMapping
     @ApiImplicitParams({
