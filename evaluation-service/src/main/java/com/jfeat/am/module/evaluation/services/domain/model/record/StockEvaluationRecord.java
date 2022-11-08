@@ -32,6 +32,16 @@ public class StockEvaluationRecord extends StockEvaluation{
 
     private String avatar;
 
+    private Boolean isStared;
+
+    public Boolean getStared() {
+        return isStared;
+    }
+
+    public void setStared(Boolean stared) {
+        isStared = stared;
+    }
+
     public String getUserName() {
         return userName;
     }

@@ -40,6 +40,12 @@ public class StockEvaluationServiceImpl extends CRUDStockEvaluationServiceImpl i
     @Resource
     QueryStockEvaluationDao queryStockEvaluationDao;
 
+
+    @Override
+    protected String entityName() {
+        return "StockEvaluationService";
+    }
+
     @Override
     public StockEvaluationModel createOne(StockEvaluationModel entity){
         Integer affected = 0;

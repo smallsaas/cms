@@ -43,6 +43,15 @@
             <version>${crud-dev.version}</version>
             <scope>provided</scope>
         </dependency>
+
+<!--        点赞-->
+
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>crud-star</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

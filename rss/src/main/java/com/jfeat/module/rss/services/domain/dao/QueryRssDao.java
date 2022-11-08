@@ -42,6 +42,11 @@ public interface QueryRssDao extends QueryMasterDao<Rss> {
                                      @Param("search") String search, @Param("orderBy") String orderBy,
                                      @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
+    List<RssRecord> queryRssWithItemNotTags(Page<RssRecord> page, @Param("record") RssRecord record,
+                                     @Param("tag") String tag,
+                                     @Param("search") String search, @Param("orderBy") String orderBy,
+                                     @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
     List<RssRecord> queryRssWithItemNotTag(Page<RssRecord> page, @Param("record") RssRecord record,
                                      @Param("ids") List<Long> ids,
                                      @Param("tag") String tag,

@@ -87,7 +87,7 @@ public class StockEvaluation extends Model<StockEvaluation> {
     @TableField("trade_time")
     private Date tradeTime;
 
-    @TableField("star")
+    @TableField(exist = false)
     private Integer star;
 
     @TableField("dislike")

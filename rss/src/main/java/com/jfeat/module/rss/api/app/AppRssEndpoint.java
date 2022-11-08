@@ -83,7 +83,7 @@ public class AppRssEndpoint {
         RssRecord record = new RssRecord();
         String key = redistKey.concat(String.valueOf(id));
         record.setId(id);
-        List<RssRecord> recordList = queryRssDao.queryRssWithItem(null, record, null, null, null, null, null);
+        List<RssRecord> recordList = queryRssDao.queryRssWithItemNotTags(null, record, null, null, null, null, null);
         if (recordList != null && recordList.size() == 1) {
             if (RedisKit.isSanity() ){
                 if (stringRedisTemplate.hasKey(key) && stringRedisTemplate.opsForValue().getOperations().getExpire(key)>0){
