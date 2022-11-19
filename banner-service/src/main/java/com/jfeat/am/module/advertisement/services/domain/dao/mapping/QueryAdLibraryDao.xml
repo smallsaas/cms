@@ -22,15 +22,19 @@
         LEFT JOIN t_ad_group g
         ON g.id=a.group_id
         WHERE g.identifier=#{group}
+        <if test="appid != null and appid != ''">
+            and  g.appid = #{appid}
+        </if>
+
         <if test="enabled != null">
-          <choose>
-              <when test="enabled > 0">
-                  and a.enabled > 0
-              </when>
-              <otherwise>
-                  and a.enabled = 0
-              </otherwise>
-          </choose>
+            <choose>
+                <when test="enabled > 0">
+                    and a.enabled > 0
+                </when>
+                <otherwise>
+                    and a.enabled = 0
+                </otherwise>
+            </choose>
         </if>
         order by a.seq DESC
     </select>

@@ -157,7 +157,7 @@ public class AppCMSEvaluationEndpoint {
         } else {
             evaluations = stockEvaluationService.evaluations(page, record, orderBy, memberId);
         }
-
+        stockEvaluationStarService.setEvaluationStar(evaluations);
         page.setRecords(evaluations);
         return SuccessTip.create(page);
     }

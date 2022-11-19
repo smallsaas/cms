@@ -58,6 +58,28 @@ public class Ad extends Model<Ad> {
 	//排序号
 	private Integer seq ;
 
+	@TableField(exist = false)
+	private String identifier;
+
+	@TableField(exist = false)
+	private Long orgId;
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+
 	public Integer getSeq() {
 		return seq;
 	}

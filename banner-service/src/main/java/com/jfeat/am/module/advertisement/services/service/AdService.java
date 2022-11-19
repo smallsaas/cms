@@ -21,12 +21,15 @@ public interface AdService extends CRUDServiceOnly<Ad> {
      * @param group
      * @return
      */
-    AdGroupedModel getAdRecordsByGroup(String group, Integer enabled);
+    AdGroupedModel getAdRecordsByGroup(String group, String appid,Integer enabled);
 
     Integer createMaster(Ad ad);
 
     Integer updateMaster(Ad ad);
+    AdGroupedModel getAdRecordsByGroup(String group,String appid);
+
     AdGroupedModel getAdRecordsByGroup(String group);
+
 
     List<Ad> getAdList(Ad record);
 

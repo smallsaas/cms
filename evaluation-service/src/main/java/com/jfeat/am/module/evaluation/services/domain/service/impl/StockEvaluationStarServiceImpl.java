@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @author admin
  * @since 2017-10-16
  */
-@Service("StockEvaluationStarService")
+@Service
 public class StockEvaluationStarServiceImpl extends CRUDStockEvaluationStarServiceImpl implements StockEvaluationStarService {
 
     @Resource

@@ -44,6 +44,29 @@ public class AdEndpoint  {
     @Resource
     private AdGroupMapper adGroupMapper;
 
+    @Resource
+    QueryAdLibraryDao queryAdLibraryDao;
+    @Resource
+    QueryAdDao queryAdDao;
+
+
+    @GetMapping("/pub/ad/group/{group}")
+    @ApiOperation("按组获取轮播图 [带组信息]")
+    public Tip getAdGroup(@PathVariable String group) {
+        AdGroupedModel model = adService.getAdRecordsByGroup(group);
+        if(model != null && model.getAds() != null) {
+            List<Ad> temp = model.getAds().stream().sorted((t1, t2) -> t1.getType().compareTo(t2.getType())).collect(Collectors.toList());
+            model.setAds(temp);
+        }
+        return SuccessTip.create(model);
+    }
+
+    @ApiOperation("按组获取轮播图 group=1 首页轮播图")
+    @GetMapping("/pub/ad/records/{group}")
+    public Tip Ad(@PathVariable String group,
+                  @RequestParam(value = "enabled", required = false) Integer enabled) {
+        return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group,null, enabled));
+    }
 
     @PostMapping("/ad")
     @ApiOperation("添加轮播图")
@@ -109,6 +132,19 @@ public class AdEndpoint  {
         return SuccessTip.create(adService.updateMaster(entity,false));
     }
 
+    @GetMapping("/pub/ad/{id}")
+    @ApiOperation("轮播图详情")
+    public Tip getAdInfo(@PathVariable Long id) {
+        //新建对象 进行封装image
+        List<AdImage> images=new ArrayList<>();
+        AdImage image= new AdImage();
+        AdRecord adRecord=new AdRecord();
+        adRecord = adService.getAdRecord(id);
+        image.setUrl(adRecord.getImage());
+        images.add(image);
+        /*adRecord.setImages(images);*/
+        return SuccessTip.create(adRecord);
+    }
     @DeleteMapping("/ad/{id}")
     @ApiOperation("删除轮播图")
     public Tip deleteAd(@PathVariable Long id) {
@@ -131,6 +167,89 @@ public class AdEndpoint  {
         ad.setId(id);
         ad.setEnabled(0);
         return SuccessTip.create(adService.updateMaster(ad,false));
+    }
+
+    @ApiOperation("按组获取广告组")
+    @GetMapping("/pub/ad/allGroup/{groupId}")
+    public Tip getAdsFromGroup(
+            @RequestParam(name = "search", required = false) String search,
+            @PathVariable Integer groupId) {
+
+        if(search!=null && search.trim().length()>0){
+            return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)
+                    .like("name",search)
+                    .or()
+                    .like("type",search)
+                    .eq("group_id",groupId)
+            ));
+        }else  return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)));
+
+    }
+
+    @GetMapping("/pub/ad")
+    @ApiOperation("广告列表")
+    public Tip queryAdLibraryies(Page<AdRecord> page,
+                                 @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(name = "search", required = false) String search,
+                                 @RequestParam(name = "enabled", required = false) Integer enabled,
+                                 @RequestParam(name = "groupId", required = false) Long groupId,
+                                 @RequestParam(name = "orderBy", required = false) String orderBy,
+                                 @RequestParam(name = "sort", required = false) String sort) {
+        if (orderBy != null && orderBy.length() > 0) {
+            if (sort != null && sort.length() > 0) {
+                String pattern = "(ASC|DESC|asc|desc)";
+                if (!sort.matches(pattern)) {
+                    throw new BusinessException(BusinessCode.BadRequest.getCode(), "sort must be ASC or DESC");//此处异常类型根据实际情况而定
+                }
+            } else {
+                sort = "ASC";
+            }
+            orderBy = "`" + orderBy + "`" + " " + sort;
+        }
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+
+        AdRecord record = new AdRecord();
+        record.setGroupId(groupId);
+        record.setName(search);
+        record.setEnabled(enabled);
+
+        page.setRecords(queryAdDao.findAdPage(page,record,orderBy,search));
+
+        return SuccessTip.create(page);
+    }
+
+    @GetMapping("/pub/ad/libraries")
+    @ApiOperation("图库列表")
+    public Tip queryAdLibraryies(Page<AdLibraryRecord> page,
+                                 @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
+                                 @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(name = "id", required = false) Long id,
+                                 @RequestParam(name = "url", required = false) String url,
+                                 @RequestParam(name = "orderBy", required = false) String orderBy,
+                                 @RequestParam(name = "sort", required = false) String sort) {
+        if (orderBy != null && orderBy.length() > 0) {
+            if (sort != null && sort.length() > 0) {
+                String pattern = "(ASC|DESC|asc|desc)";
+                if (!sort.matches(pattern)) {
+                    throw new BusinessException(BusinessCode.BadRequest.getCode(), "sort must be ASC or DESC");//此处异常类型根据实际情况而定
+                }
+            } else {
+                sort = "ASC";
+            }
+            orderBy = "`" + orderBy + "`" + " " + sort;
+        }
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+
+        AdLibraryRecord record = new AdLibraryRecord();
+        record.setId(id);
+        record.setUrl(url);
+
+        page.setRecords(queryAdLibraryDao.findAdLibraryPage(page, record, orderBy));
+
+        return SuccessTip.create(page);
     }
 
 }

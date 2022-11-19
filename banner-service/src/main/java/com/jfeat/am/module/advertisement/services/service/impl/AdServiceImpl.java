@@ -75,8 +75,13 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
     }
 
     @Override
+    public AdGroupedModel getAdRecordsByGroup(String group,String appid) {
+        return getAdRecordsByGroup(group, appid,1);
+    }
+
+    @Override
     public AdGroupedModel getAdRecordsByGroup(String group) {
-        return getAdRecordsByGroup(group, 1);
+        return getAdRecordsByGroup(group, null,1);
     }
 
     @Override
@@ -112,9 +117,9 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
     }
 
     @Override
-    public AdGroupedModel getAdRecordsByGroup(String group, Integer enabled) {
+    public AdGroupedModel getAdRecordsByGroup(String group, String appid,Integer enabled) {
         /// group means group identifier
-        List<Ad> records= queryAdLibraryDao.getAdRecordsByGroup(group, enabled);
+        List<Ad> records= queryAdLibraryDao.getAdRecordsByGroup(group,appid, enabled);
 
         AdGroupedModel model = new AdGroupedModel();
         model.setAds(records);

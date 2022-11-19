@@ -16,5 +16,5 @@ import java.util.List;
 public interface QueryAdLibraryDao extends BaseMapper<AdLibraryRecord> {
     List<AdLibraryRecord> findAdLibraryPage(Page<AdLibraryRecord> page, @Param("record") AdLibraryRecord record, @Param("orderBy") String orderBy);
 
-    List<Ad> getAdRecordsByGroup(@Param("group") String group, @Param("enabled") Integer enabled);
+    List<Ad> getAdRecordsByGroup(@Param("group") String group,@Param("appid")String appid, @Param("enabled") Integer enabled);
 }

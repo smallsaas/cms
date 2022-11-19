@@ -21,6 +21,32 @@
 
      </select>
 
+
+    <select id="findAdPageByAppid" resultType="AdRecord" parameterType="AdRecord">
+        SELECT t_ad.*,t_ad_group.name as group_name
+        FROM t_ad left join t_ad_group on t_ad.group_id=t_ad_group.id
+        WHERE 1=1
+        <if test="record.groupId != null and record.groupId>0 ">
+            AND t_ad_group.id = #{record.groupId}
+        </if>
+        <if test="search != null and search!= ''">
+            AND (t_ad.name LIKE CONCAT('%',#{search},'%')
+            or t_ad_group.name LIKE CONCAT('%',#{search},'%'))
+        </if>
+        <if test="record.enabled != null ">
+            AND t_ad.enabled LIKE CONCAT('%',#{record.enabled},'%')
+        </if>
+        <if test="appid != null and appid != ''">
+            AND t_ad_group.appid = #{appid}
+        </if>
+        <if test="record.identifier != null and record.identifier != ''">
+            AND t_ad_group.identifier = #{record.identifier}
+        </if>
+        <if test="record.orgId != null and record.orgId >0">
+            AND t_ad_group.org_id = #{record.orgId}
+        </if>
+    </select>
+
     <select id="findAd" resultType="AdRecord" parameterType="AdRecord">
         SELECT t_ad.*,t_ad_group.name as group_name
         FROM t_ad left join t_ad_group on t_ad.group_id=t_ad_group.id

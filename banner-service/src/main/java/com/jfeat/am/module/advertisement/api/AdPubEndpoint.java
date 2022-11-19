@@ -84,7 +84,7 @@ public class AdPubEndpoint {
     @GetMapping("/ad/records/{group}")
     public Tip Ad(@PathVariable String group,
                  @RequestParam(value = "enabled", required = false) Integer enabled) {
-        return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group, enabled));
+        return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group,null, enabled));
     }
 
     @GetMapping("/ad/{id}")

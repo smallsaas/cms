@@ -18,6 +18,13 @@ public interface QueryAdDao extends BaseMapper<Ad> {
                               @Param("orderBy") String orderBy,
                               @Param("search") String search);
 
+
+    List<AdRecord> findAdPageByAppid(Page<AdRecord> page,
+                                     @Param("record") AdRecord record,
+                                     @Param("orderBy") String orderBy,
+                                     @Param("search") String search,
+                                     @Param("appid")String appid);
+
     AdRecord findAd( @Param("id") Long id);
 
     List<smallProductRequest> getProductIdName();
