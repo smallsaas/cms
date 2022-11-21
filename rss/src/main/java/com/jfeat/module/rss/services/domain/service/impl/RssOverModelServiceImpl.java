@@ -8,6 +8,7 @@ import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.plus.CRUDServiceModel;
 import com.jfeat.crud.plus.DefaultFilterResult;
+import com.jfeat.module.album.services.domain.service.ImageRegexService;
 import com.jfeat.module.lc_low_auto_page_style.services.domain.service.LowAutoPageRssStyleService;
 import com.jfeat.module.rss.services.domain.dao.QueryRssDao;
 import com.jfeat.module.rss.services.domain.dao.QueryRssItemDao;
