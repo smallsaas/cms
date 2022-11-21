@@ -1,0 +1,30 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `t_rss`;
+CREATE TABLE `t_rss`(
+`id` BIGINT(20) auto_increment,
+`uuid` VARCHAR(50) COMMENT 'uuid',
+`orgId` BIGINT(20) COMMENT 'orgId',
+`name` VARCHAR(50) COMMENT '名字',
+`status` TINYINT(4) NOT NULL DEFAULT 1 COMMENT '状态',
+`sort_number` INT NOT NULL DEFAULT 1 COMMENT '排序号',
+`note` VARCHAR(255) COMMENT '备用',
+`create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `t_rss_item`;
+CREATE TABLE `t_rss_item`(
+`id` BIGINT(20) auto_increment,
+`pid` BIGINT(20) NOT NULL COMMENT'父id',
+`title` VARCHAR(255) COMMENT '标题',
+`pictures` text COMMENT '图片集',
+`status` TINYINT(4) NOT NULL DEFAULT 1 COMMENT '状态',
+`sort_number` INT NOT NULL DEFAULT 1 COMMENT '排序号',
+`note` VARCHAR(255) COMMENT '备用',
+`create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;

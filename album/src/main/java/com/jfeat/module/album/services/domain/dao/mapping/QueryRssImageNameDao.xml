@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.album.services.domain.dao.QueryRssImageNameDao">
+    <sql id="Base_Column_List">
+        t_rss_image_name
+        .
+        id
+        , t_rss_image_name.name, t_rss_image_name.org_id AS orgId, t_rss_image_name.category, t_rss_image_name.state, t_rss_image_name.note, t_rss_image_name.create_time AS createTime, t_rss_image_name.update_time AS updateTime
+    </sql>
+
+    <sql id="QueryOwnedOrgIds">
+        SELECT children.id
+        FROM t_sys_org,
+             t_sys_org as children
+        WHERE t_sys_org.left_num &lt;= children.left_num
+          AND t_sys_org.right_num >= children.left_num
+          and t_sys_org.id = #{record.orgId}
+        order by t_sys_org.node_level ASC
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="RssImageNameModel">
+        SELECT t_rss_image_name.*
+        FROM t_rss_image_name
+        WHERE t_rss_image_name.id = #{id}
+        GROUP BY t_rss_image_name.id
+    </select>
+
+
+    <select id="findRssImageNamePage" resultType="RssImageNameRecord" parameterType="RssImageNameRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_rss_image_name
+
+
+        <if test="record.orgId > 0">
+            ,(<include refid="QueryOwnedOrgIds"></include>) AS ownedOrgIds
+        </if>
+
+        WHERE 1=1
+        <if test="record.orgId > 0">
+            AND t_rss_image_name.org_id = ownedOrgIds.id
+        </if>
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND t_rss_image_name.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_rss_image_name.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+
+
+        <if test="record.orgId != null and record.orgId>0 ">
+            AND t_rss_image_name.org_id IN (<include refid="QueryOwnedOrgIds"/>)
+        </if>
+        <if test="record.category != null and record.category!= ''">
+            AND t_rss_image_name.category LIKE CONCAT('%',#{record.category},'%')
+        </if>
+        <if test="record.state != null and record.state>0 ">
+            AND t_rss_image_name.state LIKE CONCAT('%',#{record.state},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND t_rss_image_name.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_rss_image_name.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND t_rss_image_name.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_rss_image_name.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss_image_name.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR t_rss_image_name.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+        ORDER BY update_time DESC
+        , create_time DESC
+    </select>
+
+
+    <resultMap id="RssImageNameMapper" type="RssImageNameRecord">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="org_id" property="orgId" />
+        <result column="category" property="category" />
+        <result column="state" property="state" />
+        <result column="note" property="note" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <collection property="rssImagePropList" ofType="com.jfeat.module.album.services.gen.persistence.model.RssImageProp" select="com.jfeat.module.album.services.domain.dao.QueryRssImagePropDao.queryRssImagePropByPid" column="id">
+        </collection>
+    </resultMap>
+
+    <select id="findRssImageNamePageWithItem" resultMap="RssImageNameMapper" parameterType="RssImageNameRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM t_rss_image_name
+
+
+        <if test="record.orgId > 0">
+            ,(<include refid="QueryOwnedOrgIds"></include>) AS ownedOrgIds
+        </if>
+
+        WHERE 1=1
+        <if test="record.orgId > 0">
+            AND t_rss_image_name.org_id = ownedOrgIds.id
+        </if>
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND t_rss_image_name.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND t_rss_image_name.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+
+
+        <if test="record.orgId != null and record.orgId>0 ">
+            AND t_rss_image_name.org_id IN (<include refid="QueryOwnedOrgIds"/>)
+        </if>
+        <if test="record.category != null and record.category!= ''">
+            AND t_rss_image_name.category LIKE CONCAT('%',#{record.category},'%')
+        </if>
+        <if test="record.state != null and record.state>0 ">
+            AND t_rss_image_name.state LIKE CONCAT('%',#{record.state},'%')
+        </if>
+        <if test="record.note != null and record.note!= ''">
+            AND t_rss_image_name.note LIKE CONCAT('%',#{record.note},'%')
+        </if>
+
+
+        <if test="record.createTime != null and record.createTime>0 ">
+            AND t_rss_image_name.create_time LIKE CONCAT('%',#{record.createTime},'%')
+        </if>
+
+
+        <if test="record.updateTime != null and record.updateTime>0 ">
+            AND t_rss_image_name.update_time LIKE CONCAT('%',#{record.updateTime},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND t_rss_image_name.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND t_rss_image_name.end_time <= DATE(#{endTime}]]>
+        </if>
+        ORDER BY update_time DESC
+        , create_time DESC
+    </select>
+
+</mapper>
