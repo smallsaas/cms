@@ -1,4 +1,4 @@
-package com.jfeat.module.album.services.domain.service;
+package com.jfeat.module.rss.services.domain.service;
 
 import java.util.List;
 import java.util.Map;

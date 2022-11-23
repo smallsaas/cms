@@ -1,5 +1,6 @@
 package com.jfeat.module.album.services.domain.dao;
 
+import com.jfeat.crud.plus.annotation.SQLTag;
 import com.jfeat.module.album.services.domain.model.RssImageNameRecord;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,13 +16,14 @@ import java.util.List;
  * Created by Code generator on 2022-10-21
  */
 public interface QueryRssImageNameDao extends QueryMasterDao<RssImageName> {
-   /*
-    * Query entity list by page
-    */
+    /*
+     * Query entity list by page
+     */
+    @SQLTag("RssImageName")
     List<RssImageNameRecord> findRssImageNamePage(Page<RssImageNameRecord> page, @Param("record") RssImageNameRecord record,
-                                            @Param("tag") String tag,
-                                            @Param("search") String search, @Param("orderBy") String orderBy,
-                                            @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+                                                  @Param("tag") String tag,
+                                                  @Param("search") String search, @Param("orderBy") String orderBy,
+                                                  @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     /*
      * Query entity model for details
@@ -34,10 +36,10 @@ public interface QueryRssImageNameDao extends QueryMasterDao<RssImageName> {
      */
     List<RssImageNameModel> queryMasterModelList(@Param("masterId") Object masterId);
 
- List<RssImageNameRecord> findRssImageNamePageWithItem(Page<RssImageNameRecord> page, @Param("record") RssImageNameRecord record,
-                                               @Param("tag") String tag,
-                                               @Param("search") String search, @Param("orderBy") String orderBy,
-                                               @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    List<RssImageNameRecord> findRssImageNamePageWithItem(Page<RssImageNameRecord> page, @Param("record") RssImageNameRecord record,
+                                                          @Param("tag") String tag,
+                                                          @Param("search") String search, @Param("orderBy") String orderBy,
+                                                          @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
 
 }

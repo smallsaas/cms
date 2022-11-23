@@ -64,7 +64,7 @@
 
         <dependency>
             <groupId>com.jfeat</groupId>
-            <artifactId>album</artifactId>
+            <artifactId>lc_low_auto_album</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

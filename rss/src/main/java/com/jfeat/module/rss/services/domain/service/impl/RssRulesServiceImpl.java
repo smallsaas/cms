@@ -2,7 +2,7 @@ package com.jfeat.module.rss.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jfeat.module.album.services.domain.service.RssImageNameOverModelService;
+import com.jfeat.module.album.services.domain.service.LowAutoAlbumOverModelService;
 import com.jfeat.module.rss.services.domain.service.RssComponentPropService;
 import com.jfeat.module.rss.services.domain.service.RssComponentService;
 import com.jfeat.module.rss.services.domain.service.RssRulesService;
@@ -39,7 +39,7 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
     RssComponentService rssComponentService;
 
     @Resource
-    RssImageNameOverModelService rssImageNameOverModelService;
+    LowAutoAlbumOverModelService rssImageNameOverModelService;
 
     @Override
     protected String entityName() {
@@ -781,7 +781,7 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
             if (m.find()) {
                 imageCollectionName = m.group(1);
 //                查看图片集图片列表
-                Map<String, List<JSONObject>> allRssImageToList = rssImageNameOverModelService.getAllRssImageToList();
+                Map<String, List<JSONObject>> allRssImageToList = rssImageNameOverModelService.getAllAlbumToList();
 
                 if (allRssImageToList != null && allRssImageToList.containsKey(imageCollectionName) && allRssImageToList.get(imageCollectionName) != null) {
                     imageCollectionJsonList = allRssImageToList.get(imageCollectionName);

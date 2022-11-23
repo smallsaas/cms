@@ -1,7 +1,7 @@
-package com.jfeat.module.album.services.domain.service.impl;
+package com.jfeat.module.rss.services.domain.service.impl;
 
-import com.jfeat.module.album.services.domain.service.ImageRegexService;
-import com.jfeat.module.album.utils.FileUtil;
+import com.jfeat.module.rss.services.domain.service.ImageRegexService;
+import com.jfeat.module.rss.utils.FileUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 

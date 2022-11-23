@@ -2,7 +2,7 @@ package com.jfeat.module.rss.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jfeat.module.album.services.domain.service.RssImageNameOverModelService;
+import com.jfeat.module.album.services.domain.service.LowAutoAlbumOverModelService;
 import com.jfeat.module.lc_low_auto_page_style.services.domain.service.LowAutoPageRssStyleService;
 import com.jfeat.module.rss.services.domain.model.RssRecord;
 import com.jfeat.module.rss.services.domain.service.RssStyleControl;
@@ -21,14 +21,14 @@ public class RssStyleControlImpl implements RssStyleControl {
     LowAutoPageRssStyleService LowAutoPageRssStyleService;
 
     @Resource
-    RssImageNameOverModelService rssImageNameOverModelService;
+    LowAutoAlbumOverModelService rssImageNameOverModelService;
 
     @Override
     public List<RssRecord> andRssStyleValue(List<RssRecord> recordList) {
         if (recordList!=null && recordList.size()>0){
             Map<String, JSONObject> map =  LowAutoPageRssStyleService.getAllStyleJsonMap();
 
-            Map<String, String> imageStyleMap = rssImageNameOverModelService.getAllRssImageToMap();
+            Map<String, String> imageStyleMap = rssImageNameOverModelService.getAllAlbumToMap();
 
             for (RssRecord record:recordList){
 
