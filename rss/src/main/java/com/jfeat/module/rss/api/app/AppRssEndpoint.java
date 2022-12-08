@@ -225,6 +225,12 @@ public class AppRssEndpoint {
             rssPage = queryRssDao.queryRssWithItemNotComponent(page, record, tag, search, orderBy, null, null);
         }
 
+        for (RssRecord rssRecord:rssPage){
+            if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
+                rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
+            }
+        }
+
         page.setRecords(rssPage);
 
         return SuccessTip.create(page);
