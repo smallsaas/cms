@@ -67,6 +67,12 @@
             <artifactId>lc_low_auto_album</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.13</version>
+        </dependency>
     </dependencies>
 
 

@@ -94,11 +94,23 @@ public class AppRssEndpoint {
                 }else {
                     rssStyleControl.andRssStyleValue(recordList);
                     stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(recordList.get(0),SerializerFeature.WriteMapNullValue),24, TimeUnit.HOURS);
+                    if (recordList.get(0)!=null){
+                        RssRecord rssRecord = recordList.get(0);
+                        if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
+                            rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
+                        }
+                    }
                     return SuccessTip.create(recordList.get(0));
                 }
 
             }else {
                 rssStyleControl.andRssStyleValue(recordList);
+                if (recordList.get(0)!=null){
+                    RssRecord rssRecord = recordList.get(0);
+                    if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
+                        rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
+                    }
+                }
                 return SuccessTip.create(recordList.get(0));
             }
 
