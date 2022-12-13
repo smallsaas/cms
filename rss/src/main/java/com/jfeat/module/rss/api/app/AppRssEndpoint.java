@@ -77,6 +77,9 @@ public class AppRssEndpoint {
     }
 
 
+
+
+
     @GetMapping("/{id}")
     @ApiOperation(value = "查询rss详情")
     public Tip getPreView(@PathVariable("id") Long id) {
@@ -99,7 +102,10 @@ public class AppRssEndpoint {
                         if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
                             rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
                         }
+
+                        rssRecord.setRecords(rssRecord.getRssItemList());
                     }
+
                     return SuccessTip.create(recordList.get(0));
                 }
 
@@ -110,6 +116,7 @@ public class AppRssEndpoint {
                     if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
                         rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
                     }
+                    rssRecord.setRecords(rssRecord.getRssItemList());
                 }
                 return SuccessTip.create(recordList.get(0));
             }

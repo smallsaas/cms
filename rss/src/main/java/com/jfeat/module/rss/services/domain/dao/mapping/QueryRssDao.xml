@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssDao">
     <sql id="Base_Column_List">
-        t_rss.id, t_rss.uuid, t_rss.orgId, t_rss.name, t_rss.status, t_rss.sort_number AS sortNumber, t_rss.note, t_rss.create_time AS createTime, t_rss.update_time AS updateTime
+        t_rss.id, t_rss.uuid, t_rss.orgId, t_rss.name, t_rss.status, t_rss.sort_number AS sortNumber, t_rss.note, t_rss.create_time AS createTime, t_rss.update_time AS updateTime,t_rss.summary
     </sql>
 
 
@@ -86,6 +86,7 @@
         <result column="note" property="note" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
+        <result column="summary" property="summary" />
         <collection property="rssItemList" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssItem" select="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao.queryRssItemByPid" column="{pid=id}">
 
         </collection>
@@ -298,6 +299,7 @@
         <result column="note" property="note" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
+        <result column="summary" property="summary" />
         <collection property="rssItemList" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssItem" select="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao.queryRssItemNotComponentByPid" column="{pid=id}">
 
         </collection>

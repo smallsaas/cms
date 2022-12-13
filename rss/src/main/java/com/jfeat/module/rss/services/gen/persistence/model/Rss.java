@@ -52,6 +52,9 @@ public class Rss extends Model<Rss> {
     @ApiModelProperty(value = "备用")
     private String note;
 
+    @ApiModelProperty("简述")
+    private String summary;
+
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
@@ -71,6 +74,15 @@ public class Rss extends Model<Rss> {
 
     @TableField(exist = false)
     private String tagIds;
+
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
     public JSONObject getExtra() {
         return extra;

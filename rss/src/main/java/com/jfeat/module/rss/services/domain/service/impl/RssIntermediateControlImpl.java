@@ -3,7 +3,9 @@ package com.jfeat.module.rss.services.domain.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.module.rss.services.domain.service.RssIntermediateControl;
 import com.jfeat.module.rss.services.domain.service.RssRulesService;
+import com.jfeat.module.rss.services.gen.persistence.dao.RssMapper;
 import com.jfeat.module.rss.services.gen.persistence.dao.RssRulesMapper;
+import com.jfeat.module.rss.services.gen.persistence.model.Rss;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
 import com.jfeat.module.rss.services.gen.persistence.model.RssRules;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class RssIntermediateControlImpl implements RssIntermediateControl {
     @Resource
     RssRulesService rssRulesService;
 
+    @Resource
+    RssMapper rssMapper;
+
     @Override
     public void involve(RssItem rssItem,Queue<String> queue) {
 
@@ -29,12 +34,25 @@ public class RssIntermediateControlImpl implements RssIntermediateControl {
         rssRulesQueryWrapper.orderByDesc(RssRules.PRIORITY);
         List<RssRules> rssRulesList = rssRulesMapper.selectList(rssRulesQueryWrapper);
 
+
+        Integer count=0;
+
         while (!queue.isEmpty()){
 
             String data = queue.peek();
+            count+=1;
 
 //            注释
             if (data.startsWith("<!>")){
+                if (count<=1){
+                    Rss rss = rssMapper.selectById(rssItem.getPid());
+                    if (rss!=null){
+                        String summary = data.substring("<!>".length());
+                        rss.setSummary(summary);
+                        rssMapper.updateById(rss);
+                    }
+
+                }
                 queue.poll();
                 continue;
             }
