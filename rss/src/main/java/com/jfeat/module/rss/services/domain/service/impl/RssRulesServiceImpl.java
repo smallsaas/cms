@@ -825,7 +825,7 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
 
 //        判断是否有风格
         String stylePattern = ".*<(.*)>.*";
-        String singeImageStyle = null;
+         String singeImageStyle = null;
 //        添加单图片风格
         boolean isMatchStyle = Pattern.matches(stylePattern, data);
         if (isMatchStyle) {

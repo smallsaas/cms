@@ -2,6 +2,7 @@ package com.jfeat.module.rss.api.app;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -100,10 +101,13 @@ public class AppRssEndpoint {
                     if (recordList.get(0)!=null){
                         RssRecord rssRecord = recordList.get(0);
                         if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
+
                             rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
                         }
 
-                        rssRecord.setRecords(rssRecord.getRssItemList());
+                        String content = JSONArray.toJSONString(rssRecord.getRssItemList(),SerializerFeature.DisableCircularReferenceDetect);
+                        List<RssItem> rssItemList = JSONArray.parseArray(content,RssItem.class);
+                        rssRecord.setRecords(rssItemList);
                     }
 
                     return SuccessTip.create(recordList.get(0));
@@ -116,7 +120,9 @@ public class AppRssEndpoint {
                     if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
                         rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
                     }
-                    rssRecord.setRecords(rssRecord.getRssItemList());
+                    String content = JSONArray.toJSONString(rssRecord.getRssItemList(),SerializerFeature.DisableCircularReferenceDetect);
+                    List<RssItem> rssItemList = JSONArray.parseArray(content,RssItem.class);
+                    rssRecord.setRecords(rssItemList);
                 }
                 return SuccessTip.create(recordList.get(0));
             }
