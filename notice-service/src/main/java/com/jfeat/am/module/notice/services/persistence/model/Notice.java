@@ -101,6 +101,28 @@ public class Notice extends Model<Notice> {
 
     private Integer stick;
 
+    private Boolean template;
+
+
+    @TableField(exist = false)
+    private Long templateId;
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
+    }
+
+    public Boolean getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(Boolean template) {
+        this.template = template;
+    }
+
     public Integer getStick() {
         return stick;
     }

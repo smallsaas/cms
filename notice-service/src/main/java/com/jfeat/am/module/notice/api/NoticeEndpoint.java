@@ -57,6 +57,8 @@ public class NoticeEndpoint {
     NoticeMapper noticeMapper;
 
 
+
+
     /**
      * CRUD
      *
@@ -65,9 +67,21 @@ public class NoticeEndpoint {
      */
     @PostMapping
     @ApiOperation(value = "添加公告", response = Notice.class)
-    public Tip createNotice(@RequestBody Notice entity) {
+    public Tip createNotice(@RequestBody Notice entity,@RequestParam(value = "template",required = false,defaultValue = "false") Boolean template) {
+        entity.setTemplate(template);
         entity.setAuthor(JWTKit.getAccount());
-//        entity.setOrgId(JWTKit.getOrgId());
+        if (!template&&entity.getTemplateId()!=null){
+            Notice notice =  noticeMapper.selectById(entity.getTemplateId());
+            if (notice!=null&&notice.getContent()!=null&&notice.getTemplate()!=null&&notice.getTemplate()){
+                String newContent = entity.getContent().concat(notice.getContent());
+                entity.setContent(newContent);
+            }
+        }
+
+        if (entity.getOrgId()==null){
+            entity.setOrgId(JWTKit.getOrgId());
+        }
+
         if (entity.getContent()!=null){
             entity.setPictureUrl(RegexScript.getImageUrl(entity.getContent()));
         }
@@ -94,10 +108,18 @@ public class NoticeEndpoint {
     @PutMapping("/{id}")
     @ApiOperation(value = "修改公告", response = Notice.class)
     public Tip updateNotice(@PathVariable Long id, @RequestBody Notice entity) {
+
         if (entity.getContent()!=null){
             entity.setPictureUrl(RegexScript.getImageUrl(entity.getContent()));
         }
 
+        if (entity.getTemplateId()!=null){
+            Notice notice =  noticeMapper.selectById(entity.getTemplateId());
+            if (notice!=null&&notice.getContent()!=null&&notice.getTemplate()!=null&&notice.getTemplate()){
+                String newContent = entity.getContent().concat(notice.getContent());
+                entity.setContent(newContent);
+            }
+        }
         entity.setId(id);
         return SuccessTip.create(noticeMapper.updateById(entity));
     }
@@ -120,7 +142,8 @@ public class NoticeEndpoint {
             @Range(min = 0, max = 1) @RequestParam(name = "expired", required = false) Integer expired,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "search", required = false) String search,
-            @RequestParam(name = "content", required = false) String content
+            @RequestParam(name = "content", required = false) String content,
+            @RequestParam(name = "template",required = false) Boolean template
     ) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
@@ -152,6 +175,7 @@ public class NoticeEndpoint {
         notice.setContent(content);
         notice.setEnabled(enabled);
         notice.setOrgId(JWTKit.getOrgId());
+        notice.setTemplate(template);
         List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
 
         //        当content为空时读取content_path内容

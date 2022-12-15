@@ -124,6 +124,7 @@ public class UserNoticeEndpoint {
         notice.setTitle(title);
         notice.setContent(content);
         notice.setEnabled(enabled);
+        notice.setTemplate(false);
         notice.setNoticeType(Notice.NOTICE_Type_NOTICE);
 
         if (META.enabledSaas()) {

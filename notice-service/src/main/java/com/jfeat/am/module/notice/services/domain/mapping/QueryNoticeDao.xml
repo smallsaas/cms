@@ -56,6 +56,10 @@
             AND t_notice.notice_type =#{notice.noticeType}
         </if>
 
+        <if test="notice.template != null">
+            AND t_notice.template = #{notice.template}
+        </if>
+
 
         <if test="search != null and search!= ''">
             AND(
