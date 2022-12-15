@@ -9,9 +9,9 @@
         t_rss_item.status,
         t_rss_item.sort_number AS sortNumber,
         t_rss_item.note,
-        t_rss_item.font_weight AS fontWeight,
-        t_rss_item.font_size AS fontSize,
-        t_rss_item.line_height AS lineHeight,
+--         t_rss_item.font_weight AS fontWeight,
+--         t_rss_item.font_size AS fontSize,
+--         t_rss_item.line_height AS lineHeight,
         t_rss_item.image_sort imageSort,
         t_rss_item.image_ratio AS imageRatio,
         t_rss_item.image_expression AS imageExpression,
@@ -94,9 +94,9 @@
 <!--    批量插入-->
     <insert id="batchAddRssItem">
         insert into t_rss_item
-        (pid,title,pictures,status,sort_number,note,font_weight,font_size,line_height,image_sort,image_ratio,image_expression,image_container,image_style) values
+        (pid,title,pictures,status,sort_number,note,image_sort,image_ratio,image_expression,image_container,image_style) values
         <foreach collection="rssItemList" item="item" separator=",">
-            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.fontWeight},#{item.fontSize},#{item.lineHeight},#{item.imageSort},#{item.imageRatio},#{item.imageExpression},#{item.imageContainer},#{item.imageStyle})
+            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.imageSort},#{item.imageRatio},#{item.imageExpression},#{item.imageContainer},#{item.imageStyle})
         </foreach>
     </insert>
 
@@ -104,9 +104,9 @@
 
     <insert id="batchAddRssItemModel">
         insert into t_rss_item
-        (pid,title,pictures,status,sort_number,note,font_weight,font_size,line_height) values
+        (pid,title,pictures,status,sort_number,note) values
         <foreach collection="rssItemList" item="item" separator=",">
-            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note},#{item.fontWeight},#{item.fontSize},#{item.lineHeight})
+            (#{item.pid},#{item.title},#{item.pictures},#{item.status},#{item.sortNumber},#{item.note})
         </foreach>
     </insert>
 
@@ -120,9 +120,6 @@
         <result column="status" property="status" />
         <result column="sort_number" property="sortNumber" />
         <result column="note" property="note" />
-        <result column="font_weight" property="fontWeight" />
-        <result column="font_size" property="fontSize" />
-        <result column="line_height" property="lineHeight" />
 
         <result column="image_sort" property="imageSort" />
         <result column="image_ratio" property="imageRatio" />

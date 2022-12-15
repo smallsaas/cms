@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jfeat.module.rss.services.gen.crud.model.RssComponentModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,6 +28,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @TableName("t_rss_item")
 @ApiModel(value = "RssItem对象", description = "")
+@JsonIgnoreProperties(value = {"fontSize", "lineHeight","fontSize"})
 public class RssItem extends Model<RssItem> {
 
     private static final long serialVersionUID = 1L;
@@ -49,11 +51,11 @@ public class RssItem extends Model<RssItem> {
     @ApiModelProperty(value = "排序号")
     private Integer sortNumber;
 
-    private Boolean fontWeight;
-
-    private Integer fontSize;
-
-    private Integer lineHeight;
+//    private Boolean fontWeight;
+//
+//    private Integer fontSize;
+//
+//    private Integer lineHeight;
 
     private String imageSort;
 
@@ -167,29 +169,29 @@ public class RssItem extends Model<RssItem> {
         return this;
     }
 
-    public Boolean getFontWeight() {
-        return fontWeight;
-    }
-
-    public void setFontWeight(Boolean fontWeight) {
-        this.fontWeight = fontWeight;
-    }
-
-    public Integer getFontSize() {
-        return fontSize;
-    }
-
-    public void setFontSize(Integer fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    public Integer getLineHeight() {
-        return lineHeight;
-    }
-
-    public void setLineHeight(Integer lineHeight) {
-        this.lineHeight = lineHeight;
-    }
+//    public Boolean getFontWeight() {
+//        return fontWeight;
+//    }
+//
+//    public void setFontWeight(Boolean fontWeight) {
+//        this.fontWeight = fontWeight;
+//    }
+//
+//    public Integer getFontSize() {
+//        return fontSize;
+//    }
+//
+//    public void setFontSize(Integer fontSize) {
+//        this.fontSize = fontSize;
+//    }
+//
+//    public Integer getLineHeight() {
+//        return lineHeight;
+//    }
+//
+//    public void setLineHeight(Integer lineHeight) {
+//        this.lineHeight = lineHeight;
+//    }
 
     public String getTitle() {
         return title;
