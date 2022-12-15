@@ -20,6 +20,8 @@ import com.jfeat.module.rss.services.domain.service.RssOverModelService;
 import com.jfeat.module.rss.services.domain.service.RssStyleControl;
 import com.jfeat.module.rss.services.gen.crud.model.RssModel;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
+import com.jfeat.module.rss.services.gen.persistence.model.RssItemC;
+import com.jfeat.module.rss.utils.JsonUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -101,12 +103,14 @@ public class AppRssEndpoint {
                     if (recordList.get(0)!=null){
                         RssRecord rssRecord = recordList.get(0);
                         if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
-
                             rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
                         }
 
                         String content = JSONArray.toJSONString(rssRecord.getRssItemList(),SerializerFeature.DisableCircularReferenceDetect);
-                        List<RssItem> rssItemList = JSONArray.parseArray(content,RssItem.class);
+//                        为react 去除关键字参数
+
+
+                        List<RssItemC> rssItemList = JSONArray.parseArray(content,RssItemC.class);
                         rssRecord.setRecords(rssItemList);
                     }
 
@@ -122,7 +126,10 @@ public class AppRssEndpoint {
                         rssRecord.setContent(rssRecord.getRssItemList().get(0).getTitle());
                     }
                     String content = JSONArray.toJSONString(rssRecord.getRssItemList(),SerializerFeature.DisableCircularReferenceDetect);
-                    List<RssItem> rssItemList = JSONArray.parseArray(content,RssItem.class);
+
+                    //                        为react 去除关键字参数
+
+                    List<RssItemC> rssItemList = JSONArray.parseArray(content, RssItemC.class);
                     rssRecord.setRecords(rssItemList);
                 }
                 return SuccessTip.create(recordList.get(0));

@@ -1,35 +1,16 @@
 package com.jfeat.module.rss.services.gen.persistence.model;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-
-import java.util.Date;
-
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.io.Serializable;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jfeat.module.rss.services.gen.crud.model.RssComponentModel;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Code generator
- * @since 2022-09-26
- */
-@TableName("t_rss_item")
-@ApiModel(value = "RssItem对象", description = "")
-public class RssItem extends Model<RssItem> {
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
+public class RssItemC {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -50,11 +31,7 @@ public class RssItem extends Model<RssItem> {
     @ApiModelProperty(value = "排序号")
     private Integer sortNumber;
 
-    private Boolean fontWeight;
 
-    private Integer fontSize;
-
-    private Integer lineHeight;
 
     private String imageSort;
 
@@ -154,105 +131,72 @@ public class RssItem extends Model<RssItem> {
         return id;
     }
 
-    public RssItem setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public Long getPid() {
         return pid;
     }
 
-    public RssItem setPid(Long pid) {
+    public void setPid(Long pid) {
         this.pid = pid;
-        return this;
-    }
-
-    public Boolean getFontWeight() {
-        return fontWeight;
-    }
-
-    public void setFontWeight(Boolean fontWeight) {
-        this.fontWeight = fontWeight;
-    }
-
-    public Integer getFontSize() {
-        return fontSize;
-    }
-
-    public void setFontSize(Integer fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    public Integer getLineHeight() {
-        return lineHeight;
-    }
-
-    public void setLineHeight(Integer lineHeight) {
-        this.lineHeight = lineHeight;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public RssItem setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public String getPictures() {
         return pictures;
     }
 
-    public RssItem setPictures(String pictures) {
+    public void setPictures(String pictures) {
         this.pictures = pictures;
-        return this;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public RssItem setStatus(Integer status) {
+    public void setStatus(Integer status) {
         this.status = status;
-        return this;
     }
 
     public Integer getSortNumber() {
         return sortNumber;
     }
 
-    public RssItem setSortNumber(Integer sortNumber) {
+    public void setSortNumber(Integer sortNumber) {
         this.sortNumber = sortNumber;
-        return this;
     }
 
     public String getNote() {
         return note;
     }
 
-    public RssItem setNote(String note) {
+    public void setNote(String note) {
         this.note = note;
-        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public RssItem setCreateTime(Date createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public RssItem setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-        return this;
     }
 
     public static final String ID = "id";
@@ -273,10 +217,6 @@ public class RssItem extends Model<RssItem> {
 
     public static final String UPDATE_TIME = "update_time";
 
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
 
     @Override
     public String toString() {
