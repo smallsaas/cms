@@ -97,7 +97,7 @@ public class AppRssEndpoint {
                     return SuccessTip.create(json);
                 }else {
                     rssStyleControl.andRssStyleValue(recordList);
-                    stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(recordList.get(0),SerializerFeature.WriteMapNullValue),24, TimeUnit.HOURS);
+
                     if (recordList.get(0)!=null){
                         RssRecord rssRecord = recordList.get(0);
                         if (rssRecord.getRssItemList()!=null&&rssRecord.getRssItemList().size()>0){
@@ -110,6 +110,7 @@ public class AppRssEndpoint {
                         rssRecord.setRecords(rssItemList);
                     }
 
+                    stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(recordList.get(0),SerializerFeature.WriteMapNullValue),24, TimeUnit.HOURS);
                     return SuccessTip.create(recordList.get(0));
                 }
 
