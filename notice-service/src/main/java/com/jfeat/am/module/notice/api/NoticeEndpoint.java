@@ -70,11 +70,12 @@ public class NoticeEndpoint {
     public Tip createNotice(@RequestBody Notice entity,@RequestParam(value = "template",required = false,defaultValue = "false") Boolean template) {
         entity.setTemplate(template);
         entity.setAuthor(JWTKit.getAccount());
+
+
         if (!template&&entity.getTemplateId()!=null){
             Notice notice =  noticeMapper.selectById(entity.getTemplateId());
-            if (notice!=null&&notice.getContent()!=null&&notice.getTemplate()!=null&&notice.getTemplate()){
-                String newContent = entity.getContent().concat(notice.getContent());
-                entity.setContent(newContent);
+            if (notice==null){
+                throw new BusinessException(BusinessCode.BadRequest,"未找到该模板");
             }
         }
 
@@ -97,10 +98,10 @@ public class NoticeEndpoint {
         Notice notice = queryNoticeDao.queryNoticesById(id);
 
 //        当content为空时读取content_path内容
-        if (("".equals(notice.getContent()) || notice.getContent()==null) && (notice.getContentPath()!=null || "".equals(notice.getContentPath()))){
-            String path = notice.getContentPath();
-            notice.setContent(ReaderFile.readerFile(path));
-        }
+//        if (("".equals(notice.getContent()) || notice.getContent()==null) && (notice.getContentPath()!=null || "".equals(notice.getContentPath()))){
+//            String path = notice.getContentPath();
+//            notice.setContent(ReaderFile.readerFile(path));
+//        }
 //        noticeService.retrieveMaster(id)
         return SuccessTip.create(notice);
     }
@@ -115,9 +116,8 @@ public class NoticeEndpoint {
 
         if (entity.getTemplateId()!=null){
             Notice notice =  noticeMapper.selectById(entity.getTemplateId());
-            if (notice!=null&&notice.getContent()!=null&&notice.getTemplate()!=null&&notice.getTemplate()){
-                String newContent = entity.getContent().concat(notice.getContent());
-                entity.setContent(newContent);
+            if (notice==null){
+                throw new BusinessException(BusinessCode.BadRequest,"未找到该模板");
             }
         }
         entity.setId(id);
@@ -174,7 +174,7 @@ public class NoticeEndpoint {
         notice.setTitle(title);
         notice.setContent(content);
         notice.setEnabled(enabled);
-        notice.setOrgId(JWTKit.getOrgId());
+//        notice.setOrgId(JWTKit.getOrgId());
         notice.setTemplate(template);
         List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
 

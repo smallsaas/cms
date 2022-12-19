@@ -104,8 +104,8 @@ public class Notice extends Model<Notice> {
     private Boolean template;
 
 
-    @TableField(exist = false)
     private Long templateId;
+
 
     public Long getTemplateId() {
         return templateId;

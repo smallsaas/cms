@@ -60,12 +60,22 @@ public class UserNoticeEndpoint {
         Notice notice = queryNoticeDao.queryNoticesById(id);
 
 //        当content为空时读取content_path内容
-        if (("".equals(notice.getContent()) || notice.getContent()==null) && (notice.getContentPath()!=null || "".equals(notice.getContentPath()))){
-            String path = notice.getContentPath();
-            notice.setContent(ReaderFile.readerFile(path));
-        }
+//        if (("".equals(notice.getContent()) || notice.getContent()==null) && (notice.getContentPath()!=null || "".equals(notice.getContentPath()))){
+//            String path = notice.getContentPath();
+//            notice.setContent(ReaderFile.readerFile(path));
+//        }
+
         notice.setViewNumber(notice.getViewNumber()+1);
         noticeMapper.updateById(notice);
+
+        if (notice!=null&&notice.getTemplateId()!=null){
+            Notice template = queryNoticeDao.queryNoticesById(notice.getTemplateId());
+            if (template!=null&&template.getContent()!=null){
+                notice.setContent(notice.getContent().concat(template.getContent()));
+            }
+        }
+
+
 //        noticeService.retrieveMaster(id)
         return SuccessTip.create(notice);
     }
