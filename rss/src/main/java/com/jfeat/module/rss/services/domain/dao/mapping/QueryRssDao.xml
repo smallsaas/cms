@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jfeat.module.rss.services.domain.dao.QueryRssDao">
     <sql id="Base_Column_List">
-        t_rss.id, t_rss.uuid, t_rss.orgId, t_rss.name, t_rss.status, t_rss.sort_number AS sortNumber, t_rss.note, t_rss.create_time AS createTime, t_rss.update_time AS updateTime,t_rss.summary
+        t_rss.id, t_rss.uuid, t_rss.orgId, t_rss.name, t_rss.status, t_rss.sort_number AS sortNumber, t_rss.note, t_rss.create_time AS createTime, t_rss.update_time AS updateTime,t_rss.summary,
+            t_rss.copy_writing as copyWriting,t_rss.edit
     </sql>
 
 
@@ -37,8 +38,17 @@
         <if test="record.name != null and record.name!= ''">
             AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
         </if>
-        <if test="record.status != null and record.status>0 ">
-            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        <if test="record.status != null and record.status>=0 ">
+            AND t_rss.status =#{record.status}
+        </if>
+
+
+        <if test="record.copyWriting != null and record.copyWriting>=0 ">
+            AND t_rss.copy_writing = #{record.copyWriting}
+        </if>
+
+        <if test="record.edit != null and record.edit>0 ">
+            AND t_rss.edit = #{record.edit}
         </if>
 
 
@@ -84,9 +94,11 @@
         <result column="status" property="status" />
         <result column="sort_number" property="sortNumber" />
         <result column="note" property="note" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
         <result column="summary" property="summary" />
+        <result column="copyWriting" property="copyWriting" />
+        <result column="edit" property="edit" />
         <collection property="rssItemList" ofType="com.jfeat.module.rss.services.gen.persistence.model.RssItem" select="com.jfeat.module.rss.services.domain.dao.QueryRssItemDao.queryRssItemByPid" column="{pid=id}">
 
         </collection>
@@ -115,8 +127,17 @@
         <if test="record.name != null and record.name!= ''">
             AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
         </if>
-        <if test="record.status != null and record.status>0 ">
-            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        <if test="record.status != null and record.status>=0 ">
+            AND t_rss.status =#{record.status}
+        </if>
+
+
+        <if test="record.copyWriting != null and record.copyWriting>=0 ">
+            AND t_rss.copy_writing = #{record.copyWriting}
+        </if>
+
+        <if test="record.edit != null and record.edit>0 ">
+            AND t_rss.edit = #{record.edit}
         </if>
 
 
@@ -176,8 +197,17 @@
         <if test="record.name != null and record.name!= ''">
             AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
         </if>
-        <if test="record.status != null and record.status>0 ">
-            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        <if test="record.status != null and record.status>=0 ">
+            AND t_rss.status =#{record.status}
+        </if>
+
+
+        <if test="record.copyWriting != null and record.copyWriting>=0 ">
+            AND t_rss.copy_writing = #{record.copyWriting}
+        </if>
+
+        <if test="record.edit != null and record.edit>0 ">
+            AND t_rss.edit = #{record.edit}
         </if>
 
 
@@ -242,8 +272,17 @@
         <if test="record.name != null and record.name!= ''">
             AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
         </if>
-        <if test="record.status != null and record.status>0 ">
-            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        <if test="record.status != null and record.status>=0 ">
+            AND t_rss.status =#{record.status}
+        </if>
+
+
+        <if test="record.copyWriting != null and record.copyWriting>=0 ">
+            AND t_rss.copy_writing = #{record.copyWriting}
+        </if>
+
+        <if test="record.edit != null and record.edit>0 ">
+            AND t_rss.edit = #{record.edit}
         </if>
 
 
@@ -331,8 +370,17 @@
         <if test="record.name != null and record.name!= ''">
             AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
         </if>
-        <if test="record.status != null and record.status>0 ">
-            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        <if test="record.status != null and record.status>=0 ">
+            AND t_rss.status =#{record.status}
+        </if>
+
+
+        <if test="record.copyWriting != null and record.copyWriting>=0 ">
+            AND t_rss.copy_writing = #{record.copyWriting}
+        </if>
+
+        <if test="record.edit != null and record.edit>0 ">
+            AND t_rss.edit = #{record.edit}
         </if>
 
 
@@ -397,8 +445,17 @@
         <if test="record.name != null and record.name!= ''">
             AND t_rss.name LIKE CONCAT('%',#{record.name},'%')
         </if>
-        <if test="record.status != null and record.status>0 ">
-            AND t_rss.status LIKE CONCAT('%',#{record.status},'%')
+        <if test="record.status != null and record.status>=0 ">
+            AND t_rss.status =#{record.status}
+        </if>
+
+
+        <if test="record.copyWriting != null and record.copyWriting>=0 ">
+            AND t_rss.copy_writing = #{record.copyWriting}
+        </if>
+
+        <if test="record.edit != null and record.edit>0 ">
+            AND t_rss.edit = #{record.edit}
         </if>
 
 

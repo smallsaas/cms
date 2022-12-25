@@ -87,7 +87,7 @@
                 AND ( t_notice.type = #{type[0]} OR t_notice.type = #{type[1]} )
             </if>
         </if>
-        ORDER BY t_notice.sort_num DESC, t_notice.create_time DESC,t_notice.enabled DESC,t_notice.update_time DESC
+        ORDER BY field(t_notice.`status`,"Publish","Deprecated","Draft","Expired"),t_notice.sort_num DESC, t_notice.create_time DESC,t_notice.enabled DESC,t_notice.update_time DESC
     </select>
 
     <select id="findExpiredNotices" resultType="Notice">

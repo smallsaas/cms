@@ -19,6 +19,7 @@ import com.jfeat.module.rss.services.domain.model.RssRecord;
 import com.jfeat.module.rss.services.domain.service.RssOverModelService;
 import com.jfeat.module.rss.services.domain.service.RssStyleControl;
 import com.jfeat.module.rss.services.gen.crud.model.RssModel;
+import com.jfeat.module.rss.services.gen.persistence.model.Rss;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItem;
 import com.jfeat.module.rss.services.gen.persistence.model.RssItemC;
 import com.jfeat.module.rss.utils.JsonUtil;
@@ -199,6 +200,8 @@ public class AppRssEndpoint {
                             @RequestParam(name = "sortNumber", required = false) Integer sortNumber,
 
                             @RequestParam(name = "note", required = false) String note,
+                            @RequestParam(name = "copyWriting", required = false) Integer copyWriting,
+                            @RequestParam(name = "edit", required = false) Integer edit,
 
                             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                             @RequestParam(name = "createTime", required = false) Date createTime,
@@ -233,6 +236,8 @@ public class AppRssEndpoint {
         record.setNote(note);
         record.setCreateTime(createTime);
         record.setUpdateTime(updateTime);
+        record.setEdit(edit);
+        record.setCopyWriting(copyWriting);
 
         List<RssRecord> rssPage = new ArrayList<>();
         if (tagId != null && tagId == -1) {
@@ -258,10 +263,23 @@ public class AppRssEndpoint {
     }
 
 
+
+
+
     @PostMapping("/preview")
     @ApiOperation(value = "更新 Rss 并重新解析值", response = RssRecord.class)
     public Tip updatePreview(@RequestBody RssRecord rssRecord) {
         return SuccessTip.create(rssOverModelService.updateAndParseRss(rssRecord));
+    }
+
+
+    @PostMapping("/copy")
+    @ApiOperation(value = "复制rss", response = RssRecord.class)
+    public Tip copyRss(@RequestBody Rss rss) {
+        if (rss.getId()==null){
+            throw new BusinessException(BusinessCode.BadRequest,"id不能为空");
+        }
+        return SuccessTip.create(rssOverModelService.copyRss(rss.getId()));
     }
 
 

@@ -15,18 +15,32 @@ import java.util.List;
  */
 public interface RssOverModelService extends CRUDRssOverModelService {
 
+
+//    添加rss
     Integer createRss(RssModel rss, List<RssItem> rssItemList);
 
+//    删除rss
     Integer deleteRss(Long id);
 
     Integer updateRss(RssRecord rssRecord);
 
+//    更新rss
     Integer updateRssRecord(RssRecord rssRecord);
 
+//    更新解析rss
     Integer updateAndParseRss(RssRecord rssRecord);
 
+
+//    添加css
     List<RssRecord> andCss(List<RssRecord> recordList);
 
+
+//    解析上传的rss文件
     String uploadRssFile(MultipartFile file);
+
+
+//    复制rss
+    Integer copyRss(Long id);
+
 
 }

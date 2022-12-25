@@ -75,6 +75,25 @@ public class Rss extends Model<Rss> {
     @TableField(exist = false)
     private String tagIds;
 
+    private Integer copyWriting;
+
+    private Integer edit;
+
+    public Integer getCopyWriting() {
+        return copyWriting;
+    }
+
+    public void setCopyWriting(Integer copyWriting) {
+        this.copyWriting = copyWriting;
+    }
+
+    public Integer getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Integer edit) {
+        this.edit = edit;
+    }
 
     public String getSummary() {
         return summary;
@@ -214,6 +233,18 @@ public class Rss extends Model<Rss> {
     public static final String CREATE_TIME = "create_time";
 
     public static final String UPDATE_TIME = "update_time";
+
+    public static final Integer EDIT_NOT=0;
+
+    public static final Integer EDIT_YSE=1;
+
+    public static final String EDIT = "edit";
+
+    public static final String COPY_WRITING="copy_writing";
+
+    public static final Integer COPY_WRITING_NOT=0;
+
+    public static final Integer COPY_WRITING_YES=1;
 
     @Override
     protected Serializable pkVal() {

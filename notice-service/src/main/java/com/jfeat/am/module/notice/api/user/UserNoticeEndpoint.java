@@ -102,9 +102,9 @@ public class UserNoticeEndpoint {
 
 
 
-        page.setCurrent(pageNum);
-
-        page.setSize(pageSize);
+//        page.setCurrent(pageNum);
+//
+//        page.setSize(pageSize);
 
         // type=External,Internal,System
         if(type!=null && type.length<=2){
@@ -140,7 +140,7 @@ public class UserNoticeEndpoint {
         if (META.enabledSaas()) {
             notice.setOrgId(JWTKit.getOrgId());
         }
-        List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
+        List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(null, notice, expired, type,search);
 
         //        当content为空时读取content_path内容
 //        for (Notice notice1:noticeRequestList){
