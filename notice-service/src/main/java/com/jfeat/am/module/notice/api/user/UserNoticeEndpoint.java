@@ -231,6 +231,12 @@ public class UserNoticeEndpoint {
     }
 
 
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除公告")
+    public Tip deleteNotice(@PathVariable Long id) {
+        return SuccessTip.create(noticeMapper.deleteById(id));
+    }
+
 
 
 
