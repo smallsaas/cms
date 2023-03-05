@@ -26,5 +26,9 @@ public interface RssRulesService extends CRUDRssRulesService {
 
     Integer parseRssByTable(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
 
+    Integer parseRssBySelect(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
+    Integer parseRssByVideo(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
+
 //    Integer parseRssByImageTest(Queue<String> queue, RssItem rssItem,List<RssRules> rssRulesList);
 }
