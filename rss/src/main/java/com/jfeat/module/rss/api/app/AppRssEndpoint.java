@@ -99,6 +99,8 @@ public class AppRssEndpoint {
                     logger.info("返回rss缓存数据",json.toString());
                     return SuccessTip.create(json);
                 }else {
+
+//                    添加css样式
                     rssStyleControl.andRssStyleValue(recordList);
 
                     if (recordList.get(0)!=null){

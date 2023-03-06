@@ -1,6 +1,7 @@
 package com.jfeat.module.rss.services.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfeat.module.album.services.domain.service.LowAutoAlbumOverModelService;
 import com.jfeat.module.lc_low_auto_page_style.services.domain.service.LowAutoPageRssStyleService;
@@ -25,52 +26,62 @@ public class RssStyleControlImpl implements RssStyleControl {
 
     @Override
     public List<RssRecord> andRssStyleValue(List<RssRecord> recordList) {
-        if (recordList!=null && recordList.size()>0){
-            Map<String, JSONObject> map =  LowAutoPageRssStyleService.getAllStyleJsonMap();
+        if (recordList != null && recordList.size() > 0) {
+            Map<String, JSONObject> map = LowAutoPageRssStyleService.getAllStyleJsonMap();
 
             Map<String, String> imageStyleMap = rssImageNameOverModelService.getAllAlbumToMap();
 
-            for (RssRecord record:recordList){
+            for (RssRecord record : recordList) {
 
                 List<RssItem> rssItemList = record.getRssItemList();
 
-                if (rssItemList!=null && rssItemList.size()>0){
-                    for (RssItem rssItem:rssItemList){
+                if (rssItemList != null && rssItemList.size() > 0) {
+                    for (RssItem rssItem : rssItemList) {
 
 //                        每一项图片容器
-                        if (rssItem.getImageContainer()!=null && map.containsKey(rssItem.getImageContainer())){
+                        if (rssItem.getImageContainer() != null && map.containsKey(rssItem.getImageContainer())) {
                             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssItem.getImageContainer())));
                             rssItem.setImageContainerJson(jsonObject);
                         }
 
 //                        每一个RssItem image css
-                        if (rssItem.getImageStyle()!=null && map.containsKey(rssItem.getImageStyle())){
+                        if (rssItem.getImageStyle() != null && map.containsKey(rssItem.getImageStyle())) {
                             JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssItem.getImageStyle())));
                             rssItem.setImageStyleJson(jsonObject);
                         }
 
                         List<RssComponent> rssComponentList = rssItem.getRssComponentList();
 
-                        if (rssComponentList!=null && rssComponentList.size()>0){
+                        if (rssComponentList != null && rssComponentList.size() > 0) {
 
-                            for (RssComponent rssComponent:rssComponentList){
-                                if (rssComponent.getComponentStyle()!=null&&(rssComponent.getComponentType().equals("uploadImage")||rssComponent.getComponentType().equals("showImage"))){
+                            for (RssComponent rssComponent : rssComponentList) {
+                                if (rssComponent.getComponentStyle() != null && (rssComponent.getComponentType().equals("uploadImage") || rssComponent.getComponentType().equals("showImage"))) {
 
-                                    if (imageStyleMap.containsKey(rssComponent.getComponentStyle())){
-                                       rssComponent.setComponentStyleValue(imageStyleMap.get(rssComponent.getComponentStyle()));
+                                    if (imageStyleMap.containsKey(rssComponent.getComponentStyle())) {
+                                        rssComponent.setComponentStyleValue(imageStyleMap.get(rssComponent.getComponentStyle()));
                                     }
 
                                 }
 
-                                if (map.containsKey(rssComponent.getCssName())){
-                                    JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssComponent.getCssName())));
-                                    rssComponent.setCss(jsonObject);
+                                if (rssComponent.getCssName() != null) {
+                                    String[] split = rssComponent.getCssName().split(",");
+                                    if (split != null && split.length > 1) {
+                                        JSONArray jsonArray = new JSONArray();
+                                        for (String cssItem : split) {
+                                            if (map.containsKey(cssItem)) {
+                                                JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(cssItem)));
+                                                jsonArray.add(jsonObject);
+                                            }
+                                        }
+                                        rssComponent.setCssJsonArray(jsonArray);
+                                    } else if (map.containsKey(rssComponent.getCssName())) {
+                                        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(map.get(rssComponent.getCssName())));
+                                        rssComponent.setCss(jsonObject);
+                                    }
                                 }
 
 
                             }
-
-
 
 
                         }

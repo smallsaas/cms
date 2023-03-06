@@ -733,6 +733,217 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
         return affect;
     }
 
+    @Override
+    public Integer parseRssBySelect(Queue<String> queue, RssItem rssItem, List<RssRules> rssRulesList) {
+        Integer affect = 0;
+        Long componentId = null;
+//        判读是什么类型
+        String type = "title";
+        String data = queue.poll();
+        String decollator = "";
+        String defaultCssName = "";
+        String columns = "";
+        RssComponent rssComponent = new RssComponent();
+
+
+        if (data == null) {
+            return 0;
+        }
+
+//        判断Rss类型
+        for (RssRules rssRules : rssRulesList) {
+
+            String startSymbol = "^".concat("(").concat(rssRules.getSymbol()).concat(").*");
+            boolean isSymbol = Pattern.matches(startSymbol, data.strip());
+
+            if (isSymbol) {
+                Pattern r = Pattern.compile(startSymbol);
+                Matcher m = r.matcher(data);
+                if (m.find()) {
+                    String symbol = m.group(1);
+                    type = rssRules.getName();
+                    columns = m.group(2);
+                    decollator = rssRules.getDecollator();
+                    if (type != null && symbol.length() > 0) {
+                        data = data.substring(symbol.length()).strip();
+                    }
+                }
+                break;
+
+
+            }
+        }
+
+
+        // 判断是否有组件风格
+        String albumPattern = ".*<<(.*)>>.*";
+        boolean isMatchAlbum = Pattern.matches(albumPattern, data);
+        if (isMatchAlbum) {
+            Pattern r = Pattern.compile(albumPattern);
+            Matcher m = r.matcher(data);
+            if (m.find()) {
+                rssComponent.setComponentStyle(m.group(1));
+                String componentStyle = "<<".concat(m.group(1)).concat(">>");
+                String startToMid = data.substring(0, data.indexOf(componentStyle));
+                String midToEnd = data.substring(startToMid.length() + componentStyle.length());
+                data = startToMid.concat(midToEnd).strip();
+            }
+        }
+
+//        判断是否有风格
+        String pattern = ".*<(.*)>.*";
+        boolean isMatch = Pattern.matches(pattern, data);
+        if (isMatch) {
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(data);
+            if (m.find()) {
+                rssComponent.setCssName(m.group(1));
+                String componentStyle = "<".concat(m.group(1)).concat(">");
+                data = data.substring(componentStyle.length()).strip();
+            }
+        } else if (defaultCssName != null && !defaultCssName.equals("")) {
+            rssComponent.setCssName(defaultCssName);
+        }
+
+
+        List<String> componentPropData = new ArrayList<>();
+        if (decollator != null && !decollator.equals("")) {
+            String lineDate[] = data.split(decollator);
+            componentPropData = Arrays.asList(lineDate);
+        } else {
+            componentPropData.add(data);
+        }
+
+        rssComponent.setComponentName(type);
+        rssComponent.setComponentType(type);
+        rssComponent.setRssItemId(rssItem.getId());
+        if (columns.isEmpty()||Integer.parseInt(columns)<=1){
+            rssComponent.setComponentLimit("1");
+        }else {
+            rssComponent.setComponentLimit(columns);
+        }
+
+        if (isMatch) {
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(data);
+            if (m.find()) {
+                rssComponent.setComponentStyle(m.group(1));
+            }
+        }
+
+        affect += rssComponentService.createMaster(rssComponent);
+        componentId = rssComponent.getId();
+
+
+        for (int i = 0; i < componentPropData.size(); i++) {
+            RssComponentProp rssComponentProp = new RssComponentProp();
+            rssComponentProp.setComponentId(componentId);
+            rssComponentProp.setPropName(componentPropData.get(i));
+            affect += rssComponentPropService.createMaster(rssComponentProp);
+        }
+//        读取内容
+        return affect;
+    }
+
+    @Override
+    public Integer parseRssByVideo(Queue<String> queue, RssItem rssItem, List<RssRules> rssRulesList) {
+        Integer affect = 0;
+        Long componentId = null;
+//        判读是什么类型
+        String type = "title";
+        String data = queue.poll();
+        String decollator = "";
+        String defaultCssName = "";
+        String videoUrl = "";
+        RssComponent rssComponent = new RssComponent();
+
+
+        if (data == null) {
+            return 0;
+        }
+
+//        判断Rss类型
+        for (RssRules rssRules : rssRulesList) {
+
+            String startSymbol = "^".concat("(").concat(rssRules.getSymbol()).concat(").*");
+            boolean isSymbol = Pattern.matches(startSymbol, data.strip());
+
+            if (isSymbol) {
+                Pattern r = Pattern.compile(startSymbol);
+                Matcher m = r.matcher(data);
+                if (m.find()) {
+                    String symbol = m.group(1);
+                    type = rssRules.getName();
+                    videoUrl = m.group(2);
+                    decollator = rssRules.getDecollator();
+                    if (type != null && symbol.length() > 0) {
+                        data = data.substring(symbol.length()).strip();
+                    }
+                }
+                break;
+
+
+            }
+        }
+
+
+        // 判断是否有组件风格
+        String albumPattern = ".*<<(.*)>>.*";
+        boolean isMatchAlbum = Pattern.matches(albumPattern, data);
+        if (isMatchAlbum) {
+            Pattern r = Pattern.compile(albumPattern);
+            Matcher m = r.matcher(data);
+            if (m.find()) {
+                rssComponent.setComponentStyle(m.group(1));
+                String componentStyle = "<<".concat(m.group(1)).concat(">>");
+                String startToMid = data.substring(0, data.indexOf(componentStyle));
+                String midToEnd = data.substring(startToMid.length() + componentStyle.length());
+                data = startToMid.concat(midToEnd).strip();
+            }
+        }
+
+//        判断是否有风格
+        String pattern = ".*<(.*)>.*";
+        boolean isMatch = Pattern.matches(pattern, data);
+        if (isMatch) {
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(data);
+            if (m.find()) {
+                rssComponent.setCssName(m.group(1));
+                String componentStyle = "<".concat(m.group(1)).concat(">");
+                data = data.substring(componentStyle.length()).strip();
+            }
+        } else if (defaultCssName != null && !defaultCssName.equals("")) {
+            rssComponent.setCssName(defaultCssName);
+        }
+
+
+
+
+        rssComponent.setComponentName(type);
+        rssComponent.setComponentType(type);
+        rssComponent.setRssItemId(rssItem.getId());
+
+
+        if (isMatch) {
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(data);
+            if (m.find()) {
+                rssComponent.setComponentStyle(m.group(1));
+            }
+        }
+
+        affect += rssComponentService.createMaster(rssComponent);
+        componentId = rssComponent.getId();
+
+        RssComponentProp rssComponentProp = new RssComponentProp();
+        rssComponentProp.setComponentId(componentId);
+        rssComponentProp.setPropName(videoUrl);
+        affect += rssComponentPropService.createMaster(rssComponentProp);
+//        读取内容
+        return affect;
+    }
+
 
     public Integer parseRssByImage(Queue<String> queue, RssItem rssItem, List<RssRules> rssRulesList) {
         Integer affect = 0;
@@ -1086,6 +1297,9 @@ public class RssRulesServiceImpl extends CRUDRssRulesServiceImpl implements RssR
 
         return affect;
     }
+
+
+
 
 
     private static String getMatchValue(String data, String pattern) {

@@ -88,7 +88,13 @@ public class RssIntermediateControlImpl implements RssIntermediateControl {
                 rssRulesService.parseRssByRichText(queue,rssItem,rssRulesList);
             }else if (methode.equals("table")){
                 rssRulesService.parseRssByTable(queue,rssItem,rssRulesList);
-            } else{
+            }
+            else if (methode.equals("select")){
+                rssRulesService.parseRssBySelect(queue,rssItem,rssRulesList);
+            }
+            else if (methode.equals("video")){
+                rssRulesService.parseRssByVideo(queue,rssItem,rssRulesList);
+            }else{
                 rssRulesService.parseRssByCommon(queue,rssItem,rssRulesList);
             }
         }

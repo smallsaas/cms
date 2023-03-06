@@ -1,5 +1,6 @@
 package com.jfeat.module.rss.services.gen.persistence.model;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -57,6 +58,9 @@ public class RssComponent extends Model<RssComponent> {
 
     private String cssValue;
 
+    @TableField(exist = false)
+    private JSONArray cssJsonArray;
+
     private String componentStyle;
 
     private String componentStyleValue;
@@ -72,6 +76,15 @@ public class RssComponent extends Model<RssComponent> {
 
     @TableField(exist = false)
     private JSONObject css;
+
+
+    public JSONArray getCssJsonArray() {
+        return cssJsonArray;
+    }
+
+    public void setCssJsonArray(JSONArray cssJsonArray) {
+        this.cssJsonArray = cssJsonArray;
+    }
 
     public String getAlbumName() {
         return albumName;
