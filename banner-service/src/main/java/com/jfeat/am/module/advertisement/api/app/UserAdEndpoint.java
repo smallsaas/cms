@@ -67,33 +67,33 @@ public class UserAdEndpoint {
         return SuccessTip.create(page);
     }
 
-    @GetMapping("/ad/groups")
-    @ApiOperation("获取广告组列表")
-    public Tip listAdGroups(Page<AdGroup> page,
-                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
-                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                            @RequestParam(name = "search", required = false) String search) {
-        Long userId = JWTKit.getUserId();
-        if (userId==null){
-            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
-        }
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        Long orgId = tenantUtilsService.getCurrentOrgId(userId);
-//        大匠
-        List<AdGroup> house = adGroupService.getCurrentAdGroup(orgId,"1");
-
-//        小匠
-        QueryWrapper<AdGroup> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(AdGroup.APPID,"2");
-        List<AdGroup> rentAdGroups = adGroupMapper.selectList(queryWrapper);
-
-        house.addAll(rentAdGroups);
-
-        page.setRecords(house);
-
-        return SuccessTip.create(page);
-    }
+//    @GetMapping("/ad/groups")
+//    @ApiOperation("获取广告组列表")
+//    public Tip listAdGroups(Page<AdGroup> page,
+//                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
+//                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+//                            @RequestParam(name = "search", required = false) String search) {
+//        Long userId = JWTKit.getUserId();
+//        if (userId==null){
+//            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+//        }
+//        page.setCurrent(pageNum);
+//        page.setSize(pageSize);
+//        Long orgId = tenantUtilsService.getCurrentOrgId(userId);
+////        大匠
+//        List<AdGroup> house = adGroupService.getCurrentAdGroup(orgId,"1");
+//
+////        小匠
+//        QueryWrapper<AdGroup> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq(AdGroup.APPID,"2");
+//        List<AdGroup> rentAdGroups = adGroupMapper.selectList(queryWrapper);
+//
+//        house.addAll(rentAdGroups);
+//
+//        page.setRecords(house);
+//
+//        return SuccessTip.create(page);
+//    }
 
     @GetMapping("/ad/groups/{id}")
     @ApiOperation("获取轮播图分类详情")

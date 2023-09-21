@@ -19,6 +19,10 @@
     </parent>
 
     <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <skipStandalone>true</skipStandalone>
     </properties>
 
@@ -40,12 +44,11 @@
             <version>1.0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>uaas</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>com.jfeat</groupId>-->
+<!--            <artifactId>uaas</artifactId>-->
+<!--            <version>4.0.0</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>junit</groupId>
@@ -96,6 +99,13 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectjweaver.version}</version>
+        </dependency>
+
+        <!-- 使用mysql8.0.15 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
         </dependency>
     </dependencies>
 
@@ -148,9 +158,9 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
                         <configuration>
                             <classifier>standalone</classifier>
                         </configuration>

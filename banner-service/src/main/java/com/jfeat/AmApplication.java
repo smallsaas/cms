@@ -19,11 +19,12 @@ import javax.annotation.Resource;
  * @Date 2017/5/21 12:06
  */
 @SpringBootApplication
-public class AmApplication extends WebMvcConfigurerAdapter{
+public class AmApplication extends WebMvcConfigurerAdapter {
 
     protected final static Logger logger = LoggerFactory.getLogger(AmApplication.class);
 
     public static void main(String[] args) {
+
         SpringApplication.run(AmApplication.class, args);
         logger.info("AD amApplication success!");
     }
