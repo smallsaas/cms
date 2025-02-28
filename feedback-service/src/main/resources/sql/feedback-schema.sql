@@ -1,12 +1,12 @@
-DROP TABLE IF EXISTS `t_feedback`;
-CREATE TABLE `t_feedback`
+DROP TABLE IF EXISTS `t_cms_feedback`;
+CREATE TABLE `t_cms_feedback`
 (
     id             BIGINT(20)  NOT NULL AUTO_INCREMENT,
-    user_id        BIGINT(20)  not null default 0 comment '反馈用户ID',
-    user_name      varchar(50) NOT null comment '反馈用户名',
+    user_id        BIGINT(20)  NOT NULL default 0 comment '反馈用户ID',
+    user_name      varchar(50) NOT NULL comment '反馈用户名',
     contact        varchar(50)          DEFAULT NULL comment '联系方式',
     feedback       text comment '反馈内容',
-    feedback_image varchar(512)         DEFAULT NULL comment '返馈图片',
+    feedback_image varchar(512)         DEFAULT NULL comment '反馈图片链接',
     status         varchar(26) NOT NULL default 'UNREAD' comment '状态[UNREAD,SOLVED,CLOSED]',
     solved_by      varchar(50)          DEFAULT NULL comment '处理人签名',
     solved_note    varchar(200)         DEFAULT NULL comment '处理人意见',

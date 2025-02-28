@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao;
-import com.jfeat.module.feedback.services.gen.persistence.dao.CMSFeedbackMapper;
+import com.jfeat.module.feedback.services.gen.persistence.dao.FeedbackMapper;
 import com.jfeat.module.feedback.services.service.FeedbackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,8 +22,8 @@ import javax.annotation.Resource;
  */
 @RestController
 @Api("反馈建议")
-@RequestMapping("/api/adm")
-public class CMSFeedbackEndpoint {
+@RequestMapping("/api/adm/cms/feedback")
+public class AdmFeedbackEndpoint {
 
     @Resource
     private FeedbackService feedbackService;
@@ -33,7 +33,7 @@ public class CMSFeedbackEndpoint {
 
 
     @ApiOperation("处理(解决)反馈或建议")
-    @PutMapping("/feedback/{id}/solve")
+    @PutMapping("/{id}/solve")
     public Tip solve(@PathVariable Long id, @RequestBody String note) {
         Integer result = feedbackService.solve(id, note);
         return SuccessTip.create(result);
@@ -55,7 +55,7 @@ public class CMSFeedbackEndpoint {
 //    }
 
     @ApiOperation("查看反馈或建议")
-    @GetMapping("/feedback/{id}")
+    @GetMapping("/{id}")
     public Tip getTFeedback(@PathVariable Long id) {
         return SuccessTip.create(feedbackService.retrieveMaster(id));
     }
@@ -69,13 +69,13 @@ public class CMSFeedbackEndpoint {
 //    }
 
     @ApiOperation("删除反馈或建议")
-    @DeleteMapping("/feedback/{id}")
+    @DeleteMapping("/{id}")
     public Tip deleteTFeedback(@PathVariable Long id) {
         return SuccessTip.create(feedbackService.deleteMaster(id));
     }
 
     @ApiOperation("反馈或建议列表")
-    @GetMapping("/feedback")
+    @GetMapping
     public Tip queryFeedbacks(Page page,
                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,

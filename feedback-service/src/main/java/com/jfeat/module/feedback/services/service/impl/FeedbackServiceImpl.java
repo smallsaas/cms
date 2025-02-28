@@ -5,7 +5,7 @@ import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
 import com.jfeat.module.feedback.constant.FeedbackStatus;
 import com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao;
-import com.jfeat.module.feedback.services.gen.persistence.dao.CMSFeedbackMapper;
+import com.jfeat.module.feedback.services.gen.persistence.dao.FeedbackMapper;
 import com.jfeat.module.feedback.services.gen.persistence.model.Feedback;
 import com.jfeat.module.feedback.services.service.FeedbackService;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 public class FeedbackServiceImpl extends CRUDServiceOnlyImpl<Feedback> implements FeedbackService {
 
     @Resource
-    private CMSFeedbackMapper CMSFeedbackMapper;
+    private FeedbackMapper CMSFeedbackMapper;
     @Resource
     private QueryFeedbackDao queryFeedbackDao;
 

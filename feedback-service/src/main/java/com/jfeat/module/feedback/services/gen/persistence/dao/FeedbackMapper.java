@@ -1,7 +1,7 @@
 package com.jfeat.module.feedback.services.gen.persistence.dao;
 
+import com.jfeat.module.feedback.services.gen.persistence.model.Feedback;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jfeat.module.feedback.services.gen.persistence.model.ComplainType;
 
 /**
  * <p>
@@ -9,8 +9,8 @@ import com.jfeat.module.feedback.services.gen.persistence.model.ComplainType;
  * </p>
  *
  * @author Code generator
- * @since 2022-01-27
+ * @since 2022-01-15
  */
-public interface ComplainTypeMapper extends BaseMapper<ComplainType> {
+public interface FeedbackMapper extends BaseMapper<Feedback> {
 
 }
