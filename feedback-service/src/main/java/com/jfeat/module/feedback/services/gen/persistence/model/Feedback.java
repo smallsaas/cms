@@ -2,6 +2,7 @@ package com.jfeat.module.feedback.services.gen.persistence.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author Code generator
  * @since 2022-01-15
  */
-@TableName("t_feedback")
+@TableName("t_cms_feedback")
 @ApiModel(value="Feedback对象", description="")
 public class Feedback extends Model<Feedback> {
 
@@ -27,8 +28,10 @@ public class Feedback extends Model<Feedback> {
       private Long id;
 
       @ApiModelProperty(value = "反馈用户ID")
+      @TableField("user_id")
       private Long userId;
 
+      @TableField("user_name")
       @ApiModelProperty(value = "反馈用户名")
       private String userName;
 
@@ -38,27 +41,39 @@ public class Feedback extends Model<Feedback> {
       @ApiModelProperty(value = "反馈内容")
       private String feedback;
 
+      @TableField("feedback_image")
       @ApiModelProperty(value = "返馈图片")
       private String feedbackImage;
 
       @ApiModelProperty(value = "状态[UNREAD,SOLVED,CLOSED]")
       private String status;
 
+      @TableField("solved_by")
       @ApiModelProperty(value = "处理人签名")
       private String solvedBy;
 
+      @TableField("solved_note")
       @ApiModelProperty(value = "处理人意见")
       private String solvedNote;
 
+      @TableField("solved_user_id")
       @ApiModelProperty(value = "处理人用户ID")
       private Long solvedUserId;
 
+      @TableField("create_time")
       @ApiModelProperty(value = "反馈时间")
       private Date createTime;
 
+      @TableField("update_time")
       @ApiModelProperty(value = "最新反馈处理时间")
       private Date updateTime;
 
+      @ApiModelProperty(value = "区分不同应用")
+      private String appid;
+
+      @ApiModelProperty(value = "区分不同类别")
+      @TableField("request_type")
+      private String requestType;
     
     public Long getId() {
         return id;
@@ -66,6 +81,24 @@ public class Feedback extends Model<Feedback> {
 
       public Feedback setId(Long id) {
           this.id = id;
+          return this;
+      }
+
+      public String getRequestType() {
+        return requestType;
+      }
+
+      public Feedback setRequestType(String requestType) {
+          this.requestType = requestType;
+          return this;
+      }
+
+      public String getAppid() {
+        return appid;
+    }
+
+      public Feedback setAppid(String appid) {
+          this.appid = appid;
           return this;
       }
     
@@ -191,6 +224,11 @@ public class Feedback extends Model<Feedback> {
       public static final String CREATE_TIME = "create_time";
 
       public static final String UPDATE_TIME = "update_time";
+
+      public static final String APP_ID = "appid";
+
+      public static final String REQUEST_TYPE = "request_type";
+
 
       @Override
     protected Serializable pkVal() {

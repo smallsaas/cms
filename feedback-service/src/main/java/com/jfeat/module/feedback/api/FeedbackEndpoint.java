@@ -40,11 +40,10 @@ public class FeedbackEndpoint {
         if (JWTKit.getUserId() == null) {
             throw new BusinessException(BusinessCode.NoPermission, "用户未登录");
         }
-        //request.setAppid(appid);
-        //request.setRequestType(type);
-        // TODO
-        
-        return SuccessTip.create();
+        request.setAppid(appid);
+        request.setRequestType(type);
+
+        return SuccessTip.create(feedbackService.createMaster(request));
     }
 
 /*    @ApiOperation(value = "用户进行反馈")

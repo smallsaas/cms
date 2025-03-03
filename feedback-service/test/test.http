@@ -1,0 +1,5 @@
+@endpoint = http://localhost:8080
+
+###  提交返馈
+GET {{endpoint}}/api/adm/cms/feedback
+
