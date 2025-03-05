@@ -10,6 +10,8 @@ import java.util.List;
 public interface QueryFeedbackDao extends BaseMapper<Feedback> {
 
     List<Feedback> findFeedbacks(Page<Feedback> page,
+                                       @Param("appid") String appid,
+                                       @Param("type") String type,
                                        @Param("status") String status,
                                        @Param("createName") String createName,
                                        @Param("startTime") String startTime,

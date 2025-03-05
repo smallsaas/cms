@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.module.feedback.services.domain.dao.QueryFeedbackDao;
-import com.jfeat.module.feedback.services.gen.persistence.dao.FeedbackMapper;
+import com.jfeat.module.feedback.services.gen.persistence.model.Feedback;
 import com.jfeat.module.feedback.services.service.FeedbackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,17 +76,19 @@ public class AdmFeedbackEndpoint {
 
     @ApiOperation("反馈或建议列表")
     @GetMapping
-    public Tip queryFeedbacks(Page page,
+    public Tip queryFeedbacks(Page<Feedback> page,
                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
                               @RequestParam(name = "status", required = false) String status,
                               @RequestParam(name = "createName", required = false) String createName,
                               @RequestParam(name = "startTime", required = false) String startTime,
                               @RequestParam(name = "endTime", required = false) String endTime,
-                              @RequestParam(name = "name", required = false) String name) {
+                              @RequestParam(name = "type", required = false) String type,
+                              @RequestParam(name = "appid", required = false) String appid) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        page.setRecords(queryFeedbackDao.findFeedbacks(page, status, createName, startTime, endTime));
+        page.setRecords(queryFeedbackDao.findFeedbacks(page, appid, type, status, createName, startTime, endTime));
         return SuccessTip.create(page);
     }
+
 }
