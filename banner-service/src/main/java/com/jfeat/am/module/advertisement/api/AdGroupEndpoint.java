@@ -1,7 +1,6 @@
 package com.jfeat.am.module.advertisement.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -21,39 +20,20 @@ import javax.annotation.Resource;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/cms")
+@RequestMapping("/api/adm/cms")
 @Api("AD-轮播图")
 public class AdGroupEndpoint {
 
     @Resource
     private AdGroupService adGroupService;
 
-    @GetMapping("/pub/ad/groups")
-    @ApiOperation("获取广告组列表")
-    public Tip listAdGroups(Page<AdGroup> page,
-                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
-                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                            @RequestParam(name = "search", required = false) String search) {
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(adGroupService.getAllAdGroup(search));
-
-        return SuccessTip.create(page);
-    }
-
-    @GetMapping("/pub/ad/groups/{id}")
-    @ApiOperation("获取轮播图分类详情")
-    public Tip getAdGroups(@PathVariable Long id) {
-        return SuccessTip.create(adGroupService.retrieveMaster(id));
-    }
-
-    @PostMapping("/adm/ad/groups")
+    @PostMapping("/ad/groups")
     @ApiOperation("添加轮播图分类")
     public Tip createAdGroup(@RequestBody AdGroup entity) {
         return SuccessTip.create(adGroupService.createMaster(entity));
     }
 
-    @PutMapping("/adm/ad/groups/{id}")
+    @PutMapping("/ad/groups/{id}")
     @ApiOperation("更新轮播图分类")
     public Tip updateAdGroup(@PathVariable Long id, @RequestBody AdGroup entity) {
         entity.setId(id);
@@ -61,8 +41,14 @@ public class AdGroupEndpoint {
     }
 
     @ApiOperation("删除轮播图分类")
-    @DeleteMapping("/adm/ad/groups/{id}")
+    @DeleteMapping("/ad/groups/{id}")
     public Tip deleteAdGroup(@PathVariable Long id) {
         return SuccessTip.create(adGroupService.deleteMaster(id));
+    }
+
+    @GetMapping("/ad/groups/data")
+    @ApiOperation("获取轮播图所有分类数据")
+    public Tip getAllGroupData() {
+        return SuccessTip.create(adGroupService.getAllGroupData());
     }
 }

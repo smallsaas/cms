@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/cms")
+@RequestMapping("/api/adm/cms")
 @Api("AD-轮播图")
 public class AppidAdEndpoint {
 
@@ -35,33 +35,9 @@ public class AppidAdEndpoint {
     private AdService adService;
     @Resource
     private AdGroupMapper adGroupMapper;
-    @Resource
-    QueryAdLibraryDao queryAdLibraryDao;
-    @Resource
-    QueryAdDao queryAdDao;
-
-    @GetMapping("/pub/ad/group/{group}/{appid}")
-    @ApiOperation("按组获取轮播图 [带组信息]")
-    public Tip getAdGroup(@PathVariable String group,@PathVariable String appid) {
-        AdGroupedModel model = adService.getAdRecordsByGroup(group,appid);
-        if(model != null && model.getAds() != null) {
-            List<Ad> temp = model.getAds().stream().sorted((t1, t2) -> t1.getType().compareTo(t2.getType())).collect(Collectors.toList());
-            model.setAds(temp);
-        }
-        return SuccessTip.create(model);
-    }
-
-    @ApiOperation("按组获取轮播图 group=1 首页轮播图")
-    @GetMapping("/pub/ad/records/{group}/{appid}")
-    public Tip Ad(@PathVariable String group,
-                 @RequestParam(value = "enabled", required = false) Integer enabled,@PathVariable String appid) {
-        return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group,appid, enabled));
-    }
-
-
 
     @PostMapping("/ad/id/{identifier}/{appid}")
-    @ApiOperation("根据identifier添加轮播图")
+    @ApiOperation("根据identifier分类添加轮播图")
     public Tip createAdByIdentifier(@PathVariable String identifier, @RequestBody Ad entity,@PathVariable("appid")String appid) {
         entity.setEnabled(1);
         AdGroup adGroup = new AdGroup();
@@ -71,7 +47,4 @@ public class AppidAdEndpoint {
         entity.setGroupId(query == null ? null : query.getId());
         return SuccessTip.create(adService.createMaster(entity));
     }
-
-
-
 }

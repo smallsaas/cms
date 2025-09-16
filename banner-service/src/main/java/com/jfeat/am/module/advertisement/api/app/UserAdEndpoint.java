@@ -8,19 +8,17 @@ import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
 import com.jfeat.am.module.advertisement.services.domain.model.AdImage;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdLibraryRecord;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
-import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.am.module.advertisement.services.service.AdService;
-import com.jfeat.am.module.advertisement.services.service.TenantUtilsService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.users.account.services.gen.persistence.dao.UserAccountMapper;
-import com.jfeat.users.account.services.gen.persistence.model.UserAccount;
+//import com.jfeat.users.account.services.gen.persistence.dao.UserAccountMapper;
+//import com.jfeat.users.account.services.gen.persistence.model.UserAccount;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -43,16 +41,10 @@ public class UserAdEndpoint {
     QueryAdDao queryAdDao;
 
     @Resource
-    AdGroupMapper adGroupMapper;
-
-    @Resource
-    TenantUtilsService tenantUtilsService;
-
-    @Resource
     private AdGroupService adGroupService;
 
-    @Resource
-    UserAccountMapper userAccountMapper;
+//    @Resource
+//    UserAccountMapper userAccountMapper;
 
     @GetMapping("/ad/groups/all")
     @ApiOperation("获取广告组列表")
@@ -195,24 +187,26 @@ public class UserAdEndpoint {
                                                 @RequestParam(name = "orderBy", required = false) String orderBy,
                                                 @RequestParam(name = "sort", required = false) String sort,
                                                 @RequestParam(name = "identifier", required = false) String identifier,
-                                                @PathVariable("appid")String appid) {
+                                                @PathVariable("appid") String appid) {
         Long userId = JWTKit.getUserId();
         if (userId==null){
             throw new BusinessException(BusinessCode.NoPermission,"没有登录");
         }
 
-        UserAccount userAccount = userAccountMapper.selectById(userId);
-        if (userAccount==null){
-            throw new BusinessException(BusinessCode.UserNotExisted,"用户不存在");
-        }
         Long currentOrgId = null;
-        if (userAccount.getCurrentOrgId()!=null){
-            currentOrgId = userAccount.getCurrentOrgId();
-        }else if (userAccount.getOrgId()!=null){
-            currentOrgId = userAccount.getOrgId();
-        }else {
-            throw new BusinessException(BusinessCode.CodeBase,"没有找到该社区信息");
-        }
+        if(true)
+        throw  new BusinessException(BusinessCode.NotImplement);
+//        UserAccount userAccount = userAccountMapper.selectById(userId);
+//        if (userAccount==null){
+//            throw new BusinessException(BusinessCode.UserNotExisted,"用户不存在");
+//        }
+//        if (userAccount.getCurrentOrgId()!=null){
+//            currentOrgId = userAccount.getCurrentOrgId();
+//        }else if (userAccount.getOrgId()!=null){
+//            currentOrgId = userAccount.getOrgId();
+//        }else {
+//            throw new BusinessException(BusinessCode.CodeBase,"没有找到该社区信息");
+//        }
 
         if (orderBy != null && orderBy.length() > 0) {
             if (sort != null && sort.length() > 0) {

@@ -1,3 +1,4 @@
+
 /*INSERT INTO `perm_group` (`id`, `name`, `identifier`) VALUES
 ('953826078664228865', '广告管理', 'Ad.management');
 INSERT INTO `perm` (`id`, `groupid`, `name`, `identifier`) VALUES

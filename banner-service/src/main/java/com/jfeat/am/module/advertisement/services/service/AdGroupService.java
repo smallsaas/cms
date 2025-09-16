@@ -1,6 +1,7 @@
 package com.jfeat.am.module.advertisement.services.service;
 
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
+import com.jfeat.am.module.advertisement.services.persistence.model.GroupDataItem;
 import com.jfeat.crud.plus.CRUDServiceOnly;
 
 import java.util.List;
@@ -15,7 +16,11 @@ import java.util.List;
  */
 public interface AdGroupService extends CRUDServiceOnly<AdGroup> {
 
-    public List<AdGroup> getAllAdGroup(String search);
+    List<AdGroup> getAllAdGroup(String search);
 
-//    List<AdGroup> getCurrentAdGroup(Long orgId,String appid);
+    /**
+     * 提供所有分组信息，包括分组下面的广告
+     */
+    List<GroupDataItem> getAllGroupData();
+
 }

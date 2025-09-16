@@ -4,15 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
+import com.jfeat.am.module.advertisement.services.persistence.model.GroupDataItem;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
-import com.jfeat.am.module.advertisement.services.service.TenantUtilsService;
 import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
-//import com.jfeat.org.services.persistence.model.SysOrg;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +29,6 @@ public class AdGroupServiceImpl extends CRUDServiceOnlyImpl<AdGroup> implements 
 
     @Resource
     private AdGroupService adGroupService;
-
-    @Resource
-    private TenantUtilsService tenantUtilsService;
 
     @Override
     protected BaseMapper<AdGroup> getMasterMapper() {
@@ -87,5 +83,22 @@ public class AdGroupServiceImpl extends CRUDServiceOnlyImpl<AdGroup> implements 
 
 
 
+    @Override
+    public List<GroupDataItem> getAllGroupData() {
+        List<GroupDataItem> groups = new ArrayList<>();
 
+        List<AdGroup> groupList = adGroupService.getAllAdGroup("");
+        for (AdGroup adGroup : groupList){
+            GroupDataItem item = new GroupDataItem();
+            item.setId(adGroup.getId());
+            item.setName(adGroup.getName());
+            /*    item.setIdentifier(adGroup.getIdentifier());*/
+
+            /*  item.setAds(adService.getAdRecordsByGroup(adGroup.getIdentifier()).getAds());*/
+
+            groups.add(item);
+        }
+
+        return groups;
+    }
 }

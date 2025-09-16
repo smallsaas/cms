@@ -2,17 +2,11 @@ package com.jfeat.am.module.advertisement.api.app;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao;
-import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
-import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
-import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
-import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.am.module.advertisement.services.service.AdService;
-import com.jfeat.am.module.advertisement.services.service.TenantUtilsService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -22,7 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/u/cms/manage")
@@ -31,19 +24,9 @@ public class UserAdManageEndpoint {
 
     @Resource
     private AdService adService;
-    @Resource
-    QueryAdLibraryDao queryAdLibraryDao;
+
     @Resource
     QueryAdDao queryAdDao;
-
-    @Resource
-    AdGroupMapper adGroupMapper;
-
-    @Resource
-    TenantUtilsService tenantUtilsService;
-
-    @Resource
-    private AdGroupService adGroupService;
 
 /*    @Resource
     Authentication authentication;*/

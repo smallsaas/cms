@@ -1,6 +1,5 @@
-package com.jfeat.am.module.advertisement.api;
+package com.jfeat.am.module.advertisement.api.pub;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao;
@@ -10,9 +9,7 @@ import com.jfeat.am.module.advertisement.services.domain.model.record.AdLibraryR
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
-import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
-import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.am.module.advertisement.services.service.AdService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -36,38 +33,19 @@ import java.util.stream.Collectors;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/openapi/cms")
+@RequestMapping("/api/pub/cms")
 @Api("轮播图-Banner")
-public class AdPubEndpoint {
+public class PubAdEndpoint {
 
     @Resource
     private AdService adService;
     @Resource
+    private AdGroupMapper adGroupMapper;
+
+    @Resource
     QueryAdLibraryDao queryAdLibraryDao;
     @Resource
     QueryAdDao queryAdDao;
-
-    @Resource
-    private AdGroupService adGroupService;
-
-    @GetMapping("/ad/groups")
-    @ApiOperation("获取广告组列表")
-    public Tip listAdGroups(Page<AdGroup> page,
-                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
-                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                            @RequestParam(name = "search", required = false) String search) {
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-        page.setRecords(adGroupService.getAllAdGroup(search));
-
-        return SuccessTip.create(page);
-    }
-
-    @GetMapping("/ad/groups/{id}")
-    @ApiOperation("获取轮播图分类详情")
-    public Tip getAdGroups(@PathVariable Long id) {
-        return SuccessTip.create(adGroupService.retrieveMaster(id));
-    }
 
     @GetMapping("/ad/group/{group}")
     @ApiOperation("按组获取轮播图 [带组信息]")
@@ -83,7 +61,7 @@ public class AdPubEndpoint {
     @ApiOperation("按组获取轮播图 group=1 首页轮播图")
     @GetMapping("/ad/records/{group}")
     public Tip Ad(@PathVariable String group,
-                 @RequestParam(value = "enabled", required = false) Integer enabled) {
+                  @RequestParam(value = "enabled", required = false) Integer enabled) {
         return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group,null, enabled));
     }
 
@@ -104,8 +82,8 @@ public class AdPubEndpoint {
     @ApiOperation("按组获取广告组")
     @GetMapping("/ad/allGroup/{groupId}")
     public Tip getAdsFromGroup(
-                 @RequestParam(name = "search", required = false) String search,
-                  @PathVariable Integer groupId) {
+            @RequestParam(name = "search", required = false) String search,
+            @PathVariable Integer groupId) {
 
         if(search!=null && search.trim().length()>0){
             return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)
@@ -183,4 +161,5 @@ public class AdPubEndpoint {
 
         return SuccessTip.create(page);
     }
+
 }

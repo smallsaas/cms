@@ -3,8 +3,6 @@ package com.jfeat.am.module.advertisement.services.crud.service.impl;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdLibrary;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdLibraryMapper;
-
-
 import com.jfeat.am.module.advertisement.services.crud.service.CRUDAdLibraryService;
 import com.jfeat.crud.plus.impl.CRUDServiceOnlyImpl;
 import org.springframework.stereotype.Service;
@@ -21,11 +19,6 @@ import javax.annotation.Resource;
 
 @Service
 public class CRUDAdLibraryServiceImpl  extends CRUDServiceOnlyImpl<AdLibrary> implements CRUDAdLibraryService {
-
-
-
-
-
         @Resource
         private AdLibraryMapper adLibraryMapper;
 
@@ -33,13 +26,6 @@ public class CRUDAdLibraryServiceImpl  extends CRUDServiceOnlyImpl<AdLibrary> im
         protected BaseMapper<AdLibrary> getMasterMapper() {
                 return adLibraryMapper;
         }
-
-
-
-
-
-
-
 }
 
 

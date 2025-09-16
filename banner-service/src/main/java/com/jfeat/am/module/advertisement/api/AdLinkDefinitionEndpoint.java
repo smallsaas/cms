@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/cms/ad/definition")
+@RequestMapping("/api/adm/cms/ad/definition")
 public class AdLinkDefinitionEndpoint{
 
     @Resource

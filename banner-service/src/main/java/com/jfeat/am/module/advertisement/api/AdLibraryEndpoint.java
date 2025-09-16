@@ -26,7 +26,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Api("AD-轮播图")
-@RequestMapping("/api/cms/ad/libraries")
+@RequestMapping("/api/adm/cms/ad/libraries")
 public class AdLibraryEndpoint  {
 
     @Resource
