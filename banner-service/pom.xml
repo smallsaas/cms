@@ -36,24 +36,23 @@
             <groupId>com.jfeat</groupId>
             <artifactId>crud-core</artifactId>
             <version>${crud-core.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-plus</artifactId>
             <version>${crud-plus.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>jwt-core</artifactId>
             <version>${jwt-core.version}</version>
+            <scope>provided</scope>
         </dependency>
 
-       <!-- <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>user-account</artifactId>
-            <version>1.0.1</version>
-        </dependency>-->
 
+<!-- test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

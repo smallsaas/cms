@@ -21,51 +21,55 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>lc_low_auto_page_style</artifactId>
             <version>1.0.0</version>
         </dependency>
-
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <groupId>com.jfeat</groupId>
+            <artifactId>lc_low_auto_album</artifactId>
+            <version>1.0.0</version>
         </dependency>
+
+
+<!-- crud -->
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-core</artifactId>
             <version>${crud-core.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>jwt-core</artifactId>
             <version>${jwt-core.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-plus</artifactId>
             <version>${crud-plus.version}</version>
+            <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-tag</artifactId>
             <version>1.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-core</artifactId>
             <version>1.5.16</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>lc_low_auto_album</artifactId>
-            <version>1.0.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

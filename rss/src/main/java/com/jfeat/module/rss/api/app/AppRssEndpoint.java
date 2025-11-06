@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Api("Rss")
-@RequestMapping("/api/u/rss/master")
+@RequestMapping("/api/cms/rss/master")
 public class AppRssEndpoint {
 
     @Resource

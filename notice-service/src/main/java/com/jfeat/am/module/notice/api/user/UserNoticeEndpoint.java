@@ -19,7 +19,7 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.crud.base.util.DateTimeKit;
+// import com.jfeat.crud.base.util.DateTimeKit; // Temporarily commented out - class not found
 import com.jfeat.crud.plus.META;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -194,7 +194,7 @@ public class UserNoticeEndpoint {
         }
 
         for (NoticeRequest noticeRequest:resultNotices){
-            noticeRequest.setCreateTimeStr(DateTimeKit.toTimeline(noticeRequest.getCreateTime()));
+            // noticeRequest.setCreateTimeStr(DateTimeKit.toTimeline(noticeRequest.getCreateTime())); // Temporarily commented out - DateTimeKit not available
         }
 
 

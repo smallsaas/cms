@@ -2,19 +2,13 @@ package com.jfeat.am.module.advertisement.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao;
 import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
-import com.jfeat.am.module.advertisement.services.domain.model.AdImage;
-import com.jfeat.am.module.advertisement.services.domain.model.record.AdLibraryRecord;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
-import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
 import com.jfeat.am.module.advertisement.services.service.AdService;
-import com.jfeat.crud.base.exception.BusinessCode;
-import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
@@ -22,9 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>

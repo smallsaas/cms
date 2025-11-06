@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/u/rss/tag")
+@RequestMapping("/api/cms/rss/tag")
 public class AppRssTagEndpoint {
 
     @Resource

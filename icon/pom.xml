@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.jfeat</groupId>
     <artifactId>icon</artifactId>
     <version>1.0.0</version>
 
@@ -14,36 +15,46 @@
         <relativePath/>
     </parent>
 
+    <!-- TODO: Switch to new parent when co.jfeat:cms:3.0.0 is available
+    <parent>
+        <groupId>co.jfeat</groupId>
+        <artifactId>cms</artifactId>
+        <version>3.0.0</version>
+        <relativePath/>
+    </parent>
+    -->
+
     <properties>
         <skipStandalone>true</skipStandalone>
-
-        <crud-dev.version>0.0.2</crud-dev.version>
     </properties>
 
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>2.0.1.Final</version>
-        </dependency>
-        <dependency>
+            <scope>provided</scope>
+        </dependency> -->
+        <!-- <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-dev</artifactId>
             <version>${crud-dev.version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
 
         <!--    测试 tag    -->
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-plus</artifactId>
             <version>0.1.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-tag</artifactId>
             <version>1.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -85,10 +96,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+                    <fork>true</fork>
+                    <compilerArgs>
+                        <arg>--add-opens</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>--add-opens</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>--add-opens</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 

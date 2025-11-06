@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @Api("RssItem")
-@RequestMapping("/api/u/rss/rssItem")
+@RequestMapping("/api/cms/rss/rssItem")
 public class AppRssItemEndpoint {
 
 

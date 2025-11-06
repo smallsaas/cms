@@ -55,7 +55,7 @@ import com.alibaba.fastjson.JSONArray;
  */
 @RestController
 @Api("RssComponent")
-@RequestMapping("/api/adm/rss/rssComponent/rssComponents")
+@RequestMapping("/api/adm/cms/rss/rssComponent/rssComponents")
 public class RssComponentEndpoint {
 
     @Resource

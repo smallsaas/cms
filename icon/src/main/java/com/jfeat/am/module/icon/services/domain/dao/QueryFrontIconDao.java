@@ -27,5 +27,6 @@ public interface QueryFrontIconDao extends QueryMasterDao<FrontIcon> {
     /*
      * Query entity model for details
      */
+    @SuppressWarnings("unchecked")
     FrontIconModel queryMasterModel(@Param("id") Long id);
 }

@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController
 @Api("AppRssComponentProp")
-@RequestMapping("/api/u/rss/componentProp")
+@RequestMapping("/api/cms/rss/componentProp")
 public class AppRssComponentPropEndpoint {
     @Resource
     RssComponentPropService rssComponentPropService;

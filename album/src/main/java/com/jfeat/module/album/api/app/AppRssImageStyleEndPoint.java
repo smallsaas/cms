@@ -30,7 +30,7 @@ import java.util.List;
 
 @RestController
 @Api("RssImageStyle")
-@RequestMapping("/api/u/album")
+@RequestMapping("/api/cms/album")
 public class AppRssImageStyleEndPoint {
     @Resource
     RssImageNameOverModelService rssImageNameOverModelService;

@@ -2,8 +2,6 @@ package com.jfeat.am.module.icon.api.app;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.common.annotation.Permission;
-import com.jfeat.am.module.icon.api.permission.FrontIconPermission;
 import com.jfeat.am.module.icon.services.domain.dao.QueryFrontIconDao;
 import com.jfeat.am.module.icon.services.domain.model.FrontIconRecord;
 import com.jfeat.am.module.icon.services.domain.service.FrontIconService;
@@ -34,7 +32,7 @@ import java.util.List;
 @RestController
 
 @Api("FrontIcon")
-@RequestMapping("/api/u/frontIcon")
+@RequestMapping("/api/cms/frontIcon")
 public class FrontIconAppEndpoint {
 
     @Resource
@@ -63,7 +61,7 @@ public class FrontIconAppEndpoint {
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 FrontIcon", response = FrontIcon.class)
     public Tip getFrontIcon(@PathVariable Long id) {
-        return SuccessTip.create(frontIconService.queryMasterModel(queryFrontIconDao, id));
+        return SuccessTip.create(queryFrontIconDao.queryMasterModel(id));
     }
 
     @BusinessLog(name = "FrontIcon", value = "update FrontIcon")

@@ -41,7 +41,7 @@ import java.util.List;
 @RestController
 
 @Api("FrontIcon")
-@RequestMapping("/api/adm/frontIcon/frontIcons")
+@RequestMapping("/api/adm/cms/frontIcon/frontIcons")
 public class FrontIconEndpoint {
 
     @Resource

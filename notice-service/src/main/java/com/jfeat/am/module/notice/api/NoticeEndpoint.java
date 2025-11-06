@@ -41,7 +41,7 @@ import java.util.List;
 
 @RestController
 @Api("公告")
-@RequestMapping("/api/cms/notice/notices")
+@RequestMapping("/api/adm/cms/notice/notices")
 public class NoticeEndpoint {
 
     @Resource

@@ -8,6 +8,12 @@
     <artifactId>album</artifactId>
     <version>1.0.0</version>
 
+    <!-- upgrade history
+    album 1.0.0 from 1.0.0 for /api/u/album => /api/cms/album
+    @when 2025-11-06
+    @who vincent
+     -->
+
     <parent>
         <groupId>com.jfeat</groupId>
         <artifactId>pom-parent</artifactId>
@@ -17,42 +23,48 @@
 
     <properties>
         <skipStandalone>true</skipStandalone>
-        <lombok.version>1.18.4</lombok.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
+
+<!-- crud-core, jwt-core, crud-plus, crud-tag are provided by cms-parent -->
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-core</artifactId>
             <version>${crud-core.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>jwt-core</artifactId>
             <version>${jwt-core.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-plus</artifactId>
             <version>${crud-plus.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-tag</artifactId>
             <version>1.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-core</artifactId>
             <version>1.5.16</version>
+            <scope>provided</scope>
         </dependency>
 
 

@@ -24,7 +24,7 @@ import java.util.Date;
  */
 @Api("cms-系统规则配置")
 @RestController
-@RequestMapping("/api/cms/term/config")
+@RequestMapping("/api/adm/cms/term/config")
 public class TermConfigEndpoint  {
 
     @Resource

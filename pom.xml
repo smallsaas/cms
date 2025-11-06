@@ -4,10 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jfeat</groupId>
-    <artifactId>cms</artifactId>
+    <artifactId>cms-pom</artifactId>
     <version>2.0.0</version>
     <packaging>pom</packaging>
-    <name>cms</name>
+    <name>cms-pom</name>
+
+    <!-- 
+    upgrade history
+    cms 3.0.0 from 2.0.0 for aligning up uaas-5.0.0, /api/cms => /api/adm/cms, /api/u/cms => /api/cms
+    @when 2025-11-06
+    @who vincent
+    统一由父项目管理所有模块，统一版本号，统一依赖管理
+
+    upgrade 1.3.0 from 1.2.1 
+    @what remove nft relative
+    @when 2025-02-28
+    @who vincent
+
+    2.0.0 from 1.2.1 for aligning up uaas-5.0.0, /api/cms => /api/adm/cms
+    @when 2025-11-06
+    @who vincent
+     -->
 
     <parent>
         <groupId>com.jfeat</groupId>
@@ -19,15 +36,17 @@
     <modules>
         <module>banner-service</module>
         <module>term-config</module>
-        <module>feedback-service</module>
-        <module>notice-service</module>
+        <!-- <module>notice-service</module> -->
+        <module>album</module>
         <module>icon</module>
-        <module>evaluation-service</module>
+        <module>rss</module>
+        <module>cms-parent</module>
 
+        <!-- => monents -->
 <!--        <module>notification-service</module>-->
 <!--        <module>survey-service</module>-->
 <!--        <module>article-service</module>-->
 <!--        <module>evaluation-service</module>-->
-        <module>cms-api</module>
+        <!-- <module>cms-api</module> -->
     </modules>
 </project>
