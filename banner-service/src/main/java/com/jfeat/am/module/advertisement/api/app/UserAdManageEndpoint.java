@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/api/u/cms/manage")
+@RequestMapping("/api/cms/manage")
 @Api("轮播图管理-Banner")
 public class UserAdManageEndpoint {
 

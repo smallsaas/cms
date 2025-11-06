@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  */
 @Api("cms-系统规则配置")
 @RestController
-@RequestMapping("/api/u/cms/term/config")
+@RequestMapping("/api/cms/term/config")
 public class UserEndTermConfigEndpoint {
     @Resource
     TermConfigService termConfigService;

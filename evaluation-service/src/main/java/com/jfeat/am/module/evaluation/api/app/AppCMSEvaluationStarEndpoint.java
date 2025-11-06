@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 
 @RestController
 @Api("cms-评价 点赞")
-@RequestMapping("/api/u/cms/star")
+@RequestMapping("/api/cms/star")
 public class AppCMSEvaluationStarEndpoint {
 
     @Resource

@@ -94,7 +94,7 @@ PUT {{endpoint}}/api/cms/notice/notices/1529001196451561473/switchEnabled
 Authorization:{{A_2token}}
 
 ### 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
-GET {{endpoint}}/api/u/cms/notice/notices/recent/notices
+GET {{endpoint}}/api/cms/notice/notices/recent/notices
 Authorization:{{A_1token}}
 
 

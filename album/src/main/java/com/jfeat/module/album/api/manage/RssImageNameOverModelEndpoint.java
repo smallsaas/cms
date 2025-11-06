@@ -40,7 +40,7 @@ import java.util.List;
  */
 @RestController
 @Api("RssImageName")
-@RequestMapping("/api/crud/album/rssImageName/rssImageNames")
+@RequestMapping("/api/adm/album/rssImageName/rssImageNames")
 public class RssImageNameOverModelEndpoint {
 
     @Resource

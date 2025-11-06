@@ -52,7 +52,7 @@ import com.alibaba.fastjson.JSONArray;
  */
     @RestController
     @Api("RssRules")
-            @RequestMapping("/api/crud/rss/rssRules/rssRuleses")
+            @RequestMapping("/api/adm/rss/rssRules/rssRuleses")
     public class RssRulesEndpoint {
 
     @Resource

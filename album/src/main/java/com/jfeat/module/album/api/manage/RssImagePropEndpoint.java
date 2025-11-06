@@ -34,7 +34,7 @@ import java.util.List;
  */
 @RestController
 @Api("RssImageProp")
-@RequestMapping("/api/crud/album/rssImageProp/rssImageProps")
+@RequestMapping("/api/adm/album/rssImageProp/rssImageProps")
 public class RssImagePropEndpoint {
 
     @Resource

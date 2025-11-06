@@ -3,14 +3,14 @@
 
 
 ### 图标列表
-GET {{Endpoint}}/api/crud/frontIcon/frontIcons
+GET {{Endpoint}}/api/adm/frontIcon/frontIcons
 
 
 ### 图标列表
-GET {{Endpoint}}/api/crud/frontIcon/frontIcons/2
+GET {{Endpoint}}/api/adm/frontIcon/frontIcons/2
 
 ### 新建图标
-POST {{Endpoint}}/api/crud/frontIcon/frontIcons
+POST {{Endpoint}}/api/adm/frontIcon/frontIcons
 content-type: application/json
 
 {
@@ -24,4 +24,4 @@ content-type: application/json
 
 
 ### 图标列表
-GET {{Endpoint}}/api/crud/frontIcon/frontIcons?tagName=动物
+GET {{Endpoint}}/api/adm/frontIcon/frontIcons?tagName=动物

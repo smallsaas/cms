@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/api/u/cms/notices")
+@RequestMapping("/api/cms/notices")
 public class UserNoticesEndpoint {
 
     @Resource
