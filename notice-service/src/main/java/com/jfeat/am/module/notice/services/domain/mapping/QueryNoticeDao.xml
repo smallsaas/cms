@@ -13,108 +13,108 @@
     </sql>
 
     <select id="findNotices" resultType="NoticeRequest">
-        SELECT t_notice.*
-        FROM t_notice
+        SELECT t_cms_notice.*
+        FROM t_cms_notice
         <if test="notice.orgId > 0">
             ,(<include refid="QueryOwnedOrgIds"></include>) AS ownedOrgIds
         </if>
         WHERE 1=1
         <if test="notice.orgId > 0">
-            AND t_notice.org_id = ownedOrgIds.id
+            AND t_cms_notice.org_id = ownedOrgIds.id
         </if>
 
         <if test="notice.orgId != null and notice.orgId>0 ">
-            AND t_notice.org_id IN (<include refid="QueryOwnedOrgIds"/>)
+            AND t_cms_notice.org_id IN (<include refid="QueryOwnedOrgIds"/>)
         </if>
 
         <if test="notice.status != null and notice.status!= ''">
-            AND t_notice.status = #{notice.status}
+            AND t_cms_notice.status = #{notice.status}
         </if>
         <if test="notice.enabled != null">
-            AND t_notice.enabled = #{notice.enabled}
+            AND t_cms_notice.enabled = #{notice.enabled}
         </if>
         <if test="notice.title != null and notice.title!= ''">
-            AND t_notice.title LIKE CONCAT('%',#{notice.title},'%')
+            AND t_cms_notice.title LIKE CONCAT('%',#{notice.title},'%')
         </if>
         <if test="notice.name != null and notice.name!= ''">
-            AND t_notice.name LIKE CONCAT('%',#{notice.name},'%')
+            AND t_cms_notice.name LIKE CONCAT('%',#{notice.name},'%')
         </if>
         <if test="notice.content != null and notice.content!= ''">
-            AND t_notice.content LIKE CONCAT('%',#{notice.content},'%')
+            AND t_cms_notice.content LIKE CONCAT('%',#{notice.content},'%')
         </if>
 
         <if test="notice.viewNumber != null and notice.viewNumber>=0">
-            AND t_notice.view_number =#{notice.viewNumber}
+            AND t_cms_notice.view_number =#{notice.viewNumber}
         </if>
         <if test="notice.tag != null and notice.tag!= ''">
-            AND t_notice.tag LIKE CONCAT('%',#{notice.tag},'%')
+            AND t_cms_notice.tag LIKE CONCAT('%',#{notice.tag},'%')
         </if>
         <if test="notice.contentType != null and notice.contentType>=0">
-            AND t_notice.content_type =#{notice.contentType}
+            AND t_cms_notice.content_type =#{notice.contentType}
         </if>
         <if test="notice.noticeType != null and notice.noticeType>=0">
-            AND t_notice.notice_type =#{notice.noticeType}
+            AND t_cms_notice.notice_type =#{notice.noticeType}
         </if>
 
         <if test="notice.template != null">
-            AND t_notice.template = #{notice.template}
+            AND t_cms_notice.template = #{notice.template}
         </if>
 
 
         <if test="search != null and search!= ''">
             AND(
-            t_notice.content LIKE CONCAT('%',#{search},'%')
-            OR t_notice.author LIKE CONCAT('%',#{search},'%')
-            OR t_notice.title LIKE CONCAT('%',#{search},'%')
-            OR t_notice.id LIKE CONCAT('%',#{search},'%')
+            t_cms_notice.content LIKE CONCAT('%',#{search},'%')
+            OR t_cms_notice.author LIKE CONCAT('%',#{search},'%')
+            OR t_cms_notice.title LIKE CONCAT('%',#{search},'%')
+            OR t_cms_notice.id LIKE CONCAT('%',#{search},'%')
             )
         </if>
 
         <if test="expired != null">
             <if test="expired == 1">
-                AND (t_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1
+                AND (t_cms_notice.end_time IS NOT NULL AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_cms_notice.end_time, interval 1
                 day))
             </if>
             <if test="expired == 0">
-                AND (t_notice.end_time IS NULL OR DATE_ADD(t_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
+                AND (t_cms_notice.end_time IS NULL OR DATE_ADD(t_cms_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
             </if>
         </if>
         <if test="type != null">
             <if test="type.length==1">
-                AND t_notice.type = #{type[0]}
+                AND t_cms_notice.type = #{type[0]}
             </if>
             <if test="type.length==2">
-                AND ( t_notice.type = #{type[0]} OR t_notice.type = #{type[1]} )
+                AND ( t_cms_notice.type = #{type[0]} OR t_cms_notice.type = #{type[1]} )
             </if>
         </if>
-        ORDER BY field(t_notice.`status`,"Publish","Deprecated","Draft","Expired"),t_notice.sort_num DESC, t_notice.create_time DESC,t_notice.enabled DESC,t_notice.update_time DESC
+        ORDER BY field(t_cms_notice.`status`,"Publish","Deprecated","Draft","Expired"),t_cms_notice.sort_num DESC, t_cms_notice.create_time DESC,t_cms_notice.enabled DESC,t_cms_notice.update_time DESC
     </select>
 
     <select id="findExpiredNotices" resultType="Notice">
-        SELECT t_notice.*
-        FROM t_notice
+        SELECT t_cms_notice.*
+        FROM t_cms_notice
 
-        WHERE t_notice.end_time IS NOT NULL
-          AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_notice.end_time, interval 1 day)
-        ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC, t_notice.create_time DESC
+        WHERE t_cms_notice.end_time IS NOT NULL
+          AND CURRENT_TIMESTAMP &gt;= DATE_ADD(t_cms_notice.end_time, interval 1 day)
+        ORDER BY t_cms_notice.sort_num DESC, t_cms_notice.update_time DESC, t_cms_notice.create_time DESC
     </select>
 
     <select id="findRecentNotices" resultType="Notice">
-        SELECT t_notice.*
-        FROM t_notice
-        WHERE (t_notice.end_time IS NULL OR DATE_ADD(t_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
-        AND t_notice.enabled = 1
-        AND t_notice.status = 'Publish'
+        SELECT t_cms_notice.*
+        FROM t_cms_notice
+        WHERE (t_cms_notice.end_time IS NULL OR DATE_ADD(t_cms_notice.end_time, interval 1 day) &gt; CURRENT_TIMESTAMP)
+        AND t_cms_notice.enabled = 1
+        AND t_cms_notice.status = 'Publish'
 
         <if test="type != null and type!= ''">
-            AND ( t_notice.type = #{type} OR t_notice.type = 'System')
+            AND ( t_cms_notice.type = #{type} OR t_cms_notice.type = 'System')
         </if>
-        ORDER BY t_notice.sort_num DESC, t_notice.update_time DESC,t_notice.create_time DESC
+        ORDER BY t_cms_notice.sort_num DESC, t_cms_notice.update_time DESC,t_cms_notice.create_time DESC
     </select>
 
     <select id="queryNoticesById" resultType="Notice">
-        SELECT t_notice.*
-        FROM t_notice
-        Where t_notice.id = #{id}
+        SELECT t_cms_notice.*
+        FROM t_cms_notice
+        Where t_cms_notice.id = #{id}
     </select>
 </mapper>

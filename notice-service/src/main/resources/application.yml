@@ -1,17 +1,3 @@
-##########################################################
-##################  所有profile共有的配置  #################
-##########################################################
-
-###################  am配置  ###################
-am:
-  swagger-open: true #是否开启swagger (true/false)
-  kaptcha-open: false #是否开启登录时验证码 (true/false)
-  #file-upload-path: d:/tmp  #文件上传目录(不配置的话为java.io.tmpdir目录)
-  #file-host: http://localhost:8080
-  worker-id: 0 # id gen service machine id 0~1023
-  redis-host: 127.0.0.1
-  redis-port: 6379
-
 ###################  jwt配置  ###################
 jwt:
   encoded-key: L7A/6zARSkK1j7Vd5SDD9pSSqZlqF7mAhiOgRbgv9Smce6tf4cJnvKOjtKPxNNnWQj+2lQEScm3XIUjhW+YVZg==
@@ -25,13 +11,6 @@ jwt:
 ###################  项目启动端口  ###################
 server:
   port: 8080
-
-###################  beetl配置  ###################
-beetl:
-  delimiter-statement-start: \@   #开始结束标签(yaml不允许@开头)
-  delimiter-statement-end: null
-  resource-tagroot: common/tags   #自定义标签文件Root目录和后缀
-  resource-tagsuffix: tag
 
 
 ###################  spring配置  ###################
@@ -64,10 +43,31 @@ mybatis-plus:
     lazyLoadingEnabled: true #延时加载的开关
     multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
-    interceptors: com.jfeat.am.module.notice.services.service.filter.ResultFilter
-
+    # interceptors: com.jfeat.am.module.notice.services.service.filter.ResultFilter
 ---
 
+
+##########################################################
+###################  开发环境的profile  ###################
+##########################################################
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://sh-cynosdbmysql-grp-mlyunquo.sql.tencentcdb.com:25133/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: zb2014@8888
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: log4j,wall,mergeStat
+    sql-script-encoding: UTF-8
+    schema: classpath*:sql/**/*-schema.sql
+    data: classpath*:sql/**/*-data.sql
+    initialize: false
+
+logging:
+  level: debug
+
+
+---
 ##########################################################
 ###################  测试环境的profile  ###################
 ##########################################################
@@ -85,54 +85,3 @@ spring:
 
 logging:
   level: debug
-  file: logs/sbmessage.log
-
-am:
-  shiro-cache-redis: false
----
-
-##########################################################
-###################  开发环境的profile  ###################
-##########################################################
-spring:
-  profiles: dev
-  datasource:
-    url: jdbc:mysql://sh-cynosdbmysql-grp-mlyunquo.sql.tencentcdb.com:25133/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
-#    url: jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
-    #url: jdbc:mysql://localhost:3307/uaas-saas?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-    username: root
-#    password: root
-    password: zb2014@8888
-    driver-class-name: com.mysql.jdbc.Driver
-    filters: log4j,wall,mergeStat
-    sql-script-encoding: UTF-8
-    schema: classpath*:sql/**/*-schema.sql
-    data: classpath*:sql/**/*-data.sql
-    initialize: false
-
-logging:
-  level: debug
-  file: logs/sbmessage.log
-
-am:
-  shiro-cache-redis: false
----
-
-##########################################################
-###################  正式环境的profile  ###################
-##########################################################
-spring:
-  profiles: produce
-  datasource:
-      url: jdbc:mysql://127.0.0.1:3306/sbnotice?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: root
-      password: root
-      filters: log4j,wall,mergeStat
-
-logging:
-  level: warn
-  file: logs/sbmessage.log
-
-am:
-  shiro-cache-redis: true
-

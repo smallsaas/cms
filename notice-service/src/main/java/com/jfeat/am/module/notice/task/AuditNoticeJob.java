@@ -27,6 +27,7 @@ public class AuditNoticeJob {
     /**
      * 每10分钟执行一次，检查到期的notice，把其禁用
      * Fix: 每10分钏执行一次浪费资源，改为每天执行一次，暂时设置为不检查
+     * 直接查询过虑过期的公告即可
      */
     //@Scheduled(cron = "* 1/10 * * * ?")
     public void auditNotice() {

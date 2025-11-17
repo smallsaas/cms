@@ -16,13 +16,23 @@
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
 		<result column="end_time" property="endTime" />
+		<result column="start_time" property="startTime" />
 		<result column="content_path" property="contentPath" />
 		<result column="picture_url" property="pictureUrl" />
+		<result column="org_id" property="orgId" />
+		<result column="period_type" property="periodType" />
+		<result column="view_number" property="viewNumber" />
+		<result column="tag" property="tag" />
+		<result column="reference" property="reference" />
+		<result column="content_type" property="contentType" />
+		<result column="notice_type" property="noticeType" />
+		<result column="stick" property="stick" />
+		<result column="template" property="template" />
+		<result column="template_id" property="templateId" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id,name, author, sort_num AS sortNum, status, title, content, type, enabled, create_time AS createTime, update_time AS updateTime, end_time AS endTime,content_path AS contentPath,picture_url AS pictureUrl
-    </sql>
-
+	<sql id="Base_Column_List">
+		id, name, author, title, content, type, status, enabled, create_time AS createTime, update_time AS updateTime, start_time AS startTime, end_time AS endTime, sort_num AS sortNum, org_id AS orgId, content_path AS contentPath, picture_url AS pictureUrl, period_type AS periodType, view_number AS viewNumber, tag, reference, content_type AS contentType, notice_type AS noticeType, stick, template, template_id AS templateId
+	</sql>
 </mapper>

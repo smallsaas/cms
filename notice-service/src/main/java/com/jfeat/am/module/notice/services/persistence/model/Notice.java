@@ -17,7 +17,7 @@ import java.util.Date;
  * @author Code Generator
  * @since 2017-11-20
  */
-@TableName("t_notice")
+@TableName("t_cms_notice")
 public class Notice extends Model<Notice> {
 
     private static final long serialVersionUID = 1L;
@@ -101,7 +101,7 @@ public class Notice extends Model<Notice> {
 
     private Integer stick;
 
-    private Boolean template;
+    private Integer template;
 
 
     private Long templateId;
@@ -115,11 +115,11 @@ public class Notice extends Model<Notice> {
         this.templateId = templateId;
     }
 
-    public Boolean getTemplate() {
+    public Integer getTemplate() {
         return template;
     }
 
-    public void setTemplate(Boolean template) {
+    public void setTemplate(Integer template) {
         this.template = template;
     }
 
@@ -341,11 +341,31 @@ public class Notice extends Model<Notice> {
 
     public static final String SORT_NUM = "sort_num";
 
-    public static final String ORF_ID = "org_id";
+    public static final String ORG_ID = "org_id";
 
-    public static final String CONTENT_PATH = "content_Path";
+    public static final String CONTENT_PATH = "content_path";
 
     public static final String PICTURE_URL = "picture_url";
+
+    public static final String START_TIME = "start_time";
+
+    public static final String PERIOD_TYPE = "period_type";
+
+    public static final String VIEW_NUMBER = "view_number";
+
+    public static final String TAG = "tag";
+
+    public static final String REFERENCE = "reference";
+
+    public static final String CONTENT_TYPE = "content_type";
+
+    public static final String NOTICE_TYPE = "notice_type";
+
+    public static final String STICK = "stick";
+
+    public static final String TEMPLATE = "template";
+
+    public static final String TEMPLATE_ID = "template_id";
 
 
     public static final Integer PERIOD_TYPE_NOT_SET = 0;

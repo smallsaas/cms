@@ -15,7 +15,6 @@ import java.util.Date;
  * @author Code Generator
  * @since 2017-11-20
  */
-@TableName("t_notice")
 public class NoticeRequest extends Notice {
 
 

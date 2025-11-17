@@ -67,12 +67,12 @@ public class NoticeEndpoint {
      */
     @PostMapping
     @ApiOperation(value = "添加公告", response = Notice.class)
-    public Tip createNotice(@RequestBody Notice entity,@RequestParam(value = "template",required = false,defaultValue = "false") Boolean template) {
+    public Tip createNotice(@RequestBody Notice entity,@RequestParam(value = "template",required = false,defaultValue = "false") Integer template) {
         entity.setTemplate(template);
         entity.setAuthor(JWTKit.getAccount());
 
 
-        if (!template&&entity.getTemplateId()!=null){
+        if (template!=0&&entity.getTemplateId()!=null){
             Notice notice =  noticeMapper.selectById(entity.getTemplateId());
             if (notice==null){
                 throw new BusinessException(BusinessCode.BadRequest,"未找到该模板");
@@ -143,7 +143,7 @@ public class NoticeEndpoint {
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "content", required = false) String content,
-            @RequestParam(name = "template",required = false) Boolean template
+            @RequestParam(name = "template",required = false) Integer template
     ) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
@@ -266,73 +266,75 @@ public class NoticeEndpoint {
     }
 
 
-    /**
-     * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
-     */
-    @GetMapping("/recent/notices")
-    @ApiOperation("最新公告（必须是未过期，且已启用的。结果按有效时间倒序）")
-    public Tip latestNotices(Page<Notice> page,
-                               @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                               @RequestParam(name = "type", required = false) String type) {
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
+    // /**
+    //  * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
+    //  */
+    // @GetMapping("/recent/notices")
+    // @ApiOperation("最新公告（必须是未过期，且已启用的。结果按有效时间倒序）")
+    // public Tip latestNotices(Page<Notice> page,
+    //                            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+    //                            @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+    //                            @RequestParam(name = "type", required = false) String type) {
+    //     page.setCurrent(pageNum);
+    //     page.setSize(pageSize);
 
-        if(type!=null && type.length()>0){
-            if(type.compareTo(NoticeTypes.EXTERNAL.toString())==0 || type.compareTo(NoticeTypes.INTERNAL.toString())==0){
-                //ok
-            }else{
-                throw new BusinessException(BusinessCode.BadRequest.getCode(), "类型错误：Only allow [External,Internal], but " + type);
-            }
-        }
+    //     if(type!=null && type.length()>0){
+    //         if(type.compareTo(NoticeTypes.EXTERNAL.toString())==0 || type.compareTo(NoticeTypes.INTERNAL.toString())==0){
+    //             //ok
+    //         }else{
+    //             throw new BusinessException(BusinessCode.BadRequest.getCode(), "类型错误：Only allow [External,Internal], but " + type);
+    //         }
+    //     }
 
-        page.setRecords(queryNoticeDao.findRecentNotices(page, type));
+    //     page.setRecords(queryNoticeDao.findRecentNotices(page, type));
 
-        return SuccessTip.create(page);
-    }
+    //     return SuccessTip.create(page);
+    // }
 
-    /**
-     * 以命名查询 公告
-     * @param name
-     * @return
-     */
 
-    @GetMapping("/getNoticesByName")
-    public Tip getNoticesByName(@RequestParam("name") String name){
-        QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
-        noticeQueryWrapper.eq(Notice.NAME,name);
-        return SuccessTip.create(noticeMapper.selectOne(noticeQueryWrapper));
-    }
 
-    @PutMapping("/setNoticeStick/{id}")
-    public Tip setNoticeStick(@PathVariable("id") Long id){
-        Notice notice = queryNoticeDao.selectById(id);
-        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc(Notice.SORT_NUM).last("limit 1");
-        Notice maxNotice =  noticeMapper.selectOne(queryWrapper);
+    // /**
+    //  * 以命名查询 公告
+    //  * @param name
+    //  * @return
+    //  */
 
-        if (notice!=null){
-            notice.setStick(Notice.STICK_TOP);
-            if (maxNotice!=null && notice.getSortNum()!=null){
-                notice.setSortNum(maxNotice.getSortNum()+1);
-            }else {
-                notice.setSortNum(1);
-            }
-            notice.setStick(Notice.STICK_TOP);
-            return SuccessTip.create(noticeMapper.updateById(notice));
-        }
-        return SuccessTip.create();
-    }
+    // @GetMapping("/getNoticesByName")
+    // public Tip getNoticesByName(@RequestParam("name") String name){
+    //     QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
+    //     noticeQueryWrapper.eq(Notice.NAME,name);
+    //     return SuccessTip.create(noticeMapper.selectOne(noticeQueryWrapper));
+    // }
 
-    @PutMapping("/cancelNoticeStick/{id}")
-    public Tip cancelNoticeStick(@PathVariable("id") Long id){
-        Notice notice = queryNoticeDao.selectById(id);
-        if (notice!=null){
-            notice.setStick(Notice.STICK_TOP);
-            notice.setSortNum(1);
-            notice.setStick(Notice.STICK_NOT_TOP);
-            return SuccessTip.create(noticeMapper.updateById(notice));
-        }
-        return SuccessTip.create();
-    }
+    // @PutMapping("/setNoticeStick/{id}")
+    // public Tip setNoticeStick(@PathVariable("id") Long id){
+    //     Notice notice = queryNoticeDao.selectById(id);
+    //     QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+    //     queryWrapper.orderByDesc(Notice.SORT_NUM).last("limit 1");
+    //     Notice maxNotice =  noticeMapper.selectOne(queryWrapper);
+
+    //     if (notice!=null){
+    //         notice.setStick(Notice.STICK_TOP);
+    //         if (maxNotice!=null && notice.getSortNum()!=null){
+    //             notice.setSortNum(maxNotice.getSortNum()+1);
+    //         }else {
+    //             notice.setSortNum(1);
+    //         }
+    //         notice.setStick(Notice.STICK_TOP);
+    //         return SuccessTip.create(noticeMapper.updateById(notice));
+    //     }
+    //     return SuccessTip.create();
+    // }
+
+    // @PutMapping("/cancelNoticeStick/{id}")
+    // public Tip cancelNoticeStick(@PathVariable("id") Long id){
+    //     Notice notice = queryNoticeDao.selectById(id);
+    //     if (notice!=null){
+    //         notice.setStick(Notice.STICK_TOP);
+    //         notice.setSortNum(1);
+    //         notice.setStick(Notice.STICK_NOT_TOP);
+    //         return SuccessTip.create(noticeMapper.updateById(notice));
+    //     }
+    //     return SuccessTip.create();
+    // }
 }
