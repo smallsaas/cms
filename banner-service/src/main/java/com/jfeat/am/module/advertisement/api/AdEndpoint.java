@@ -1,9 +1,8 @@
 package com.jfeat.am.module.advertisement.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao;
-import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
+// import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdDao;
+// import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
@@ -36,23 +35,12 @@ public class AdEndpoint  {
     @Resource
     private AdGroupMapper adGroupMapper;
 
-    @Resource
-    QueryAdLibraryDao queryAdLibraryDao;
+    // @Resource
+    // QueryAdLibraryDao queryAdLibraryDao;
 
-    @Resource
-    QueryAdDao queryAdDao;
+    // @Resource
+    // QueryAdDao queryAdDao;
 
-    @PostMapping
-    @ApiOperation("添加轮播图")
-    public Tip createAd(@RequestBody AdRecord entity) {
-        entity.setEnabled(1);
-        //处理图片
-       /* if(entity.getImages()!=null&&entity.getImages().size()>0){
-            entity.setImage(entity.getImages().get(0).getUrl());
-        }*/
-
-        return SuccessTip.create(adService.createMaster(entity));
-    }
 
     @PostMapping("/{groupId}")
     @ApiOperation("根据分组添加轮播图")
@@ -81,7 +69,32 @@ public class AdEndpoint  {
     }
 
 
+
+    /** 
+     * 轮播图-CRUD 
+     */
+
+
+    @PostMapping
+    @ApiOperation("添加轮播图")
+    public Tip createAd(@RequestBody AdRecord entity) {
+        entity.setEnabled(1);
+        //处理图片
+       /* if(entity.getImages()!=null&&entity.getImages().size()>0){
+            entity.setImage(entity.getImages().get(0).getUrl());
+        }*/
+
+        return SuccessTip.create(adService.createMaster(entity));
+    }
+
     
+    @GetMapping("/{id}")
+    @ApiOperation("获取轮播图详情")
+    public Tip getAdGroups(@PathVariable Long id) {
+        return SuccessTip.create(adService.retrieveMaster(id));
+    }
+
+
     @PutMapping("/{id}")
     @ApiOperation("更新轮播图")
     public Tip updateAd(@PathVariable Long id, @RequestBody AdRecord entity) {

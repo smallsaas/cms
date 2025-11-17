@@ -3,13 +3,11 @@ package com.jfeat.module.album.api.manage;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.module.album.api.permission.RssImagePropPermission;
 import com.jfeat.module.album.services.domain.dao.QueryRssImagePropDao;
 import com.jfeat.module.album.services.domain.model.RssImagePropRecord;
 import com.jfeat.module.album.services.domain.service.RssImagePropService;
@@ -45,7 +43,6 @@ public class RssImagePropEndpoint {
 
 
     @BusinessLog(name = "RssImageProp", value = "create RssImageProp")
-    @Permission(RssImagePropPermission.RSSIMAGEPROP_NEW)
     @PostMapping
     @ApiOperation(value = "新建 RssImageProp", response = RssImageProp.class)
     public Tip createRssImageProp(@RequestBody RssImageProp entity) {
@@ -59,7 +56,6 @@ public class RssImagePropEndpoint {
         return SuccessTip.create(affected);
     }
 
-    @Permission(RssImagePropPermission.RSSIMAGEPROP_VIEW)
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 RssImageProp", response = RssImageProp.class)
     public Tip getRssImageProp(@PathVariable Long id) {
@@ -67,7 +63,6 @@ public class RssImagePropEndpoint {
     }
 
     @BusinessLog(name = "RssImageProp", value = "update RssImageProp")
-    @Permission(RssImagePropPermission.RSSIMAGEPROP_EDIT)
     @PutMapping("/{id}")
     @ApiOperation(value = "修改 RssImageProp", response = RssImageProp.class)
     public Tip updateRssImageProp(@PathVariable Long id, @RequestBody RssImageProp entity) {
@@ -76,14 +71,12 @@ public class RssImagePropEndpoint {
     }
 
     @BusinessLog(name = "RssImageProp", value = "delete RssImageProp")
-    @Permission(RssImagePropPermission.RSSIMAGEPROP_DELETE)
     @DeleteMapping("/{id}")
     @ApiOperation("删除 RssImageProp")
     public Tip deleteRssImageProp(@PathVariable Long id) {
         return SuccessTip.create(rssImagePropService.deleteMaster(id));
     }
 
-    @Permission(RssImagePropPermission.RSSIMAGEPROP_VIEW)
     @ApiOperation(value = "RssImageProp 列表信息", response = RssImagePropRecord.class)
     @GetMapping
     @ApiImplicitParams({

@@ -1,7 +1,7 @@
 package com.jfeat.am.module.notice.api;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.notice.services.definition.NoticeStatus;
 import com.jfeat.am.module.notice.services.definition.NoticeTypes;
@@ -25,7 +25,6 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -138,7 +137,6 @@ public class NoticeEndpoint {
             @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(name = "type", required = false) String[] type,
             @RequestParam(name = "status", required = false) String status,
-            @Range(min = 0, max = 1) @RequestParam(name = "enabled", required = false) Integer enabled,
             @Range(min = 0, max = 1) @RequestParam(name = "expired", required = false) Integer expired,
             @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "search", required = false) String search,
@@ -173,8 +171,6 @@ public class NoticeEndpoint {
         notice.setStatus(status);
         notice.setTitle(title);
         notice.setContent(content);
-        notice.setEnabled(enabled);
-//        notice.setOrgId(JWTKit.getOrgId());
         notice.setTemplate(template);
         List<NoticeRequest> noticeRequestList = queryNoticeDao.findNotices(page, notice, expired, type,search);
 
@@ -266,31 +262,49 @@ public class NoticeEndpoint {
     }
 
 
-    // /**
-    //  * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
-    //  */
-    // @GetMapping("/recent/notices")
-    // @ApiOperation("最新公告（必须是未过期，且已启用的。结果按有效时间倒序）")
-    // public Tip latestNotices(Page<Notice> page,
-    //                            @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-    //                            @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-    //                            @RequestParam(name = "type", required = false) String type) {
-    //     page.setCurrent(pageNum);
-    //     page.setSize(pageSize);
+    /**
+     * 置顶公告
+     * @param id
+     * @return
+     */
+    @ApiOperation("置顶公告公告")
+    @PutMapping("/{id}/stick")
+    public Tip setNoticeStick(@PathVariable("id") Long id){
+        Notice notice = queryNoticeDao.selectById(id);
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc(Notice.SORT_NUM).last("limit 1");
+        Notice maxNotice =  noticeMapper.selectOne(queryWrapper);
 
-    //     if(type!=null && type.length()>0){
-    //         if(type.compareTo(NoticeTypes.EXTERNAL.toString())==0 || type.compareTo(NoticeTypes.INTERNAL.toString())==0){
-    //             //ok
-    //         }else{
-    //             throw new BusinessException(BusinessCode.BadRequest.getCode(), "类型错误：Only allow [External,Internal], but " + type);
-    //         }
-    //     }
+        if (notice!=null){
+            notice.setStick(Notice.STICK_TOP);
+            if (maxNotice!=null && notice.getSortNum()!=null){
+                notice.setSortNum(maxNotice.getSortNum()+1);
+            }else {
+                notice.setSortNum(1);
+            }
+            notice.setStick(Notice.STICK_TOP);
+            return SuccessTip.create(noticeMapper.updateById(notice));
+        }
+        return SuccessTip.create();
+    }
 
-    //     page.setRecords(queryNoticeDao.findRecentNotices(page, type));
-
-    //     return SuccessTip.create(page);
-    // }
-
+    /**
+     * 取消置顶公告
+     * @param id
+     * @return
+     */
+    @ApiOperation("取消置顶公告公告")
+    @PutMapping("/{id}/stick/cancel")
+    public Tip cancelNoticeStick(@PathVariable("id") Long id){
+        Notice notice = queryNoticeDao.selectById(id);
+        if (notice!=null){
+            notice.setStick(Notice.STICK_TOP);
+            notice.setSortNum(1);
+            notice.setStick(Notice.STICK_NOT_TOP);
+            return SuccessTip.create(noticeMapper.updateById(notice));
+        }
+        return SuccessTip.create();
+    }
 
 
     // /**
@@ -306,35 +320,5 @@ public class NoticeEndpoint {
     //     return SuccessTip.create(noticeMapper.selectOne(noticeQueryWrapper));
     // }
 
-    // @PutMapping("/setNoticeStick/{id}")
-    // public Tip setNoticeStick(@PathVariable("id") Long id){
-    //     Notice notice = queryNoticeDao.selectById(id);
-    //     QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
-    //     queryWrapper.orderByDesc(Notice.SORT_NUM).last("limit 1");
-    //     Notice maxNotice =  noticeMapper.selectOne(queryWrapper);
-
-    //     if (notice!=null){
-    //         notice.setStick(Notice.STICK_TOP);
-    //         if (maxNotice!=null && notice.getSortNum()!=null){
-    //             notice.setSortNum(maxNotice.getSortNum()+1);
-    //         }else {
-    //             notice.setSortNum(1);
-    //         }
-    //         notice.setStick(Notice.STICK_TOP);
-    //         return SuccessTip.create(noticeMapper.updateById(notice));
-    //     }
-    //     return SuccessTip.create();
-    // }
-
-    // @PutMapping("/cancelNoticeStick/{id}")
-    // public Tip cancelNoticeStick(@PathVariable("id") Long id){
-    //     Notice notice = queryNoticeDao.selectById(id);
-    //     if (notice!=null){
-    //         notice.setStick(Notice.STICK_TOP);
-    //         notice.setSortNum(1);
-    //         notice.setStick(Notice.STICK_NOT_TOP);
-    //         return SuccessTip.create(noticeMapper.updateById(notice));
-    //     }
-    //     return SuccessTip.create();
-    // }
+    
 }

@@ -30,7 +30,7 @@ import java.util.List;
 
 @RestController
 @Api("RssImageStyle")
-@RequestMapping("/api/cms/album")
+@RequestMapping("/api/cms/album/albums")
 public class AppRssImageStyleEndPoint {
     @Resource
     RssImageNameOverModelService rssImageNameOverModelService;
@@ -182,9 +182,9 @@ public class AppRssImageStyleEndPoint {
         return SuccessTip.create(page);
     }
 
-    @GetMapping("/test")
-    public Tip rssTest(){
-        RssImageNameRecord record = new RssImageNameRecord();
-        return SuccessTip.create(rssImageNameOverModelService.getAllRssImageToMap());
-    }
+    // @GetMapping("/test")
+    // public Tip rssTest(){
+    //     RssImageNameRecord record = new RssImageNameRecord();
+    //     return SuccessTip.create(rssImageNameOverModelService.getAllRssImageToMap());
+    // }
 }

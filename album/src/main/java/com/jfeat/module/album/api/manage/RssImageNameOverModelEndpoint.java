@@ -3,7 +3,6 @@ package com.jfeat.module.album.api.manage;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jfeat.am.common.annotation.Permission;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -13,7 +12,6 @@ import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.crud.plus.CRUDObject;
 import com.jfeat.crud.plus.DefaultFilterResult;
 import com.jfeat.crud.plus.META;
-import com.jfeat.module.album.api.permission.RssImageNamePermission;
 import com.jfeat.module.album.services.domain.dao.QueryRssImageNameDao;
 import com.jfeat.module.album.services.domain.model.RssImageNameRecord;
 import com.jfeat.module.album.services.domain.service.RssImageNameOverModelService;
@@ -55,7 +53,6 @@ public class RssImageNameOverModelEndpoint {
     // QueryRssImagePropDao queryRssImagePropDao;
 
     @BusinessLog(name = "RssImageName", value = "create RssImageName")
-    @Permission(RssImageNamePermission.RSSIMAGENAME_NEW)
     @PostMapping
     @ApiOperation(value = "新建 RssImageName", response = RssImageNameModel.class)
     public Tip createRssImageName(@RequestBody RssImageNameModel entity) {
@@ -74,7 +71,6 @@ public class RssImageNameOverModelEndpoint {
     }
 
     @BusinessLog(name = "RssImageName", value = "查看 RssImageNameModel")
-    @Permission(RssImageNamePermission.RSSIMAGENAME_VIEW)
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 RssImageName", response = RssImageNameModel.class)
     public Tip getRssImageName(@PathVariable Long id) {
@@ -102,7 +98,6 @@ public class RssImageNameOverModelEndpoint {
     }
 
     @BusinessLog(name = "RssImageName", value = "update RssImageName")
-    @Permission(RssImageNamePermission.RSSIMAGENAME_EDIT)
     @PutMapping("/{id}")
     @ApiOperation(value = "修改 RssImageName", response = RssImageNameModel.class)
     public Tip updateRssImageName(@PathVariable Long id, @RequestBody RssImageNameModel entity) {
@@ -115,14 +110,12 @@ public class RssImageNameOverModelEndpoint {
     }
 
     @BusinessLog(name = "RssImageName", value = "delete RssImageName")
-    @Permission(RssImageNamePermission.RSSIMAGENAME_DELETE)
     @DeleteMapping("/{id}")
     @ApiOperation("删除 RssImageName")
     public Tip deleteRssImageName(@PathVariable Long id) {
         return SuccessTip.create(rssImageNameOverModelService.deleteMaster(id));
     }
 
-    @Permission(RssImageNamePermission.RSSIMAGENAME_VIEW)
     @ApiOperation(value = "RssImageName 列表信息", response = RssImageNameRecord.class)
     @GetMapping
     @ApiImplicitParams({

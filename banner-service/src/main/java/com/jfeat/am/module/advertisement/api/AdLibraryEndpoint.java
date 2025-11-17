@@ -18,14 +18,15 @@ import javax.annotation.Resource;
 
 /**
  * <p>
- * api
+ * 图库管理， 可以尝试用 album 代替
  * </p>
  *
  * @author Code Generator
  * @since 2018-12-13
  */
+@Deprecated
 @RestController
-@Api("AD-轮播图")
+@Api("轮播图-图库管理")
 @RequestMapping("/api/adm/cms/ad/libraries")
 public class AdLibraryEndpoint  {
 

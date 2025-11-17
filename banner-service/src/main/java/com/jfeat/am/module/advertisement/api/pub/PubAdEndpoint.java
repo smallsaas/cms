@@ -10,6 +10,7 @@ import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
+import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.am.module.advertisement.services.service.AdService;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/pub/cms")
+@RequestMapping("/api/pub/cms/ad")
 @Api("轮播图-Banner")
 public class PubAdEndpoint {
 
@@ -43,11 +44,18 @@ public class PubAdEndpoint {
     private AdGroupMapper adGroupMapper;
 
     @Resource
+    private AdGroupService adGroupService;
+
+    @Resource
     QueryAdLibraryDao queryAdLibraryDao;
+
     @Resource
     QueryAdDao queryAdDao;
 
-    @GetMapping("/ad/group/{group}")
+
+
+
+    @GetMapping("/group/{group}")
     @ApiOperation("按组获取轮播图 [带组信息]")
     public Tip getAdGroup(@PathVariable String group) {
         AdGroupedModel model = adService.getAdRecordsByGroup(group);
@@ -58,14 +66,37 @@ public class PubAdEndpoint {
         return SuccessTip.create(model);
     }
 
+
+    @ApiOperation("按组获取轮播图")
+    @GetMapping("/allGroup/{groupId}")
+    public Tip getAdsFromGroup(
+            @RequestParam(name = "search", required = false) String search,
+            @PathVariable Integer groupId) {
+
+        if(search!=null && search.trim().length()>0){
+            return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)
+                    .like("name", search)
+                    .or()
+                    .like("type", search)
+                    .eq("group_id", groupId)
+            ));
+
+        }else {
+            return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)));
+        }
+    }
+
+
     @ApiOperation("按组获取轮播图 group=1 首页轮播图")
-    @GetMapping("/ad/records/{group}")
+    @GetMapping("/records/{group}")
     public Tip Ad(@PathVariable String group,
                   @RequestParam(value = "enabled", required = false) Integer enabled) {
         return SuccessTip.create(queryAdLibraryDao.getAdRecordsByGroup(group,null, enabled));
     }
 
-    @GetMapping("/ad/{id}")
+
+
+    @GetMapping("/{id}")
     @ApiOperation("轮播图详情")
     public Tip getAdInfo(@PathVariable Long id) {
         //新建对象 进行封装image
@@ -79,25 +110,14 @@ public class PubAdEndpoint {
         return SuccessTip.create(adRecord);
     }
 
-    @ApiOperation("按组获取广告组")
-    @GetMapping("/ad/allGroup/{groupId}")
-    public Tip getAdsFromGroup(
-            @RequestParam(name = "search", required = false) String search,
-            @PathVariable Integer groupId) {
-
-        if(search!=null && search.trim().length()>0){
-            return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)
-                    .like("name",search)
-                    .or()
-                    .like("type",search)
-                    .eq("group_id",groupId)
-            ));
-        }else  return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)));
-
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除轮播图")
+    public Tip deleteAd(@PathVariable Long id) {
+        return SuccessTip.create(adService.deleteMaster(id));
     }
 
-    @GetMapping("/ad")
-    @ApiOperation("广告列表")
+    @GetMapping
+    @ApiOperation("轮播图列表")
     public Tip queryAdLibraryies(Page<AdRecord> page,
                                  @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
                                  @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -130,7 +150,21 @@ public class PubAdEndpoint {
         return SuccessTip.create(page);
     }
 
-    @GetMapping("/ad/libraries")
+
+
+
+    /**
+     * 图库列表
+     * @param page
+     * @param pageNum
+     * @param pageSize
+     * @param id
+     * @param url
+     * @param orderBy
+     * @param sort
+     * @return
+     */
+    @GetMapping("/libraries")
     @ApiOperation("图库列表")
     public Tip queryAdLibraryies(Page<AdLibraryRecord> page,
                                  @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,

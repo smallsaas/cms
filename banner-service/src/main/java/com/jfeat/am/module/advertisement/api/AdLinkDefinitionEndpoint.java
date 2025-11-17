@@ -18,14 +18,14 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ *  轮播图广告链接定义
  * </p>
  *
  * @author admin
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/adm/cms/ad/definition")
+@RequestMapping("/api/adm/cms/ad/link")
 public class AdLinkDefinitionEndpoint{
 
     @Resource
@@ -102,6 +102,7 @@ public class AdLinkDefinitionEndpoint{
 
         return SuccessTip.create(adLinkRequestList);
     }
+
 
     @GetMapping("/{id}")
     public Tip getAdLinkDefinition(@PathVariable Long id) {
