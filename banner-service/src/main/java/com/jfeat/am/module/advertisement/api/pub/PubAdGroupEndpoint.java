@@ -1,6 +1,8 @@
 package com.jfeat.am.module.advertisement.api.pub;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -44,5 +46,22 @@ public class PubAdGroupEndpoint {
     @ApiOperation("获取轮播图分类详情")
     public Tip getAdGroups(@PathVariable Long id) {
         return SuccessTip.create(adGroupService.retrieveMaster(id));
+    }
+
+    @ApiOperation("按组获取广告组")
+    @GetMapping("/allGroup/{groupId}")
+    public Tip getAdsFromGroup(
+            @RequestParam(name = "search", required = false) String search,
+            @PathVariable Integer groupId) {
+
+        if(search!=null && search.trim().length()>0){
+            return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)
+                    .like("name",search)
+                    .or()
+                    .like("type",search)
+                    .eq("group_id",groupId)
+            ));
+        }else  return SuccessTip.create(queryAdDao.selectList(new QueryWrapper<Ad>().eq("group_id",groupId)));
+
     }
 }

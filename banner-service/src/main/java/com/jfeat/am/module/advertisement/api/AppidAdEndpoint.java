@@ -15,8 +15,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/adm/cms")
+@RequestMapping("/api/adm/cms/ad")
 @Api("AD-轮播图")
 public class AppidAdEndpoint {
 
@@ -36,7 +34,7 @@ public class AppidAdEndpoint {
     @Resource
     private AdGroupMapper adGroupMapper;
 
-    @PostMapping("/ad/id/{identifier}/{appid}")
+    @PostMapping("/id/{identifier}/{appid}")
     @ApiOperation("根据identifier分类添加轮播图")
     public Tip createAdByIdentifier(@PathVariable String identifier, @RequestBody Ad entity,@PathVariable("appid")String appid) {
         entity.setEnabled(1);

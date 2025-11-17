@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/api/cms/manage")
-@Api("轮播图管理-Banner")
+@RequestMapping("/api/cms/ad/manage")
+@Api("终端轮播图管理-Banner")
 public class UserAdManageEndpoint {
 
     @Resource
@@ -77,14 +77,14 @@ public class UserAdManageEndpoint {
 //        return SuccessTip.create(adGroupService.createMaster(entity));
 //    }
 
-    @DeleteMapping("/ad/{id}")
+    @DeleteMapping("/{id}")
     @ApiOperation("删除轮播图")
     public Tip deleteAd(@PathVariable Long id) {
         return SuccessTip.create(adService.deleteMaster(id));
     }
 
     @ApiOperation("按组获取广告组")
-    @GetMapping("/ad/allGroup")
+    @GetMapping("/allGroup")
     public Tip getAdsFromGroup(
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "groupId", required = true) Integer groupId) {
@@ -112,7 +112,7 @@ public class UserAdManageEndpoint {
 
 
 
-    @PostMapping("/ad/{groupId}")
+    @PostMapping("/{groupId}")
     @ApiOperation("根据GroupId 添加轮播图")
     public Tip createAd(@PathVariable Long groupId, @RequestBody AdRecord entity) {
          /*

@@ -20,20 +20,20 @@ import javax.annotation.Resource;
  * @since 2017-09-20
  */
 @RestController
-@RequestMapping("/api/adm/cms")
+@RequestMapping("/api/adm/cms/ad")
 @Api("AD-轮播图")
 public class AdGroupEndpoint {
 
     @Resource
     private AdGroupService adGroupService;
 
-    @PostMapping("/ad/groups")
+    @PostMapping("/groups")
     @ApiOperation("添加轮播图分类")
     public Tip createAdGroup(@RequestBody AdGroup entity) {
         return SuccessTip.create(adGroupService.createMaster(entity));
     }
 
-    @PutMapping("/ad/groups/{id}")
+    @PutMapping("/groups/{id}")
     @ApiOperation("更新轮播图分类")
     public Tip updateAdGroup(@PathVariable Long id, @RequestBody AdGroup entity) {
         entity.setId(id);
@@ -41,12 +41,12 @@ public class AdGroupEndpoint {
     }
 
     @ApiOperation("删除轮播图分类")
-    @DeleteMapping("/ad/groups/{id}")
+    @DeleteMapping("/groups/{id}")
     public Tip deleteAdGroup(@PathVariable Long id) {
         return SuccessTip.create(adGroupService.deleteMaster(id));
     }
 
-    @GetMapping("/ad/groups/data")
+    @GetMapping("/groups/data")
     @ApiOperation("获取轮播图所有分类数据")
     public Tip getAllGroupData() {
         return SuccessTip.create(adGroupService.getAllGroupData());

@@ -36,7 +36,7 @@
     <modules>
         <module>banner-service</module>
         <module>term-config</module>
-        <!-- <module>notice-service</module> -->
+        <module>notice-service</module>
         <module>album</module>
         <module>icon</module>
         <module>rss</module>
