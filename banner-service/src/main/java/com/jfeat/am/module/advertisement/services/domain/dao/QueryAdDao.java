@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.domain.model.smallProductRequest;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
+import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,6 +16,10 @@ import java.util.List;
 public interface QueryAdDao extends BaseMapper<Ad> {
     List<AdRecord> findAdPage(Page<AdRecord> page,
                               @Param("record") AdRecord record,
+                              @Param("orderBy") String orderBy,
+                              @Param("search") String search);
+    List<AdGroup> findAdGroupPage(Page<AdGroup> page,
+                              @Param("record") AdGroup record,
                               @Param("orderBy") String orderBy,
                               @Param("search") String search);
 
