@@ -1,6 +1,8 @@
 package com.jfeat.am.module.advertisement.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.service.AdGroupService;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -10,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -21,12 +24,14 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/api/adm/cms/ad/groups")
-@Api("轮播图-分组管理")
+@Api("后台轮播图管理-分组管理")
 public class AdGroupEndpoint {
 
     @Resource
     private AdGroupService adGroupService;
-    
+
+    @Resource
+    private AdGroupMapper adGroupMapper;
 
     @PostMapping
     @ApiOperation("添加轮播图分组")
@@ -54,18 +59,61 @@ public class AdGroupEndpoint {
     }
 
 
-    @GetMapping
-    @ApiOperation("获取轮播图组列表")
-    public Tip listAdGroups(Page<AdGroup> page,
+    // @GetMapping
+    // @ApiOperation("获取轮播图分组列表")
+    // public Tip listAdGroups(Page<AdGroup> page,
+    //                         @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
+    //                         @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+    //                         @RequestParam(name = "search", required = false) String search) {
+    //     page.setCurrent(pageNum);
+    //     page.setSize(pageSize);
+    //     page.setRecords(adGroupService.getAllAdGroup(search));
+
+    //     return SuccessTip.create(page);
+    // }
+
+    @GetMapping("/all")
+    @ApiOperation("获取轮播图分组列表")
+    public Tip allListAdGroups(Page<AdGroup> page,
                             @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
                             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                             @RequestParam(name = "search", required = false) String search) {
         page.setCurrent(pageNum);
         page.setSize(pageSize);
         page.setRecords(adGroupService.getAllAdGroup(search));
-
+ 
         return SuccessTip.create(page);
     }
+
+    
+//    @GetMapping
+//    @ApiOperation("获取轮播图分组分页列表")
+//    public Tip listAdGroups(Page<AdGroup> page,
+//                            @RequestParam(name = "current", required = false, defaultValue = "1") Integer pageNum,
+//                            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+//                            @RequestParam(name = "search", required = false) String search) {
+//        Long userId = JWTKit.getUserId();
+//        if (userId==null){
+//            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+//        }
+//        page.setCurrent(pageNum);
+//        page.setSize(pageSize);
+//        Long orgId = tenantUtilsService.getCurrentOrgId(userId);
+// //        大匠
+//        List<AdGroup> house = adGroupService.getCurrentAdGroup(orgId,"1");
+
+// //        小匠
+//        QueryWrapper<AdGroup> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq(AdGroup.APPID,"2");
+//        List<AdGroup> rentAdGroups = adGroupMapper.selectList(queryWrapper);
+
+//        house.addAll(rentAdGroups);
+
+//        page.setRecords(house);
+
+//        return SuccessTip.create(page);
+//    }
+
 
 
     // @GetMapping("/data")

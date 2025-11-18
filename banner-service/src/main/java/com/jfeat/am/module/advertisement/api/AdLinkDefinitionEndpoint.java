@@ -11,7 +11,7 @@ import com.jfeat.am.module.advertisement.services.service.AdLinkDefinitionServic
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.annotations.Api;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.List;
  * @author admin
  * @since 2017-09-20
  */
+@Api("后台轮播图管理-链接管理")
 @RestController
 @RequestMapping("/api/adm/cms/ad/link")
 public class AdLinkDefinitionEndpoint{

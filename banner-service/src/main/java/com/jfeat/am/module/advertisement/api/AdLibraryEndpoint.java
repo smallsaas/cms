@@ -1,6 +1,5 @@
 package com.jfeat.am.module.advertisement.api;
 
-import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
 import com.jfeat.am.module.advertisement.services.service.AdLibraryService;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdLibrary;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -26,15 +25,15 @@ import javax.annotation.Resource;
  */
 @Deprecated
 @RestController
-@Api("轮播图-图库管理")
+@Api("后台轮播图管理-图库管理")
 @RequestMapping("/api/adm/cms/ad/libraries")
 public class AdLibraryEndpoint  {
 
     @Resource
     AdLibraryService adLibraryService;
 
-    @Resource
-    QueryAdLibraryDao queryAdLibraryDao;
+    // @Resource
+    // QueryAdLibraryDao queryAdLibraryDao;
 
     @PostMapping
     public Tip createAdLibrary(@RequestBody AdLibrary entity) {

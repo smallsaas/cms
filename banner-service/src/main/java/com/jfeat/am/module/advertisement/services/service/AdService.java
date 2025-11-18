@@ -26,6 +26,7 @@ public interface AdService extends CRUDServiceOnly<Ad> {
     Integer createMaster(Ad ad);
 
     Integer updateMaster(Ad ad);
+    
     AdGroupedModel getAdRecordsByGroup(String group,String appid);
 
     AdGroupedModel getAdRecordsByGroup(String group);

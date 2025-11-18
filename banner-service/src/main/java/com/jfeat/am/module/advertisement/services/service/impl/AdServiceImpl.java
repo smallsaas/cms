@@ -119,7 +119,7 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
     @Override
     public AdGroupedModel getAdRecordsByGroup(String group, String appid,Integer enabled) {
         /// group means group identifier
-        List<Ad> records= queryAdLibraryDao.getAdRecordsByGroup(group,appid, enabled);
+        List<Ad> records= queryAdLibraryDao.getAdRecordsByGroup(group, appid, enabled);
 
         AdGroupedModel model = new AdGroupedModel();
         model.setAds(records);
