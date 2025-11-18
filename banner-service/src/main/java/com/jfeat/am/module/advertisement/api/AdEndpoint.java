@@ -110,6 +110,17 @@ public class AdEndpoint  {
         return SuccessTip.create(adService.deleteMaster(id));
     }
 
+    /**
+     * 依据组标识为前端提供 轮播图
+     * @param group
+     * @return
+     */
+    @GetMapping("/group/{groupId}")
+    @ApiOperation("根据分组标识获取轮播图")
+    public Tip getAdByGroupId(@PathVariable Long groupId) {
+        return SuccessTip.create(adService.getAdRecordsByGroupId(groupId));
+    }
+
 
     @GetMapping
     @ApiOperation("轮播图列表")

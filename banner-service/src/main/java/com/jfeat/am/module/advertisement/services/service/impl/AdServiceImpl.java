@@ -9,7 +9,9 @@ import com.jfeat.am.module.advertisement.services.domain.dao.QueryAdLibraryDao;
 import com.jfeat.am.module.advertisement.services.domain.model.record.AdRecord;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdLibraryMapper;
 import com.jfeat.am.module.advertisement.services.persistence.dao.AdMapper;
+import com.jfeat.am.module.advertisement.services.persistence.dao.AdGroupMapper;
 import com.jfeat.am.module.advertisement.services.persistence.model.Ad;
+import com.jfeat.am.module.advertisement.services.persistence.model.AdGroup;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdGroupedModel;
 import com.jfeat.am.module.advertisement.services.persistence.model.AdLibrary;
 import com.jfeat.am.module.advertisement.services.service.AdService;
@@ -33,28 +35,20 @@ import java.util.List;
 public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService {
     @Resource
     private AdMapper adMapper;
+
     @Resource
-    private AdLibraryMapper adLibraryMapper;
-    @Resource
-    private QueryAdLibraryDao queryAdLibraryDao;
+    private AdGroupMapper adGroupMapper;
+
     @Resource
     private QueryAdDao queryAdDao;
 
+    
     @Override
     protected BaseMapper<Ad> getMasterMapper() {
         return adMapper;
     }
 
-    private Integer updateAdLibrary(String url) {
-        if(url != null && !"".equals(url)) {
-            AdLibrary adLibrary = new AdLibrary();
-            adLibrary.setUrl(url);
-            if(adLibraryMapper.selectOne(new LambdaQueryWrapper<>(adLibrary)) == null) {
-                return adLibraryMapper.insert(adLibrary);
-            }
-        }
-        return 0;
-    }
+
 
     @Override
     @Transactional
@@ -119,7 +113,7 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
     @Override
     public AdGroupedModel getAdRecordsByGroup(String group, String appid,Integer enabled) {
         /// group means group identifier
-        List<Ad> records= queryAdLibraryDao.getAdRecordsByGroup(group, appid, enabled);
+        List<Ad> records= queryAdDao.getAdRecordsByGroup(group, appid, enabled);
 
         AdGroupedModel model = new AdGroupedModel();
         model.setAds(records);
@@ -127,4 +121,43 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
 
         return model;
     }
+
+
+    @Override
+    public AdGroupedModel getAdRecordsByGroupId(Long groupId){
+        Ad ad = new Ad();
+        ad.setGroupId(groupId);
+
+        List<Ad> records= adMapper.selectList(new QueryWrapper<>(ad));
+
+        AdGroup group = adGroupMapper.selectById(groupId);
+
+        AdGroupedModel model = new AdGroupedModel();
+        model.setAds(records);
+        model.setGroup(group.getName());
+
+        return model;
+    }
+
+
+
+    /**
+     * 图库更新
+     * @param url
+     * @return
+     */
+    @Resource
+    private AdLibraryMapper adLibraryMapper;
+
+    private Integer updateAdLibrary(String url) {
+        if(url != null && !"".equals(url)) {
+            AdLibrary adLibrary = new AdLibrary();
+            adLibrary.setUrl(url);
+            if(adLibraryMapper.selectOne(new LambdaQueryWrapper<>(adLibrary)) == null) {
+                return adLibraryMapper.insert(adLibrary);
+            }
+        }
+        return 0;
+    }
+
 }

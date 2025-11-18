@@ -30,6 +30,8 @@ public interface QueryAdDao extends BaseMapper<Ad> {
                                      @Param("search") String search,
                                      @Param("appid")String appid);
 
+    List<Ad> getAdRecordsByGroup(@Param("group") String group,@Param("appid")String appid, @Param("enabled") Integer enabled);
+
     AdRecord findAd( @Param("id") Long id);
 
     List<smallProductRequest> getProductIdName();
