@@ -10,6 +10,11 @@ public class AdRecord extends Ad {
      */
     String groupName;
 
+    String appid;
+
+    Long orgId;
+
+
     /**
      * TODO, 广告投放策略, 分析作用
      */
@@ -24,11 +29,28 @@ public class AdRecord extends Ad {
         this.strategyArray = strategyArray;
     }
 
+    
     public String getGroupName() {
         return groupName;
     }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 }

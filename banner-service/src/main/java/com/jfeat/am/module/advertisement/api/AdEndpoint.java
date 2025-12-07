@@ -115,7 +115,7 @@ public class AdEndpoint  {
      * @param group
      * @return
      */
-    @GetMapping("/group/{groupId}")
+    @GetMapping("/groups/{groupId}")
     @ApiOperation("根据分组标识获取轮播图")
     public Tip getAdByGroupId(@PathVariable Long groupId) {
         return SuccessTip.create(adService.getAdRecordsByGroupId(groupId));

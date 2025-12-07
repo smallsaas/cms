@@ -17,18 +17,13 @@ import java.util.List;
  */
 public interface AdService extends CRUDServiceOnly<Ad> {
     Integer createMaster(Ad ad);
-    AdRecord getAdRecord(Long id);
     Integer updateMaster(Ad ad);
 
     /**
-     * 依据组标识为前端提供 轮播图
-     * @param group
+     * 依据分组名称提供 轮播图
+     * @param group group_name
      * @return
      */
-    AdGroupedModel getAdRecordsByGroup(String group, String appid,Integer enabled);
-    
-    AdGroupedModel getAdRecordsByGroup(String group,String appid);
-
     AdGroupedModel getAdRecordsByGroup(String group);
 
 

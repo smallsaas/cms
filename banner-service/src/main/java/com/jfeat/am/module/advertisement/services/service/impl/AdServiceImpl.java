@@ -48,8 +48,6 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
         return adMapper;
     }
 
-
-
     @Override
     @Transactional
     public Integer createMaster(Ad ad) {
@@ -66,16 +64,6 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
         affected += updateAdLibrary(ad.getImage());
         affected += super.updateMaster(ad);
         return affected;
-    }
-
-    @Override
-    public AdGroupedModel getAdRecordsByGroup(String group,String appid) {
-        return getAdRecordsByGroup(group, appid,1);
-    }
-
-    @Override
-    public AdGroupedModel getAdRecordsByGroup(String group) {
-        return getAdRecordsByGroup(group, null,1);
     }
 
     @Override
@@ -98,22 +86,9 @@ public class AdServiceImpl extends CRUDServiceOnlyImpl<Ad> implements AdService 
     }
 
     @Override
-    public AdRecord getAdRecord(Long id) {
-        AdRecord adRecord= queryAdDao.findAd(id);
-        String str=adRecord.getStrategy();
-        String[] strArr=null;
-        if(str!=null && str.trim().length()>0){
-            strArr = str.split("\\&");
-        }
-
-        adRecord.setStrategyArray(strArr);
-        return adRecord;
-    }
-
-    @Override
-    public AdGroupedModel getAdRecordsByGroup(String group, String appid,Integer enabled) {
+    public AdGroupedModel getAdRecordsByGroup(String group) {
         /// group means group identifier
-        List<Ad> records= queryAdDao.getAdRecordsByGroup(group, appid, enabled);
+        List<Ad> records= queryAdDao.getAdRecordsByGroup(group);
 
         AdGroupedModel model = new AdGroupedModel();
         model.setAds(records);
