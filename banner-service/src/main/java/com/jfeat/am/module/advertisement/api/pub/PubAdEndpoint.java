@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author admin
@@ -34,37 +36,38 @@ public class PubAdEndpoint {
     // @Resource
     // QueryAdLibraryDao queryAdLibraryDao;
 
+    /**
+     * 检查字符串是否为base64编码，如果是则解码，否则直接使用
+     */
+    private String decodeIfBase64(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return input;
+        }
 
-    // @PostMapping("/{groupId}")
-    // @ApiOperation("根据分组添加轮播图")
-    // public Tip createAd(@PathVariable Long groupId, @RequestBody AdRecord entity) {
-    //     entity.setEnabled(1);
-    //     entity.setGroupId(groupId);
+        try {
+            // 检查是否是有效的base64编码
+            // 尝试解码，如果成功且结果合理，则认为是base64编码
+            byte[] decodedBytes = Base64.getDecoder().decode(input);
+            String decoded = new String(decodedBytes, StandardCharsets.UTF_8);
 
-    //     /*   
-    //     //处理图片
-    //     if(entity.getImages()!=null&&entity.getImages().size()>0){
-    //         entity.setImage(entity.getImages().get(0).getUrl());
-    //     }*/
+            // 简单验证解码结果是否合理（非空且包含可打印字符）
+            if (!decoded.isEmpty() && decoded.matches("[\\x20-\\x7E\\u4e00-\\u9fa5]+")) {
+                return decoded;
+            }
+        } catch (IllegalArgumentException e) {
+            // 不是有效的base64编码，直接使用原值
+        }
 
-    //     return SuccessTip.create(adService.createMaster(entity));
-    // }
-
-    // @PostMapping("/id/{identifier}")
-    // @ApiOperation("根据identifier添加轮播图")
-    // public Tip createAdByIdentifier(@PathVariable String identifier, @RequestBody Ad entity) {
-    //     entity.setEnabled(1);
-    //     AdGroup adGroup = new AdGroup();
-    //     adGroup.setIdentifier(identifier);
-    //     AdGroup query = adGroupMapper.selectOne(new LambdaQueryWrapper<>(adGroup));
-    //     entity.setGroupId(query == null ? null : query.getId());
-    //     return SuccessTip.create(adService.createMaster(entity));
-    // }
+        return input;
+    }
 
     @GetMapping("/group/{group_name}")
     @ApiOperation("根据分组标识获取轮播图")
     public Tip getAdByGroupId(@PathVariable String group_name) {
-        return SuccessTip.create(adService.getAdRecordsByGroup(group_name));
+        // 检查group_name是否为base64编码，如果是则解码，否则直接使用
+        String decodedGroupName = decodeIfBase64(group_name);
+
+        return SuccessTip.create(adService.getAdRecordsByGroup(decodedGroupName));
     }
 
     // @ApiOperation("按组获取轮播图分组")
