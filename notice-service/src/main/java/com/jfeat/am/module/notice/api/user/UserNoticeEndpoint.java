@@ -18,7 +18,7 @@ import com.jfeat.am.module.notice.services.service.utils.ReaderFile;
 
 @RestController
 @Api("公告")
-@RequestMapping("/api/cms/notice")
+@RequestMapping("/api/cms/notice/notices")
 public class UserNoticeEndpoint {
 
     @Resource
@@ -28,7 +28,7 @@ public class UserNoticeEndpoint {
     NoticeMapper noticeMapper;
 
 
-    @GetMapping("/notices/{id}")
+    @GetMapping("/{id}")
     @ApiOperation(value = "查看公告", response = Notice.class)
     public Tip getNotice(@PathVariable Long id) {
         Notice notice = queryNoticeDao.queryNoticesById(id);
@@ -179,7 +179,7 @@ public class UserNoticeEndpoint {
     /**
      * 最新公告（必须是未过期，且已启用的。结果按有效时间倒序）
      */
-    @GetMapping("/recent")
+    @GetMapping
     @ApiOperation("最新公告（必须是未过期，且已启用的。结果按有效时间倒序）")
     public Tip latestNotices(Page<Notice> page,
                              @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
