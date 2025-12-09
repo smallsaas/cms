@@ -17,7 +17,7 @@ import java.util.Date;
  * @author Code Generator
  * @since 2017-11-20
  */
-@TableName("t_cms_notice")
+@TableName("t_notice")
 public class Notice extends Model<Notice> {
 
     private static final long serialVersionUID = 1L;

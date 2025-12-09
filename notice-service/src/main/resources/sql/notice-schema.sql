@@ -16,10 +16,10 @@ Date: 2017-11-02 11:20:01
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for t_cms_notice
+-- Table structure for t_notice
 -- ----------------------------
-DROP TABLE IF EXISTS `t_cms_notice`;
-CREATE TABLE `t_cms_notice` (
+DROP TABLE IF EXISTS `t_notice`;
+CREATE TABLE `t_notice` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
   `name` varchar(100) CHARACTER SET utf8 NOT NULL COMMENT '命名',
   `author` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '作者',
